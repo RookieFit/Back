@@ -12,6 +12,7 @@ public class AuthServiceImplement {
     public ResponseEntity<? super IdCheckResponseDto> idcheck( IdCheckRequestDto dto ) {
         try {
             
+            
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
