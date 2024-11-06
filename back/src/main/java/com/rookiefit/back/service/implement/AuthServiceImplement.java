@@ -5,15 +5,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.rookiefit.back.common.CertificationNumber;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
+import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
+import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.provider.JwtProvider;
+import com.rookiefit.back.provider.SmsCerificationNumberProvider;
 import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.service.AuthService;
 
@@ -25,6 +29,7 @@ public class AuthServiceImplement implements AuthService {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final SmsCerificationNumberProvider smsCerificationNumberProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -45,6 +50,30 @@ public class AuthServiceImplement implements AuthService {
         }
 
         return IdCheckResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SmsCertificationResponseDto> smsCertification(SmsCertificationRequestDto dto) {
+       
+        try {
+
+            String userId = dto.getUserId();
+            String phoneNumbaer = dto.getUser_phonenumber();
+
+            boolean isExistId = userRepository.existsByUserId(userId);
+            if (isExistId)
+                return IdCheckResponseDto.duplicatedId();
+
+            String certificationNumber = CertificationNumber.getCertificationNumber();
+
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumbaer , certificationNumber);
+            if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return SmsCertificationResponseDto.success();
     }
 
     @Override
@@ -84,10 +113,9 @@ public class AuthServiceImplement implements AuthService {
             if( userEntity == null ) return SignInResponseDto.signInFail();
 
             String password = dto.getUser_password();
-            String encodedPassword = passwordEncoder.encode(password);
+            String encodedPassword = userEntity.getUser_password();
             boolean isMatch = passwordEncoder.matches(password, encodedPassword);
             if( !isMatch ) return SignInResponseDto.signInFail();
-
             token = jwtProvider.create(userId);
 
         } catch (Exception exception) {
@@ -95,6 +123,6 @@ public class AuthServiceImplement implements AuthService {
             ResponseDto.databaseError();
         }
 
-        return SignInResponseDto.success();
+        return SignInResponseDto.success(token);
     }
 }

@@ -7,4 +7,5 @@ public interface ResponseMessage {
     String Sign_IN_FAIL = "Login Information mismatched error";
     String CERTIFICATION_FAIL = "Certification Error..";
     String DUPLICATE_ID = "Duplicated ID ..";
+    String SMS_FAIL = "SMS SEND FAIL ..";
 }

@@ -7,4 +7,5 @@ public interface ResponseCode {
     String Sign_IN_FAIL = "SF";
     String CERTIFICATION_FAIL = "CF";
     String DUPLICATE_ID = "DI";
+    String SMS_FAIL = "SMS_F";
 }

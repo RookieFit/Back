@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
+import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
+import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.service.AuthService;
 
@@ -29,6 +31,13 @@ public class AuthController {
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
             @RequestBody @Valid IdCheckRequestDto dto) {
         ResponseEntity<? super IdCheckResponseDto> responseBody = authService.idCheck(dto);
+        return responseBody;
+    }
+
+    @PostMapping("/sms-certification")
+    public ResponseEntity<? super SmsCertificationResponseDto> smsCertification(
+            @RequestBody @Valid SmsCertificationRequestDto dto) {
+        ResponseEntity<? super SmsCertificationResponseDto> responseBody = authService.smsCertification(dto);
         return responseBody;
     }
 
