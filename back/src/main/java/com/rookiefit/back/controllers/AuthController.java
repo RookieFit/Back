@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
+import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
+import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -34,6 +36,13 @@ public class AuthController {
     public ResponseEntity<? super SignUpResponseDto> signUp(
             @RequestBody @Valid SignUpRequestDto requestBody) {
         ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
+        return response;
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<? super SignInResponseDto> signIn(
+            @RequestBody @Valid SignInRequestDto requestBody) {
+        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;
     }
 }

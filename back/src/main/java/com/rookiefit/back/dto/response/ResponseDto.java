@@ -1,7 +1,6 @@
 package com.rookiefit.back.dto.response;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import com.rookiefit.back.common.ResponseCode;
