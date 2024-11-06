@@ -13,7 +13,6 @@ import lombok.Getter;
 @Getter
 public class SignInResponseDto extends ResponseDto{
     
-
     private SignInResponseDto() {
         super();
     }
