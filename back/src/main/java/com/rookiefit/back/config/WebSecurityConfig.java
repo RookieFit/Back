@@ -19,7 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.nimbusds.oauth2.sdk.auth.JWTAuthentication;
+import com.rookiefit.back.filter.JwtAuthenticationFilter;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     protected SecurityFilterChain configure( HttpSecurity httpSecurity ) throws Exception {
@@ -45,12 +45,14 @@ public class WebSecurityConfig {
             )
             .authorizeHttpRequests( request->request
                 .requestMatchers( "/", "/api/auth/**" ).permitAll()
+                .requestMatchers( "/", "/api/user/**" ).hasRole("USER")
                 .anyRequest().authenticated()
             )
         
             .exceptionHandling(handeling->handeling
                 .authenticationEntryPoint(new FailedAuthenticationEntryPoint() )
-            );
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
@@ -62,7 +64,7 @@ public class WebSecurityConfig {
         corsConfiguration.addAllowedHeader("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/v1/**", corsConfiguration);
+        source.registerCorsConfiguration("/api/**", corsConfiguration);
         return source;
     }
 }
