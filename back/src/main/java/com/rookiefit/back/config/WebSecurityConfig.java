@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.rookiefit.back.filter.JwtAuthenticationFilter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,25 +32,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     protected SecurityFilterChain configure( HttpSecurity httpSecurity ) throws Exception {
         httpSecurity
             .cors( cors-> cors.configurationSource(corsConfigurationSource()) )
-            .csrf(CsrfConfigurer::disable)
+            .csrf(CsrfConfigurer::disable) // 프론트에 연결하기 때문에 CSRF의 공격에 안전
             .httpBasic(HttpBasicConfigurer::disable)
             .sessionManagement(sessionManagement->sessionManagement
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests( request->request
                 .requestMatchers( "/", "/api/auth/**" ).permitAll()
+                .requestMatchers( "/", "/api/user/**" ).hasRole("USER")
                 .anyRequest().authenticated()
             )
         
             .exceptionHandling(handeling->handeling
                 .authenticationEntryPoint(new FailedAuthenticationEntryPoint() )
-            );
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
@@ -60,7 +64,7 @@ public class WebSecurityConfig {
         corsConfiguration.addAllowedHeader("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/v1/**", corsConfiguration);
+        source.registerCorsConfiguration("/api/**", corsConfiguration);
         return source;
     }
 }
