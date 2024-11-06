@@ -29,6 +29,7 @@ public class AuthServiceImplement implements AuthService {
             exception.printStackTrace();
             System.out.println(dto.getUserId());
             return ResponseDto.databaseError();
+            
         }
 
         return IdCheckResponseDto.success();
