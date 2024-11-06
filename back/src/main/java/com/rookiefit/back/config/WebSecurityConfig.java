@@ -38,7 +38,7 @@ public class WebSecurityConfig {
     protected SecurityFilterChain configure( HttpSecurity httpSecurity ) throws Exception {
         httpSecurity
             .cors( cors-> cors.configurationSource(corsConfigurationSource()) )
-            .csrf(CsrfConfigurer::disable)
+            .csrf(CsrfConfigurer::disable) // 프론트에 연결하기 때문에 CSRF의 공격에 안전
             .httpBasic(HttpBasicConfigurer::disable)
             .sessionManagement(sessionManagement->sessionManagement
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
