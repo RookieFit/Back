@@ -1,16 +1,28 @@
 package com.rookiefit.back.service.implement;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.rookiefit.back.common.CertificationManager;
+import com.rookiefit.back.common.CertificationNumber;
+import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
+import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
+import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
+import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
+import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
+import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.entity.UserEntity;
+import com.rookiefit.back.provider.JwtProvider;
+import com.rookiefit.back.provider.SmsCerificationNumberProvider;
 import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.service.AuthService;
 
@@ -20,7 +32,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServiceImplement implements AuthService {
 
+
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+    private final SmsCerificationNumberProvider smsCerificationNumberProvider;
+    private final CertificationManager certificationManager;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -44,6 +60,55 @@ public class AuthServiceImplement implements AuthService {
     }
 
     @Override
+    public ResponseEntity<? super SmsCertificationResponseDto> smsCertification(SmsCertificationRequestDto dto) {
+       
+        try {
+
+            String userId = dto.getUserId();
+            String phoneNumbaer = dto.getUser_phonenumber();
+
+            boolean isExistId = userRepository.existsByUserId(userId);
+            if (isExistId)
+                return IdCheckResponseDto.duplicatedId();
+
+            String certificationNumber = CertificationNumber.getCertificationNumber();
+            certificationManager.saveCertificationNumber(userId, certificationNumber);
+            
+            
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumbaer , certificationNumber);
+            if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return SmsCertificationResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super CheckCertificationResponseDto>checkCertification(CheckCertificationRequestDto dto){
+        
+        try {
+
+            String userId = dto.getUserId();
+            String phoneNumber = dto.getUser_phonenumber();
+            String certificationNumber = dto.getCertificationNumber();
+
+            boolean isExistId = userRepository.existsByUserId(userId);
+            if (isExistId)return CheckCertificationResponseDto.duplicatedId();
+
+            boolean isMatch = certificationManager.verifyAndDelete(userId, certificationNumber);
+            if( !isMatch ) return CheckCertificationResponseDto.certificationFail();
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return CheckCertificationResponseDto.success();
+    }
+
+    @Override
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
 
         try {
@@ -53,10 +118,10 @@ public class AuthServiceImplement implements AuthService {
             if (isExistId)
                 return SignUpResponseDto.duplicateId();
 
-            String password = dto.getUserPassword();
+            String password = dto.getUser_password();
             String encodedPassword = passwordEncoder.encode(password);
 
-            dto.setUserPassword(encodedPassword);
+            dto.setUser_password(encodedPassword);
             UserEntity userEntity = new UserEntity(dto);
 
             userRepository.save(userEntity);
@@ -67,5 +132,29 @@ public class AuthServiceImplement implements AuthService {
         }
 
         return SignUpResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+
+        String token = null;
+        try {
+
+            String userId = dto.getUserId();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if( userEntity == null ) return SignInResponseDto.signInFail();
+
+            String password = dto.getUser_password();
+            String encodedPassword = userEntity.getUser_password();
+            boolean isMatch = passwordEncoder.matches(password, encodedPassword);
+            if( !isMatch ) return SignInResponseDto.signInFail();
+            token = jwtProvider.create(userId);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(token);
     }
 }
