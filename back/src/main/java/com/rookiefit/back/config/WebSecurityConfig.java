@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.rookiefit.back.Handler.OAuth2SuccessHandler;
 import com.rookiefit.back.filter.JwtAuthenticationFilter;
 
 import jakarta.servlet.ServletException;
@@ -33,44 +34,49 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final DefaultOAuth2UserService oAuth2UserService;
 
     @Bean
-    protected SecurityFilterChain configure( HttpSecurity httpSecurity ) throws Exception {
+    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .cors( cors-> cors.configurationSource(corsConfigurationSource()) )
-            .csrf(CsrfConfigurer::disable) // 프론트에 연결하기 때문에 CSRF의 공격에 안전
-            .httpBasic(HttpBasicConfigurer::disable)
-            .sessionManagement(sessionManagement->sessionManagement
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authorizeHttpRequests( request->request
-                .requestMatchers( "/", "/api/auth/**" ).permitAll()
-                .requestMatchers( "/", "/api/user/**" ).hasRole("USER")
-                .requestMatchers( "/", "/api/admin/**" ).hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-        
-            .exceptionHandling(handeling->handeling
-                .authenticationEntryPoint(new FailedAuthenticationEntryPoint() )
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(CsrfConfigurer::disable) // 프론트에 연결하기 때문에 CSRF의 공격에 안전
+                .httpBasic(HttpBasicConfigurer::disable)
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/", "/api/v1/auth/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/api/v1/user/**").hasRole("USER")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .anyRequest()
+                        .authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService)))
+
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new FailedAuthenticationEntryPoint()))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
 
     @Bean
-    protected CorsConfigurationSource corsConfigurationSource(){
+    protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", corsConfiguration);
+        source.registerCorsConfiguration("/api/v1/**", corsConfiguration);
+
         return source;
     }
 }
 
-class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint{
+class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
@@ -80,5 +86,5 @@ class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint{
         // {"code" : "NP", "message" : "No permission" }
         response.getWriter().write("{\"code\" : \"NP\", \"message\" : \"No permission\" }");
     }
-    
+
 }
