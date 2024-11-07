@@ -11,6 +11,7 @@ public class CertificationManager {
     public void saveCertificationNumber( String userId , String certifiacationNumber ){
         certificationMap.put(userId, certifiacationNumber);
     }
+
     public boolean verifyAndDelete( String userId , String inputCertificationNumber ){
 
         boolean isSuccessed = false;
@@ -19,7 +20,6 @@ public class CertificationManager {
             String storedCertificationNumber = certificationMap.get(userId);
             if( storedCertificationNumber == null ) return false;
             if( storedCertificationNumber.equals(inputCertificationNumber)){
-                System.out.println(storedCertificationNumber+inputCertificationNumber);
                 certificationMap.remove(userId);
                 isSuccessed = true;
                 return isSuccessed;

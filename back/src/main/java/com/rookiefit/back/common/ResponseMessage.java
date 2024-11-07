@@ -8,4 +8,5 @@ public interface ResponseMessage {
     String CERTIFICATION_FAIL = "Certification Error..";
     String DUPLICATE_ID = "Duplicated ID ..";
     String SMS_FAIL = "SMS SEND FAIL ..";
+    String ID_NOT_FOUND = "Id not Found..";
 }

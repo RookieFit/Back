@@ -8,4 +8,5 @@ public interface ResponseCode {
     String CERTIFICATION_FAIL = "CF";
     String DUPLICATE_ID = "DI";
     String SMS_FAIL = "SMS_F";
+    String ID_NOT_FOUND = "IF";
 }
