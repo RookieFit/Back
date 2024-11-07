@@ -37,4 +37,13 @@ public class UserEntity {
         this.type = "app";
         this.role = "ROLE_USER";
     }
+
+    public UserEntity(String userId, String email, String user_phonenumber, String type) {
+        this.userId = userId;
+        this.user_password = "password";
+        this.user_email = email;
+        this.user_phonenumber = "00000000000";
+        this.type = "app";
+        this.role = "ROLE_USER";
+    }
 }
