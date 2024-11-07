@@ -19,7 +19,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.rookiefit.back.Handler.OAuth2SuccessHandler;
 import com.rookiefit.back.filter.JwtAuthenticationFilter;
 
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.rookiefit.back.Handler;
+package com.rookiefit.back.handler;
 
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
