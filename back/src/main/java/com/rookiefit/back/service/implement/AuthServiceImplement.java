@@ -1,7 +1,5 @@
 package com.rookiefit.back.service.implement;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -112,16 +110,16 @@ public class AuthServiceImplement implements AuthService {
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
 
         try {
-
+            
             String userId = dto.getUserId();
             boolean isExistId = userRepository.existsByUserId(userId);
-            if (isExistId)
-                return SignUpResponseDto.duplicateId();
+            if (isExistId)return SignUpResponseDto.duplicatedId();
 
             String password = dto.getUser_password();
             String encodedPassword = passwordEncoder.encode(password);
-
             dto.setUser_password(encodedPassword);
+
+
             UserEntity userEntity = new UserEntity(dto);
 
             userRepository.save(userEntity);
