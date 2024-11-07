@@ -1,16 +1,21 @@
 package com.rookiefit.back.service.implement;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.rookiefit.back.common.CertificationManager;
 import com.rookiefit.back.common.CertificationNumber;
+import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
+import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
@@ -27,9 +32,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServiceImplement implements AuthService {
 
+
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final SmsCerificationNumberProvider smsCerificationNumberProvider;
+    private final CertificationManager certificationManager;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -65,7 +72,9 @@ public class AuthServiceImplement implements AuthService {
                 return IdCheckResponseDto.duplicatedId();
 
             String certificationNumber = CertificationNumber.getCertificationNumber();
-
+            certificationManager.saveCertificationNumber(userId, certificationNumber);
+            
+            
             boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumbaer , certificationNumber);
             if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
 
@@ -74,6 +83,29 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.databaseError();
         }
         return SmsCertificationResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super CheckCertificationResponseDto>checkCertification(CheckCertificationRequestDto dto){
+        
+        try {
+
+            String userId = dto.getUserId();
+            String phoneNumber = dto.getUser_phonenumber();
+            String certificationNumber = dto.getCertificationNumber();
+
+            boolean isExistId = userRepository.existsByUserId(userId);
+            if (isExistId)return CheckCertificationResponseDto.duplicatedId();
+
+            boolean isMatch = certificationManager.verifyAndDelete(userId, certificationNumber);
+            if( !isMatch ) return CheckCertificationResponseDto.certificationFail();
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return CheckCertificationResponseDto.success();
     }
 
     @Override
