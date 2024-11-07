@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
+import com.rookiefit.back.dto.request.CheckFindUserPasswordRequestDto;
+import com.rookiefit.back.dto.request.FindUserPasswordRequestDto;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
@@ -13,6 +15,8 @@ import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
+import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
+import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.service.AuthService;
 
@@ -64,5 +68,21 @@ public class AuthController {
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;
     }
+
+    @PostMapping("/find-password")
+    public ResponseEntity<? super FindUserPasswordResponseDto> findUserPassword(
+        @RequestBody @Valid FindUserPasswordRequestDto requestBody){
+            ResponseEntity<? super FindUserPasswordResponseDto> response = authService.findUserPassword(requestBody);
+            return response;
+        }
+    
+    @PostMapping("/check-find-password")
+    public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
+        @RequestBody @Valid CheckFindUserPasswordRequestDto requestBody){
+            ResponseEntity<? super CheckFindUserPasswordResponseDto> response = authService.checkFindUserPasswordResponseDto(requestBody);
+            return response;
+        }
+    
+    
 
 }
