@@ -27,20 +27,17 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter{
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
-    
-    @Override
-    protected void doFilterInternal( 
-        HttpServletRequest request, 
-        HttpServletResponse response,
-        FilterChain filterChain
-        ) throws ServletException , IOException
-        {
-            try {
 
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+        try {
                 String token = parseBearerToken(request); //parseBearerToken 메서드에서 Bearer토크 추출
                 if( token == null ){
                     filterChain.doFilter(request, response);
@@ -68,15 +65,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 exception.printStackTrace();
             }
 
-            filterChain.doFilter(request, response);
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            String role = userEntity.getRole();
+            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+            authorities.add(new SimpleGrantedAuthority(role)); // 인증된 userId로 DB에서 사용자정보 조회 사용자권한 생성
+
+            SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId, null,
+                    authorities);
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.setContext(securityContext); // 인증토큰 설정
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        filterChain.doFilter(request, response);
     }
 
-    private String parseBearerToken( HttpServletRequest request ){
-        String authorization = request.getHeader("Authorization" );
+    private String parseBearerToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
         boolean hasAuthorization = StringUtils.hasText(authorization);
-        if( !hasAuthorization ) return null;
+        if (!hasAuthorization)
+            return null;
         boolean isBearer = authorization.startsWith("Bearer ");
-        if( !isBearer ) return null;
+        if (!isBearer)
+            return null;
         String token = authorization.substring(7);
         return token;
     }
