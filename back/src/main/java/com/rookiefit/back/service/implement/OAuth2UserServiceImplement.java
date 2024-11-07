@@ -31,8 +31,9 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
         String userPhoneNumber = "00000000000";
 
         if (oauthClientName.equals("kakao")) {
-            String kakaoId = (String) oAuth2User.getAttributes().get("id");
-            userId = "kakao_" + kakaoId.substring(0, 4);
+            // Kakao에서 id Long으로 받아오기
+            Long kakaoId = (Long) oAuth2User.getAttributes().get("id");
+            userId = "kakao_" + String.valueOf(kakaoId).substring(0, 4);  // Long을 String으로 변환 후 처리
             userEntity = new UserEntity(userId, email, userPhoneNumber, "kakao");
         }
 
