@@ -6,16 +6,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CertificationManager {
-    private final ConcurrentHashMap< String , String > certificationMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> certificationMap = new ConcurrentHashMap<>();
 
-    public void saveCertificationNumber( String userId , String certifiacationNumber ){
+    public void saveCertificationNumber(String userId, String certifiacationNumber) {
         certificationMap.put(userId, certifiacationNumber);
     }
 
     public boolean verifyAndDelete( String userId , String inputCertificationNumber ){
 
         boolean isSuccessed = false;
-        
+
         try {
             String storedCertificationNumber = certificationMap.get(userId);
             if( storedCertificationNumber == null ) return false;
@@ -24,7 +24,6 @@ public class CertificationManager {
                 isSuccessed = true;
                 return isSuccessed;
             }
-
 
         } catch (Exception exception) {
             exception.printStackTrace();

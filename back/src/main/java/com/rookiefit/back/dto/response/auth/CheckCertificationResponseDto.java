@@ -10,22 +10,24 @@ import com.rookiefit.back.dto.response.ResponseDto;
 import lombok.Getter;
 
 @Getter
-public class CheckCertificationResponseDto extends ResponseDto{
-    
-    private CheckCertificationResponseDto(){
+public class CheckCertificationResponseDto extends ResponseDto {
+
+    private CheckCertificationResponseDto() {
         super();
     }
 
-    public static ResponseEntity<CheckCertificationResponseDto> success(){
+    public static ResponseEntity<CheckCertificationResponseDto> success() {
         CheckCertificationResponseDto responseBody = new CheckCertificationResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
+
     public static ResponseEntity<ResponseDto> duplicatedId() {
-        ResponseDto responseBody = new ResponseDto( ResponseCode.DUPLICATE_ID , ResponseMessage.DUPLICATE_ID );
+        ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_ID, ResponseMessage.DUPLICATE_ID);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
-    public static ResponseEntity<ResponseDto> certificationFail(){
-        ResponseDto responseBody = new ResponseDto( ResponseCode.CERTIFICATION_FAIL , ResponseMessage.CERTIFICATION_FAIL );
+
+    public static ResponseEntity<ResponseDto> certificationFail() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.CERTIFICATION_FAIL, ResponseMessage.CERTIFICATION_FAIL);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
     }
 }
