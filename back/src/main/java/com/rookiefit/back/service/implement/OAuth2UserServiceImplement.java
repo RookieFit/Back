@@ -44,6 +44,13 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
             userEntity = new UserEntity(userId, email, userPhoneNumber, "naver");
         }
 
+        if (oauthClientName.equals("google")) {
+            Long googleId = (Long) oAuth2User.getAttributes().get("id");
+            userId = "google" + String.valueOf(googleId).substring(0, 4);  // Long을 String으로 변환 후 처리
+            System.out.println(userId);
+            userEntity = new UserEntity(userId, email, userPhoneNumber, "google");
+        }
+
         userRepository.save(userEntity);
 
         return oAuth2User;

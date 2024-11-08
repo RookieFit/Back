@@ -48,9 +48,7 @@ public class AuthServiceImplement implements AuthService {
             if (isExistId)return IdCheckResponseDto.duplicatedId();
 
         } catch (Exception exception) {
-            exception.printStackTrace();
-            System.out.println(dto.getUserId());
-            return ResponseDto.databaseError();
+            handleException(exception);
         }
         return IdCheckResponseDto.success();
     }
@@ -58,8 +56,8 @@ public class AuthServiceImplement implements AuthService {
     @Override
     public ResponseEntity<? super SmsCertificationResponseDto> smsCertification(SmsCertificationRequestDto dto) {  
         try {
-            String userId = dto.getUserId();
-            String phoneNumber = dto.getUser_phonenumber();
+            String userId = dto.getUserId();// 필요없음
+            String phoneNumber = dto.getUser_phonenumber();//키값으로 사용
 
             boolean isExistId = userRepository.existsByUserId(userId);
             if (isExistId)return IdCheckResponseDto.duplicatedId();
@@ -71,8 +69,7 @@ public class AuthServiceImplement implements AuthService {
             if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
 
         } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+            handleException(exception);
         }
         return SmsCertificationResponseDto.success();
     }
@@ -90,8 +87,7 @@ public class AuthServiceImplement implements AuthService {
             if( !isMatch ) return CheckCertificationResponseDto.certificationFail();
             
         } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+            handleException(exception);
         }
         return CheckCertificationResponseDto.success();
     }
@@ -111,8 +107,7 @@ public class AuthServiceImplement implements AuthService {
             userRepository.save(userEntity);
 
         } catch (Exception exception) {
-            exception.printStackTrace();
-            ResponseDto.databaseError();
+            handleException(exception);
         }
         return SignUpResponseDto.success();
     }
@@ -132,8 +127,7 @@ public class AuthServiceImplement implements AuthService {
             token = jwtProvider.create(userId);
 
         } catch (Exception exception) {
-            exception.printStackTrace();
-            ResponseDto.databaseError();
+            handleException(exception);
         }
         return SignInResponseDto.success(token);
     }
@@ -155,8 +149,7 @@ public class AuthServiceImplement implements AuthService {
             if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
 
         } catch (Exception exception) {
-            exception.printStackTrace();
-            ResponseDto.databaseError();
+            handleException(exception);
         }
         return FindUserPasswordResponseDto.success();
     }
@@ -172,9 +165,13 @@ public class AuthServiceImplement implements AuthService {
             if( !isMatch ) return CheckFindUserPasswordResponseDto.certificationFail();
             
         } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+            handleException(exception);
         }
         return CheckFindUserPasswordResponseDto.success();
+    }
+
+    private ResponseEntity<ResponseDto> handleException(Exception exception) {
+        exception.printStackTrace(); 
+        return ResponseDto.databaseError();
     }
 }
