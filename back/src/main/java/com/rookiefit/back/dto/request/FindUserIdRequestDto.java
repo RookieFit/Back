@@ -5,18 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class CheckCertificationRequestDto {
+public class FindUserIdRequestDto {
 
     @NotBlank
-    private String userId;
-
-    @NotBlank
-    private String user_phonenumber;
-
-    @NotBlank
-    private String certificationNumber;
+    private String userPhoneNumber;
 
 }

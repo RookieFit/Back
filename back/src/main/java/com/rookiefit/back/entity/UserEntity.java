@@ -2,6 +2,7 @@ package com.rookiefit.back.entity;
 
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -23,7 +24,8 @@ public class UserEntity {
 
     private String user_email;
 
-    private String user_phonenumber;
+    @Column(unique = true)
+    private String userPhoneNumber;
 
     private String role;
 
@@ -33,7 +35,7 @@ public class UserEntity {
         this.userId = dto.getUserId();
         this.user_password = dto.getUser_password();
         this.user_email = dto.getUser_email();
-        this.user_phonenumber = dto.getUser_phonenumber();
+        this.userPhoneNumber = dto.getUser_phonenumber();
         this.type = "app";
         this.role = "ROLE_USER";
     }
@@ -42,7 +44,7 @@ public class UserEntity {
         this.userId = userId;
         this.user_password = "password";
         this.user_email = email;
-        this.user_phonenumber = "00000000000";
+        this.userPhoneNumber = "00000000000";
         this.type = "app";
         this.role = "ROLE_USER";
     }

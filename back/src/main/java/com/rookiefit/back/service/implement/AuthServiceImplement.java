@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.rookiefit.back.common.CertificationManager;
 import com.rookiefit.back.common.CertificationNumber;
 import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
+import com.rookiefit.back.dto.request.CheckFindUserIdRequestDto;
+import com.rookiefit.back.dto.request.FindUserIdRequestDto;
 import com.rookiefit.back.dto.request.CheckFindUserPasswordRequestDto;
 import com.rookiefit.back.dto.request.FindUserPasswordRequestDto;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
@@ -16,6 +18,8 @@ import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
+import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
+import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
@@ -64,7 +68,7 @@ public class AuthServiceImplement implements AuthService {
 
             String certificationNumber = CertificationNumber.getCertificationNumber();
             certificationManager.saveCertificationNumber(userId, certificationNumber);
-              
+
             boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumber , certificationNumber);
             if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
 
@@ -81,11 +85,13 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = dto.getCertificationNumber();
 
             boolean isExistId = userRepository.existsByUserId(userId);
-            if (isExistId)return CheckCertificationResponseDto.duplicatedId();
+            if (isExistId)
+                return CheckCertificationResponseDto.duplicatedId();
 
             boolean isMatch = certificationManager.verifyAndDelete(userId, certificationNumber);
+          
             if( !isMatch ) return CheckCertificationResponseDto.certificationFail();
-            
+
         } catch (Exception exception) {
             handleException(exception);
         }
@@ -97,7 +103,8 @@ public class AuthServiceImplement implements AuthService {
         try { 
             String userId = dto.getUserId();
             boolean isExistId = userRepository.existsByUserId(userId);
-            if (isExistId)return SignUpResponseDto.duplicatedId();
+            if (isExistId)
+                return SignUpResponseDto.duplicatedId();
 
             String password = dto.getUser_password();
             String encodedPassword = passwordEncoder.encode(password);
@@ -118,12 +125,14 @@ public class AuthServiceImplement implements AuthService {
         try {
             String userId = dto.getUserId();
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if( userEntity == null ) return SignInResponseDto.signInFail();
+            if (userEntity == null)
+                return SignInResponseDto.signInFail();
 
             String password = dto.getUser_password();
             String encodedPassword = userEntity.getUser_password();
             boolean isMatch = passwordEncoder.matches(password, encodedPassword);
-            if( !isMatch ) return SignInResponseDto.signInFail();
+            if (!isMatch)
+                return SignInResponseDto.signInFail();
             token = jwtProvider.create(userId);
 
         } catch (Exception exception) {
@@ -131,6 +140,26 @@ public class AuthServiceImplement implements AuthService {
         }
         return SignInResponseDto.success(token);
     }
+
+
+    @Override
+    public ResponseEntity<? super FindUserIdResponseDto> findUserId(FindUserIdRequestDto dto) {
+
+        try {
+
+            String phoneNumber = dto.getUserPhoneNumber();
+
+            boolean isExistId = userRepository.existsByUserPhoneNumber(phoneNumber);
+            if (!isExistId)
+                return FindUserIdResponseDto.PhoneNumber_NOT_FOUND();
+
+            String certificationNumber = CertificationNumber.getCertificationNumber();
+            certificationManager.saveCertificationNumber(phoneNumber, certificationNumber);
+
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumber,
+                    certificationNumber);
+            if (!isSuccessed)
+                return SmsCertificationResponseDto.smsSendFail();
 
     //유저의 아이디와 전화번호를 입력받아 인증번호 메세지발송_김민준_2024_11_07_17:06
     @Override
@@ -148,10 +177,34 @@ public class AuthServiceImplement implements AuthService {
             boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumber , certificationNumber); //유저전화번호로 인증번호 발송
             if( !isSuccessed ) return SmsCertificationResponseDto.smsSendFail();
 
+
         } catch (Exception exception) {
             handleException(exception);
         }
-        return FindUserPasswordResponseDto.success();
+        return FindUserIdResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super CheckFindUserIdResponseDto> checkFindUserId(CheckFindUserIdRequestDto dto) {
+
+        try {
+
+            String phoneNumber = dto.getUserPhoneNumber();
+            String certificationNumber = dto.getCertificationNumber();
+            System.out.println("sec: " + certificationNumber);
+            System.out.println("thr:" + phoneNumber);
+
+            boolean isMatch = certificationManager.verifyAndDelete(phoneNumber, certificationNumber);
+
+            if (!isMatch) {
+                return CheckFindUserIdResponseDto.certificationFail();
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            ResponseDto.databaseError();
+        }
+        return CheckFindUserIdResponseDto.success();
     }
 
     @Override
