@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
+import com.rookiefit.back.dto.request.CheckFindUserIdRequestDto;
+import com.rookiefit.back.dto.request.FindUserIdRequestDto;
 import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
@@ -13,7 +15,8 @@ import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
-import com.rookiefit.back.dto.response.auth.SignInResponseDto;
+import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
+import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -45,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/check-certification")
-    public ResponseEntity<? super CheckCertificationResponseDto> smsCertification(
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
             @RequestBody @Valid CheckCertificationRequestDto dto) {
         ResponseEntity<? super CheckCertificationResponseDto> responseBody = authService.checkCertification(dto);
         return responseBody;
@@ -63,6 +66,20 @@ public class AuthController {
             @RequestBody @Valid SignInRequestDto requestBody) {
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;
+    }
+
+    @PostMapping("/find-id")
+    public ResponseEntity<? super FindUserIdResponseDto> findUserId(
+            @RequestBody @Valid FindUserIdRequestDto requestBody) {
+        ResponseEntity<? super FindUserIdResponseDto> response = authService.findUserId(requestBody);
+        return response;
+    }
+
+    @PostMapping("/check-find-id")
+    public ResponseEntity<? super CheckFindUserIdResponseDto> checkFindUserId(
+            @RequestBody @Valid CheckFindUserIdRequestDto dto) {
+        ResponseEntity<? super CheckFindUserIdResponseDto> responseBody = authService.checkFindUserId(dto);
+        return responseBody;
     }
 
 }
