@@ -12,17 +12,14 @@ public class CertificationManager {
         certificationMap.put(userId, certifiacationNumber);
     }
 
-    public boolean verifyAndDelete(String userId, String inputCertificationNumber) {
+    public boolean verifyAndDelete( String userId , String inputCertificationNumber ){
 
         boolean isSuccessed = false;
 
         try {
             String storedCertificationNumber = certificationMap.get(userId);
-            System.out.println("fir" + storedCertificationNumber);
-            if (storedCertificationNumber == null)
-                return false;
-            if (storedCertificationNumber.equals(inputCertificationNumber)) {
-                System.out.println(storedCertificationNumber + inputCertificationNumber);
+            if( storedCertificationNumber == null ) return false;
+            if( storedCertificationNumber.equals(inputCertificationNumber)){
                 certificationMap.remove(userId);
                 isSuccessed = true;
                 return isSuccessed;

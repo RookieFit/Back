@@ -9,4 +9,5 @@ public interface ResponseCode {
     String DUPLICATE_ID = "DI";
     String SMS_FAIL = "SMS_F";
     String PhoneNumber_NOT_FOUND = "PF";
+    String ID_NOT_FOUND = "IF";
 }
