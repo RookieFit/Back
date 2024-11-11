@@ -1,19 +1,21 @@
-package com.rookiefit.back.dto.request;
+package com.rookiefit.back.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class CheckFindUserIdRequestDto {
+public class CheckFindUserPasswordRequestDto {
+    
+    @NotBlank
+    private String userId;
 
     @NotBlank
-    private String userPhoneNumber;
+    private String user_phonenumber;
 
     @NotBlank
     private String certificationNumber;
-
 }

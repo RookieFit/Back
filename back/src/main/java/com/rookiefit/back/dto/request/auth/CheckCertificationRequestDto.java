@@ -1,4 +1,4 @@
-package com.rookiefit.back.dto.request;
+package com.rookiefit.back.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
