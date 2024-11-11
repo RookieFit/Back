@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 application-api.properties
 
+
 ### STS ###
 .apt_generated
 .classpath
