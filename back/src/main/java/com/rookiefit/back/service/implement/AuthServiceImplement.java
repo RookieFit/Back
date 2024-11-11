@@ -16,7 +16,7 @@ import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
-import com.rookiefit.back.dto.request.WithdrawRequestDto;
+import com.rookiefit.back.dto.request.UserDeleteRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
@@ -26,7 +26,7 @@ import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
-import com.rookiefit.back.dto.response.auth.WithdrawResponseDto;
+import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.provider.JwtProvider;
@@ -274,7 +274,7 @@ public class AuthServiceImplement implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? super WithdrawResponseDto> withdraw(WithdrawRequestDto dto) {
+    public ResponseEntity<? super UserDeleteResponseDto> withdraw(UserDeleteRequestDto dto) {
         try {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
             UserEntity userEntity = userRepository.findByUserId(currentUserId);
@@ -283,7 +283,7 @@ public class AuthServiceImplement implements AuthService {
             String encodedPassword = userEntity.getUser_password();
 
             if (!passwordEncoder.matches(inputPassword, encodedPassword)) {
-                return WithdrawResponseDto.passwordMismatch();
+                return UserDeleteResponseDto.passwordMismatch();
             }
 
             userRepository.delete(userEntity);
@@ -291,7 +291,7 @@ public class AuthServiceImplement implements AuthService {
         } catch (Exception exception) {
             handleException(exception);
         }
-        return WithdrawResponseDto.success();
+        return UserDeleteResponseDto.success();
     }
 
 }

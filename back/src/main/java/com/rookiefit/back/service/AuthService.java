@@ -11,7 +11,7 @@ import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
-import com.rookiefit.back.dto.request.WithdrawRequestDto;
+import com.rookiefit.back.dto.request.UserDeleteRequestDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
@@ -20,7 +20,7 @@ import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
-import com.rookiefit.back.dto.response.auth.WithdrawResponseDto;
+import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 
 public interface AuthService {
@@ -44,5 +44,5 @@ public interface AuthService {
     ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
             CheckFindUserPasswordRequestDto dto);
 
-    ResponseEntity<? super WithdrawResponseDto> withdraw(WithdrawRequestDto dto);
+    ResponseEntity<? super UserDeleteResponseDto> withdraw(UserDeleteRequestDto dto);
 }

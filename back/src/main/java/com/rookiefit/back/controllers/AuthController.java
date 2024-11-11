@@ -12,25 +12,22 @@ import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
-import com.rookiefit.back.dto.request.WithdrawRequestDto;
+import com.rookiefit.back.dto.request.UserDeleteRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
-import com.rookiefit.back.dto.response.auth.WithdrawResponseDto;
+import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
-import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.service.AuthService;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final AuthService authService;
-    private final HttpSession session;
 
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
@@ -108,16 +104,10 @@ public class AuthController {
         return response;
     }
 
-    @GetMapping("/sign-out")
-    public String signout() {
-        session.invalidate(); // 세션 무효화
-        return "redirect:/";
-    }
-
-    @GetMapping("/withdraw")
-    public ResponseEntity<? super WithdrawResponseDto> withdraw(
-            @RequestBody @Valid WithdrawRequestDto requestBody) {
-        ResponseEntity<? super WithdrawResponseDto> response = authService.withdraw(requestBody);
+    @GetMapping("/user-delete")
+    public ResponseEntity<? super UserDeleteResponseDto> userDelete(
+            @RequestBody @Valid UserDeleteRequestDto requestBody) {
+        ResponseEntity<? super UserDeleteResponseDto> response = authService.withdraw(requestBody);
         return response;
     }
 }

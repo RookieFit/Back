@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class WithdrawRequestDto {
+public class UserDeleteRequestDto {
 
     @NotBlank
     private String user_password;

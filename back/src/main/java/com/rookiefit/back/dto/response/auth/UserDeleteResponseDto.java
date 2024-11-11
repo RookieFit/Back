@@ -7,14 +7,14 @@ import com.rookiefit.back.common.ResponseCode;
 import com.rookiefit.back.common.ResponseMessage;
 import com.rookiefit.back.dto.response.ResponseDto;
 
-public class WithdrawResponseDto extends ResponseDto {
+public class UserDeleteResponseDto extends ResponseDto {
 
-    private WithdrawResponseDto() {
+    private UserDeleteResponseDto() {
         super();
     }
 
-    public static ResponseEntity<WithdrawResponseDto> success() {
-        WithdrawResponseDto responseBody = new WithdrawResponseDto();
+    public static ResponseEntity<UserDeleteResponseDto> success() {
+        UserDeleteResponseDto responseBody = new UserDeleteResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
