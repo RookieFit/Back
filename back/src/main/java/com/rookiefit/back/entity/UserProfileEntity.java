@@ -2,7 +2,7 @@ package com.rookiefit.back.entity;
 
 import org.springframework.stereotype.Component;
 
-import com.rookiefit.back.dto.request.userData.UserProfileInputRequestDto;
+import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,7 +47,7 @@ public class UserProfileEntity {
     @NotBlank
     private String userNickname;
 
-    public UserProfileEntity(UserProfileInputRequestDto dto) {
+    public UserProfileEntity(InputUserProfileRequestDto dto) {
         this.userId = dto.getUserId();
         this.userProfileImageUri = dto.getUserProfileImageUri();
         this.gymName = dto.getGymName();
@@ -55,8 +55,6 @@ public class UserProfileEntity {
         this.userName = dto.getUserName();
         this.userAddress = dto.getUserAddress();
         this.userNickname = dto.getUserNickname();
-
-        System.out.println("entity userid :" + userId);
     
     }
 }
