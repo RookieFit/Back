@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
+import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
-
+import com.rookiefit.back.dto.response.userData.InputUserBodyDataResponseDto;
 import com.rookiefit.back.service.UserDataService;
 
 import jakarta.validation.Valid;
@@ -38,4 +39,11 @@ public class UserDataController {
             ResponseEntity<? super GetUserProfileResponseDto> responseBody = userDataService.getUserProfile(dto);
             return responseBody;
     }
+
+    @PostMapping("/input-userbodydata")
+    public ResponseEntity<? super InputUserBodyDataResponseDto>inputUserBodyData(
+        @RequestBody @Valid InputUserBodyDataRequestDto dto) {
+            ResponseEntity<? super InputUserBodyDataResponseDto> responseBody = userDataService.inputUserBodyData(dto);
+            return responseBody;
+        }
 }
