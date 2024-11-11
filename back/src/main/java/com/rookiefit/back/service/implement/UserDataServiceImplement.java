@@ -3,8 +3,10 @@ package com.rookiefit.back.service.implement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
+import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.entity.UserProfileEntity;
@@ -35,6 +37,17 @@ public class UserDataServiceImplement implements UserDataService{
             return ResponseDto.databaseError();
         }
         return InputUserProfileResponseDto.succes();
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserProfileResponseDto> getUserProfile(GetUserProfileRequestDto dto) {
+        try {
+            String userId = dto.getUserId();
+            boolean isExsitedUserId = userProfileRepository.existsByUserId(userId);
+        } catch (Exception exception) {
+            
+        }
+        return GetUserProfileResponseDto.success();
     }
     
 }
