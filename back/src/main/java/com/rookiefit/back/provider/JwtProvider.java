@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
@@ -33,8 +35,6 @@ public class JwtProvider {
     }
 
     public String validate(String jwt) {
-
-        String subject = null;
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         try {
             Claims claims = Jwts.parserBuilder()
@@ -43,13 +43,16 @@ public class JwtProvider {
                     .parseClaimsJws(jwt)
                     .getBody();
 
-            subject = claims.getSubject();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
+            return claims.getSubject();
+        } catch (MalformedJwtException exception) {
+            System.out.println("잘못된 JWT 형식입니다");
+        } catch (ExpiredJwtException exception) {
+            System.out.println("JWT가 만료되었습니다.");
+        } catch (Exception exception){
+            System.out.println("JWT 검증 중 오류발생");
         }
 
-        return subject;
+        return null;
 
     }
 }
