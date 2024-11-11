@@ -48,7 +48,7 @@ public class UserProfileEntity {
     private String userNickname;
 
     public UserProfileEntity(InputUserProfileRequestDto dto) {
-        this.userId = dto.getUserId();
+        this.userId = dto.getToken(); //디코딩된 userId
         this.userProfileImageUri = dto.getUserProfileImageUri();
         this.gymName = dto.getGymName();
         this.userMessage = dto.getUserMessage();

@@ -11,5 +11,5 @@ import lombok.Setter;
 public class GetUserProfileRequestDto {
     
     @NotBlank
-    private String userId;
+    private String token;
 }

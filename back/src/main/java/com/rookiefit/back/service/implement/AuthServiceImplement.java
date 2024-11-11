@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.common.CertificationManager;
 import com.rookiefit.back.common.CertificationNumber;
+import com.rookiefit.back.common.MaskingUserId;
 import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.CheckFindUserIdRequestDto;
 import com.rookiefit.back.dto.request.FindUserIdRequestDto;
@@ -45,6 +46,7 @@ public class AuthServiceImplement implements AuthService {
     private final JwtProvider jwtProvider;
     private final SmsCerificationNumberProvider smsCerificationNumberProvider;
     private final CertificationManager certificationManager;
+    private final MaskingUserId maskingUserId;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -210,8 +212,6 @@ public class AuthServiceImplement implements AuthService {
         try {
             String phoneNumber = dto.getUserPhoneNumber();
             String certificationNumber = dto.getCertificationNumber();
-            System.out.println("sec: " + certificationNumber);
-            System.out.println("thr:" + phoneNumber);
 
             boolean isMatch = certificationManager.verifyAndDelete(phoneNumber, certificationNumber); // 인증번호 확인
             if (!isMatch) {
@@ -229,8 +229,7 @@ public class AuthServiceImplement implements AuthService {
 
             // 아이디 마스킹 처리
             String userId = userEntity.getUserId();
-            String maskedUserId = maskUserId(userId);
-            System.out.println("maskedUserId: " + maskedUserId);
+            String maskedUserId = maskingUserId.maskUserId(userId);
 
             // 마스킹된 아이디 반환
             return CheckFindUserIdResponseDto.success(maskedUserId);
@@ -241,14 +240,6 @@ public class AuthServiceImplement implements AuthService {
         }
     }
 
-    // 아이디 마스킹 처리 함수
-    private String maskUserId(String userId) {
-        if (userId.length() <= 4) {
-            return userId.charAt(0) + "*".repeat(userId.length() - 1);
-        } else {
-            return userId.substring(0, 2) + "*".repeat(userId.length() - 4) + userId.substring(userId.length() - 2);
-        }
-    }
 
     @Override
     public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
@@ -266,11 +257,6 @@ public class AuthServiceImplement implements AuthService {
             handleException(exception);
         }
         return CheckFindUserPasswordResponseDto.success();
-    }
-
-    private ResponseEntity<ResponseDto> handleException(Exception exception) {
-        exception.printStackTrace();
-        return ResponseDto.databaseError();
     }
 
     @Override
@@ -292,6 +278,11 @@ public class AuthServiceImplement implements AuthService {
             handleException(exception);
         }
         return UserDeleteResponseDto.success();
+    }
+
+    private ResponseEntity<ResponseDto> handleException(Exception exception) {
+        exception.printStackTrace();
+        return ResponseDto.databaseError();
     }
 
 }

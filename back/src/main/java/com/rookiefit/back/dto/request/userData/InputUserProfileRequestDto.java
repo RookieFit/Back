@@ -12,7 +12,7 @@ public class InputUserProfileRequestDto {
 
 
     @NotBlank
-    private String userId;
+    private String token;
     
     @NotBlank
     private String userProfileImageUri;

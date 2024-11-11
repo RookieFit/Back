@@ -10,6 +10,7 @@ import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.entity.UserProfileEntity;
+import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.service.UserDataService;
 
@@ -21,15 +22,18 @@ public class UserDataServiceImplement implements UserDataService{
 
     private final UserProfileRepository userProfileRepository;
     private final UserProfileEntity userProfileEntity;
+    private final JwtProvider jwtProvider;
 
     @Override
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(InputUserProfileRequestDto dto) {
         try {
-            String userId = dto.getUserId();
-            boolean isExsitedId = userProfileRepository.existsByUserId(userId);
+            String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+            System.out.println(currentUserId);
+            boolean isExsitedId = userProfileRepository.existsByUserId(currentUserId);
             if(isExsitedId){
-                userProfileRepository.deleteAllByUserId(userId);
+                userProfileRepository.deleteAllByUserId(currentUserId);
             }
+            dto.setToken(currentUserId);
             UserProfileEntity userProfileEntity = new UserProfileEntity(dto);
             userProfileRepository.save(userProfileEntity);
         } catch (Exception exception) {
@@ -42,12 +46,17 @@ public class UserDataServiceImplement implements UserDataService{
     @Override
     public ResponseEntity<? super GetUserProfileResponseDto> getUserProfile(GetUserProfileRequestDto dto) {
         try {
-            String userId = dto.getUserId();
-            boolean isExsitedUserId = userProfileRepository.existsByUserId(userId);
+            String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+            boolean isExsitedId = userProfileRepository.existsByUserId(currentUserId);
+            if(!isExsitedId){System.out.println("아이디 존재하지 않음");}
+
+            UserProfileEntity userProfileEntity = userProfileRepository.findByUserId(currentUserId);
+            System.out.println(userProfileEntity.getUserMessage());
+            return GetUserProfileResponseDto.success(userProfileEntity);
         } catch (Exception exception) {
-            
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
         }
-        return GetUserProfileResponseDto.success();
     }
     
 }
