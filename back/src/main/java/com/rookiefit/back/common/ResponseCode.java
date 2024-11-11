@@ -7,6 +7,8 @@ public interface ResponseCode {
     String Sign_IN_FAIL = "SF";
     String CERTIFICATION_FAIL = "CF";
     String DUPLICATE_ID = "DI";
+    String DUPLICATE_PHONENUMBER = "DP";
+    String PASSWORD_MISMATCH = "PM";
     String SMS_FAIL = "SMS_F";
     String PhoneNumber_NOT_FOUND = "PF";
     String ID_NOT_FOUND = "IF";

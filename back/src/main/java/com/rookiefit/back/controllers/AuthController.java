@@ -12,22 +12,24 @@ import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
+import com.rookiefit.back.dto.request.UserDeleteRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
+import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
-import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.service.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -73,7 +75,6 @@ public class AuthController {
         return response;
     }
 
-
     @PostMapping("/find-id")
     public ResponseEntity<? super FindUserIdResponseDto> findUserId(
             @RequestBody @Valid FindUserIdRequestDto requestBody) {
@@ -87,17 +88,26 @@ public class AuthController {
         ResponseEntity<? super CheckFindUserIdResponseDto> responseBody = authService.checkFindUserId(dto);
         return responseBody;
     }
+
     @PostMapping("/find-password")
     public ResponseEntity<? super FindUserPasswordResponseDto> findUserPassword(
-        @RequestBody @Valid FindUserPasswordRequestDto requestBody){
-            ResponseEntity<? super FindUserPasswordResponseDto> response = authService.findUserPassword(requestBody);
-            return response;
-        }
-    
+            @RequestBody @Valid FindUserPasswordRequestDto requestBody) {
+        ResponseEntity<? super FindUserPasswordResponseDto> response = authService.findUserPassword(requestBody);
+        return response;
+    }
+
     @PostMapping("/check-find-password")
     public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
-        @RequestBody @Valid CheckFindUserPasswordRequestDto requestBody){
-            ResponseEntity<? super CheckFindUserPasswordResponseDto> response = authService.checkFindUserPasswordResponseDto(requestBody);
-            return response;
-        }
+            @RequestBody @Valid CheckFindUserPasswordRequestDto requestBody) {
+        ResponseEntity<? super CheckFindUserPasswordResponseDto> response = authService
+                .checkFindUserPasswordResponseDto(requestBody);
+        return response;
+    }
+
+    @GetMapping("/user-delete")
+    public ResponseEntity<? super UserDeleteResponseDto> userDelete(
+            @RequestBody @Valid UserDeleteRequestDto requestBody) {
+        ResponseEntity<? super UserDeleteResponseDto> response = authService.withdraw(requestBody);
+        return response;
+    }
 }

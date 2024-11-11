@@ -24,7 +24,6 @@ public class UserEntity {
 
     private String user_email;
 
-    @Column(unique = true)
     private String userPhoneNumber;
 
     private String role;
