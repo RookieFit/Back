@@ -19,7 +19,13 @@ public class SignUpResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<ResponseDto> duplicatedId() {
-        ResponseDto responseBody = new ResponseDto( ResponseCode.DUPLICATE_ID , ResponseMessage.DUPLICATE_ID );
+        ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_ID, ResponseMessage.DUPLICATE_ID);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    public static ResponseEntity<ResponseDto> duplicatedphonenumber() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_PHONENUMBER,
+                ResponseMessage.DUPLICATE_PHONENUMBER);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
