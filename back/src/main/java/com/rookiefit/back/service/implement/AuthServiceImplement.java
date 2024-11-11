@@ -16,6 +16,7 @@ import com.rookiefit.back.dto.request.IdCheckRequestDto;
 import com.rookiefit.back.dto.request.SignInRequestDto;
 import com.rookiefit.back.dto.request.SignUpRequestDto;
 import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
+import com.rookiefit.back.dto.request.WithdrawRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
@@ -25,6 +26,7 @@ import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
+import com.rookiefit.back.dto.response.auth.WithdrawResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.provider.JwtProvider;
@@ -32,6 +34,7 @@ import com.rookiefit.back.provider.SmsCerificationNumberProvider;
 import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.service.AuthService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -269,4 +272,26 @@ public class AuthServiceImplement implements AuthService {
         exception.printStackTrace();
         return ResponseDto.databaseError();
     }
+
+    @Override
+    public ResponseEntity<? super WithdrawResponseDto> withdraw(WithdrawRequestDto dto) {
+        try {
+            String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+            UserEntity userEntity = userRepository.findByUserId(currentUserId);
+
+            String inputPassword = dto.getUser_password();
+            String encodedPassword = userEntity.getUser_password();
+
+            if (!passwordEncoder.matches(inputPassword, encodedPassword)) {
+                return WithdrawResponseDto.passwordMismatch();
+            }
+
+            userRepository.delete(userEntity);
+
+        } catch (Exception exception) {
+            handleException(exception);
+        }
+        return WithdrawResponseDto.success();
+    }
+
 }
