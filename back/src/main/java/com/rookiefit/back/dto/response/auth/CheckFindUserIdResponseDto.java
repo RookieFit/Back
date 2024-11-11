@@ -16,13 +16,18 @@ public class CheckFindUserIdResponseDto extends ResponseDto {
         super();
     }
 
-    public static ResponseEntity<CheckFindUserIdResponseDto> success() {
+    public static ResponseEntity<CheckFindUserIdResponseDto> success(String maskedUserId) {
         CheckFindUserIdResponseDto responseBody = new CheckFindUserIdResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
     public static ResponseEntity<? super CheckFindUserIdResponseDto> certificationFail() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.CERTIFICATION_FAIL, ResponseMessage.CERTIFICATION_FAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    public static ResponseEntity<? super ResponseDto> idNotFound() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.ID_NOT_FOUND, ResponseMessage.ID_NOT_FOUND);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 }
