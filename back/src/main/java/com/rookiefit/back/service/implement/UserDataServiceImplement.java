@@ -31,7 +31,6 @@ public class UserDataServiceImplement implements UserDataService{
 
     private final UserProfileRepository userProfileRepository;
     private final UserBodyDataRepository userBodyDataRepository;
-    private final UserProfileEntity userProfileEntity;
     private final JwtProvider jwtProvider;
 
     @Override
