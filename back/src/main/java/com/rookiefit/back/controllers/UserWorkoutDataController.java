@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDataResponseDto;
-import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutDataResponseDto;
+import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDataRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDataRequestDto;
+import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.service.UserWorkoutDataService;
 
 import jakarta.validation.Valid;
@@ -23,9 +23,9 @@ public class UserWorkoutDataController {
     private final UserWorkoutDataService userWorkoutDataService;
 
     @PostMapping("/input-userworkoutlistdata")
-    public ResponseEntity<? super InputUserWorkoutDataResponseDto> inputUserWorkoutData(
-        @RequestBody @Valid InputUserWorkoutDataRequestDto dto) {
-            ResponseEntity<? super InputUserWorkoutDataResponseDto> responseBody = userWorkoutDataService.inputUserWorkoutData(dto);
+    public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(
+        @RequestBody @Valid InputUserWorkoutListRequestDto dto) {
+            ResponseEntity<? super InputUserWorkoutListResponseDto> responseBody = userWorkoutDataService.inputUserWorkoutData(dto);
             return responseBody;
     }
 

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InputUserWorkoutDataRequestDto {
+public class InputUserWorkoutListRequestDto {
     
     @NotBlank
     private String token;

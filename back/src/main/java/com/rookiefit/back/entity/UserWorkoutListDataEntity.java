@@ -2,7 +2,7 @@ package com.rookiefit.back.entity;
 
 import org.springframework.stereotype.Component;
 
-import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDataRequestDto;
+import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +37,7 @@ public class UserWorkoutListDataEntity {
     @NotBlank
     private String workoutCreatedDate;
 
-    public UserWorkoutListDataEntity(InputUserWorkoutDataRequestDto dto) {
+    public UserWorkoutListDataEntity(InputUserWorkoutListRequestDto dto) {
         this.userId = dto.getToken();//token에서 추출한 userId 저장
         this.comment = dto.getComment();
         this.workout_title = dto.getWorkout_title();

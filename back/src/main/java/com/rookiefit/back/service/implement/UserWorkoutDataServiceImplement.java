@@ -6,11 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDataRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDataRequestDto;
+import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDataResponseDto;
-import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutDataResponseDto;
+import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
 import com.rookiefit.back.entity.UserBodyDataEntity;
 import com.rookiefit.back.entity.UserWorkoutListDataEntity;
 import com.rookiefit.back.provider.JwtProvider;
@@ -27,7 +27,7 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
     private final UserWorkoutListDataRepository userWorkoutListDataRepository;
 
     @Override
-    public ResponseEntity<? super InputUserWorkoutDataResponseDto> inputUserWorkoutData(InputUserWorkoutDataRequestDto dto) {
+    public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto) {
         try {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());//token에서 userId 추출
             dto.setToken(currentUserId);//userId 저장
@@ -39,7 +39,7 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return InputUserWorkoutDataResponseDto.success();
+        return InputUserWorkoutListResponseDto.success();
     }
 
     @Override

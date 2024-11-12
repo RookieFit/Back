@@ -8,13 +8,13 @@ import com.rookiefit.back.dto.response.ResponseDto;
 import lombok.Getter;
 
 @Getter
-public class InputUserWorkoutDataResponseDto extends ResponseDto {
-    private InputUserWorkoutDataResponseDto() {
+public class InputUserWorkoutListResponseDto extends ResponseDto {
+    private InputUserWorkoutListResponseDto() {
         super();
     }
 
-    public static ResponseEntity<InputUserWorkoutDataResponseDto> success() {
-        InputUserWorkoutDataResponseDto reponseBody = new InputUserWorkoutDataResponseDto();
+    public static ResponseEntity<InputUserWorkoutListResponseDto> success() {
+        InputUserWorkoutListResponseDto reponseBody = new InputUserWorkoutListResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
     }
 
