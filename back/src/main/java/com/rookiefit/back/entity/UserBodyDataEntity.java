@@ -1,7 +1,10 @@
 package com.rookiefit.back.entity;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Component;
 
+import com.rookiefit.back.common.CurrentDate;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 
@@ -46,6 +49,9 @@ public class UserBodyDataEntity {
     @NotNull
     private Integer user_fat_mass;
 
+    @NotBlank
+    private String date;
+
     public UserBodyDataEntity(InputUserBodyDataRequestDto dto) {
         this.userId = dto.getToken(); //디코딩된 userId
         this.user_age = dto.getUserAge();
@@ -53,6 +59,6 @@ public class UserBodyDataEntity {
         this.user_height = dto.getUserHeight();
         this.user_muscle_mass = dto.getUserMuscleMass();
         this.user_fat_mass = dto.getUserFatMass();
-    
+        this.date = CurrentDate.currentDateString();
     }
 }
