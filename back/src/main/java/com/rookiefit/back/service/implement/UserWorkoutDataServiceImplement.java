@@ -6,14 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutListRequestDto;
+import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutListResponseDto;
+import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutDetailResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
 import com.rookiefit.back.entity.UserBodyDataEntity;
+import com.rookiefit.back.entity.UserWorkoutDetailDataEntity;
 import com.rookiefit.back.entity.UserWorkoutListDataEntity;
 import com.rookiefit.back.provider.JwtProvider;
+import com.rookiefit.back.repository.UserWorkoutDetailDataRepository;
 import com.rookiefit.back.repository.UserWorkoutListDataRepository;
 import com.rookiefit.back.service.UserWorkoutDataService;
 
@@ -25,6 +29,7 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
 
     private final JwtProvider jwtProvider;
     private final UserWorkoutListDataRepository userWorkoutListDataRepository;
+    private final UserWorkoutDetailDataRepository userWorkoutDetailDataRepository;
 
     @Override
     public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto) {
@@ -55,5 +60,17 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+    }
+
+    @Override
+    public ResponseEntity<? super InputUserWorkoutDetailResponseDto> inputUserWorkoutDetail(InputUserWorkoutDetailRequestDto dto) {
+        try {
+            UserWorkoutDetailDataEntity userWorkoutDetailDataEntity = new UserWorkoutDetailDataEntity(dto);
+            userWorkoutDetailDataRepository.save(userWorkoutDetailDataEntity);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return InputUserWorkoutDetailResponseDto.success();
     }
 }
