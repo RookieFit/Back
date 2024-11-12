@@ -11,18 +11,18 @@ import com.rookiefit.back.entity.UserWorkoutListDataEntity;
 import lombok.Getter;
 
 @Getter
-public class GetUserWorkoutDataResponseDto extends ResponseDto{
+public class GetUserWorkoutListResponseDto extends ResponseDto{
     
     private List<UserWorkoutListDataEntity> userWorkoutListData;
 
-    GetUserWorkoutDataResponseDto(List<UserWorkoutListDataEntity> userWorkoutListDataEntity) {
+    GetUserWorkoutListResponseDto(List<UserWorkoutListDataEntity> userWorkoutListDataEntity) {
         super();
         this.userWorkoutListData = userWorkoutListDataEntity;
         
     }
 
-    public static ResponseEntity<GetUserWorkoutDataResponseDto> success(List<UserWorkoutListDataEntity> userWorkoutListDataEntity) {
-        GetUserWorkoutDataResponseDto responseBody = new GetUserWorkoutDataResponseDto(userWorkoutListDataEntity);
+    public static ResponseEntity<GetUserWorkoutListResponseDto> success(List<UserWorkoutListDataEntity> userWorkoutListDataEntity) {
+        GetUserWorkoutListResponseDto responseBody = new GetUserWorkoutListResponseDto(userWorkoutListDataEntity);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
