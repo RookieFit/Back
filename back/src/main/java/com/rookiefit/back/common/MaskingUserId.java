@@ -1,5 +1,8 @@
 package com.rookiefit.back.common;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MaskingUserId {
     
     // 아이디 마스킹 처리 함수

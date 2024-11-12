@@ -1,16 +1,18 @@
-package com.rookiefit.back.dto.request;
+package com.rookiefit.back.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class FindUserIdRequestDto {
+public class UserDeleteRequestDto {
 
     @NotBlank
-    private String userPhoneNumber;
+    private String user_password;
+
+    private String token;
 
 }

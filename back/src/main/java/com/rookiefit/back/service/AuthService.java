@@ -2,16 +2,16 @@ package com.rookiefit.back.service;
 
 import org.springframework.http.ResponseEntity;
 
-import com.rookiefit.back.dto.request.CheckCertificationRequestDto;
-import com.rookiefit.back.dto.request.CheckFindUserIdRequestDto;
-import com.rookiefit.back.dto.request.FindUserIdRequestDto;
-import com.rookiefit.back.dto.request.CheckFindUserPasswordRequestDto;
-import com.rookiefit.back.dto.request.FindUserPasswordRequestDto;
-import com.rookiefit.back.dto.request.IdCheckRequestDto;
-import com.rookiefit.back.dto.request.SignInRequestDto;
-import com.rookiefit.back.dto.request.SignUpRequestDto;
-import com.rookiefit.back.dto.request.SmsCertificationRequestDto;
-import com.rookiefit.back.dto.request.UserDeleteRequestDto;
+import com.rookiefit.back.dto.request.auth.CheckCertificationRequestDto;
+import com.rookiefit.back.dto.request.auth.CheckFindUserIdRequestDto;
+import com.rookiefit.back.dto.request.auth.CheckFindUserPasswordRequestDto;
+import com.rookiefit.back.dto.request.auth.FindUserIdRequestDto;
+import com.rookiefit.back.dto.request.auth.FindUserPasswordRequestDto;
+import com.rookiefit.back.dto.request.auth.IdCheckRequestDto;
+import com.rookiefit.back.dto.request.auth.SignInRequestDto;
+import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
+import com.rookiefit.back.dto.request.auth.SmsCertificationRequestDto;
+import com.rookiefit.back.dto.request.auth.UserDeleteRequestDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
