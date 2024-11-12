@@ -38,6 +38,10 @@ public class UserDataServiceImplement implements UserDataService{
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(InputUserProfileRequestDto dto) {
         try {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+            boolean isExsitedId = userProfileRepository.existsByUserId(currentUserId);
+            if(isExsitedId){
+                userProfileRepository.deleteAllByUserId(currentUserId);
+            }
             dto.setToken(currentUserId);
 
             UserProfileEntity userProfileEntity = new UserProfileEntity(dto);
@@ -68,6 +72,11 @@ public class UserDataServiceImplement implements UserDataService{
     public ResponseEntity<? super InputUserBodyDataResponseDto> inputUserBodyData(InputUserBodyDataRequestDto dto) {
         try {
             String currentId = jwtProvider.getUserIdFromToken(dto.getToken());
+            String currentDate = CurrentDate.currentDateString();
+            boolean isExsitedId = userBodyDataRepository.existsByDate(currentDate);
+            if(isExsitedId){
+                userBodyDataRepository.deleteAllByDate(currentDate);
+            }
             dto.setToken(currentId);
             
             UserBodyDataEntity userBodyDataEntity = new UserBodyDataEntity(dto);
