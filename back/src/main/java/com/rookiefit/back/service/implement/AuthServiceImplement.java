@@ -35,7 +35,6 @@ import com.rookiefit.back.provider.SmsCerificationNumberProvider;
 import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.service.AuthService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service

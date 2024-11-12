@@ -1,12 +1,15 @@
 package com.rookiefit.back.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDataResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutDataResponseDto;
+import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDataRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDataRequestDto;
 import com.rookiefit.back.service.UserWorkoutDataService;
 
@@ -19,10 +22,17 @@ import lombok.RequiredArgsConstructor;
 public class UserWorkoutDataController {
     private final UserWorkoutDataService userWorkoutDataService;
 
-    @PostMapping("/input-userworkoutdata")
+    @PostMapping("/input-userworkoutlistdata")
     public ResponseEntity<? super InputUserWorkoutDataResponseDto> inputUserWorkoutData(
         @RequestBody @Valid InputUserWorkoutDataRequestDto dto) {
             ResponseEntity<? super InputUserWorkoutDataResponseDto> responseBody = userWorkoutDataService.inputUserWorkoutData(dto);
+            return responseBody;
+    }
+
+    @GetMapping("/userworkoutlistdata")
+    public ResponseEntity<? super GetUserWorkoutDataResponseDto> getUserWorkoutData(
+        @RequestBody @Valid GetUserWorkoutDataRequestDto dto){
+            ResponseEntity<? super GetUserWorkoutDataResponseDto> responseBody = userWorkoutDataService.getUserWorkoutData(dto);
             return responseBody;
     }
 }
