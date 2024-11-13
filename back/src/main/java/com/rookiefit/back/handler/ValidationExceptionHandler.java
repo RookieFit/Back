@@ -1,6 +1,5 @@
 package com.rookiefit.back.handler;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,5 +16,4 @@ public class ValidationExceptionHandler {
         return ResponseDto.validationError();
     }
 
-    
 }
