@@ -1,13 +1,18 @@
 package com.rookiefit.back.entity;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
+import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -36,6 +41,10 @@ public class UserWorkoutListDataEntity {
 
     @NotBlank
     private String workoutCreatedDate;
+
+    @OneToMany(mappedBy = "userWorkoutList", cascade = {CascadeType.REMOVE , CascadeType.PERSIST})
+    private List<UserWorkoutDetailDataEntity> workoutDetails;
+
 
     public UserWorkoutListDataEntity(InputUserWorkoutListRequestDto dto) {
         this.userId = dto.getToken();//token에서 추출한 userId 저장

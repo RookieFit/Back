@@ -4,18 +4,15 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
-import com.rookiefit.back.dto.response.ResponseDto;
-import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutListResponseDto;
-import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutDetailResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
-import com.rookiefit.back.entity.UserBodyDataEntity;
 import com.rookiefit.back.entity.UserWorkoutDetailDataEntity;
 import com.rookiefit.back.entity.UserWorkoutListDataEntity;
 import com.rookiefit.back.provider.JwtProvider;
@@ -33,14 +30,24 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
     private final UserWorkoutListDataRepository userWorkoutListDataRepository;
     private final UserWorkoutDetailDataRepository userWorkoutDetailDataRepository;
 
+    @Transactional
     @Override
     public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto) {
-            String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());//token에서 userId 추출
-            dto.setToken(currentUserId);//userId 저장
+        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
+        dto.setToken(currentUserId); // userId 저장
+        UserWorkoutListDataEntity userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto);
+        
+        // WorkoutList 저장
+        userWorkoutListDataRepository.save(userWorkoutListDataEntity);
 
-            UserWorkoutListDataEntity userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto);
-            userWorkoutListDataRepository.save(userWorkoutListDataEntity);
-            return InputUserWorkoutListResponseDto.success();
+        List<InputUserWorkoutDetailRequestDto> workoutDetails = dto.getWorkoutDetails();
+        for (InputUserWorkoutDetailRequestDto workoutDetailDto : workoutDetails) {
+            
+            UserWorkoutDetailDataEntity userWorkoutDetailDataEntity = new UserWorkoutDetailDataEntity(workoutDetailDto);
+            userWorkoutDetailDataEntity.setUserWorkoutList(userWorkoutListDataEntity); // 외래 키 설정
+        }
+
+        return InputUserWorkoutListResponseDto.success();
     }
 
     @Override
@@ -51,13 +58,6 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
 
             List<UserWorkoutListDataEntity> userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserId(currentUserId);
             return GetUserWorkoutListResponseDto.success(userWorkoutListDataEntity);
-    }
-
-    @Override
-    public ResponseEntity<? super InputUserWorkoutDetailResponseDto> inputUserWorkoutDetail(InputUserWorkoutDetailRequestDto dto) {
-            UserWorkoutDetailDataEntity userWorkoutDetailDataEntity = new UserWorkoutDetailDataEntity(dto);
-            userWorkoutDetailDataRepository.save(userWorkoutDetailDataEntity);
-            return InputUserWorkoutDetailResponseDto.success();
     }
 
     @Override

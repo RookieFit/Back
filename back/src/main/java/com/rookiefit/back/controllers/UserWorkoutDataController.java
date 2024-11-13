@@ -40,13 +40,6 @@ public class UserWorkoutDataController {
             return responseBody;
     }
 
-    @PostMapping("/input-userworkoutdetaildata")
-    public ResponseEntity<? super InputUserWorkoutDetailResponseDto> inputUserWorkoutDetail(
-        @RequestBody @Valid InputUserWorkoutDetailRequestDto dto) {
-            ResponseEntity<? super InputUserWorkoutDetailResponseDto> responseBody = userWorkoutDataService.inputUserWorkoutDetail(dto);
-            return responseBody;
-    }
-
     @GetMapping("/userworkoutdetaildata")
     public ResponseEntity<? super GetUserWorkoutDetailResponseDto> getUserWorkoutDetail(
         @RequestBody @Valid GetUserWorkoutDetailRequestDto dto) {

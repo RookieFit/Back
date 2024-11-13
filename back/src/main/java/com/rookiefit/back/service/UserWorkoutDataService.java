@@ -18,8 +18,6 @@ public interface UserWorkoutDataService {
 
     ResponseEntity<? super GetUserWorkoutListResponseDto> getUserWorkoutData(GetUserWorkoutListRequestDto dto);
 
-    ResponseEntity<? super InputUserWorkoutDetailResponseDto> inputUserWorkoutDetail(InputUserWorkoutDetailRequestDto dto);
-
     ResponseEntity<? super GetUserWorkoutDetailResponseDto> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto);
     
 }

@@ -11,15 +11,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class InputUserWorkoutDetailRequestDto {
-    
-    @NotBlank
-    private String token;
 
     @NotBlank
     private String workoutDetailCreatedDate;
 
     @NotBlank
-    private String workoutName;
+    private String workout_name;
 
     @NotNull
     private Integer reps;

@@ -10,15 +10,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Component
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="user_workout_list_detail")
@@ -43,11 +47,19 @@ public class UserWorkoutDetailDataEntity {
     @NotBlank
     private String rest_time;
 
+    @ManyToOne
+    @JoinColumn(name = "workout_list_id")  // Foreign key to UserWorkoutListDataEntity
+    private UserWorkoutListDataEntity userWorkoutList;
+
     public UserWorkoutDetailDataEntity(InputUserWorkoutDetailRequestDto dto) {
         this.workoutDetailCreatedDate = dto.getWorkoutDetailCreatedDate();
-        this.workout_name = dto.getWorkoutName();
+        this.workout_name = dto.getWorkout_name();
         this.reps = dto.getReps();
         this.sets = dto.getSets();
         this.rest_time = dto.getRest_time();
+    }
+
+    public void setUserWorkoutList(UserWorkoutListDataEntity userWorkoutList) {
+        this.userWorkoutList = userWorkoutList;
     }
 }

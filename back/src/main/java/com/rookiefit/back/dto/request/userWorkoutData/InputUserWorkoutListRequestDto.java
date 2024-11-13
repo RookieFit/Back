@@ -1,5 +1,7 @@
 package com.rookiefit.back.dto.request.userWorkoutData;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +22,7 @@ public class InputUserWorkoutListRequestDto {
 
     @NotBlank
     private String workoutCreatedData;
+
+    private List<InputUserWorkoutDetailRequestDto> workoutDetails;
 }
+ 
