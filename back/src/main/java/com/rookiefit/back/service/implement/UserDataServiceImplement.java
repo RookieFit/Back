@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserDataServiceImplement implements UserDataService{
+public class UserDataServiceImplement implements UserDataService {
 
     private final UserProfileRepository userProfileRepository;
     private final UserProfileEntity userProfileEntity;
@@ -30,7 +30,7 @@ public class UserDataServiceImplement implements UserDataService{
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
             System.out.println(currentUserId);
             boolean isExsitedId = userProfileRepository.existsByUserId(currentUserId);
-            if(isExsitedId){
+            if (isExsitedId) {
                 userProfileRepository.deleteAllByUserId(currentUserId);
             }
             dto.setToken(currentUserId);
@@ -48,7 +48,9 @@ public class UserDataServiceImplement implements UserDataService{
         try {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
             boolean isExsitedId = userProfileRepository.existsByUserId(currentUserId);
-            if(!isExsitedId){System.out.println("아이디 존재하지 않음");}
+            if (!isExsitedId) {
+                System.out.println("아이디 존재하지 않음");
+            }
 
             UserProfileEntity userProfileEntity = userProfileRepository.findByUserId(currentUserId);
             System.out.println(userProfileEntity.getUserMessage());
@@ -58,5 +60,5 @@ public class UserDataServiceImplement implements UserDataService{
             return ResponseDto.databaseError();
         }
     }
-    
+
 }
