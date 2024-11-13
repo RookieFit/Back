@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ public class UserWorkoutDetailDataEntity {
     private Long workout_detail_id;
 
     @NotBlank
+    //@Pattern(regexp = "^\\d{2}-\\d{2}-\\d{2}$", message = "날짜 형식은 'yy-MM-dd'이어야 합니다.")
     private String workoutDetailCreatedDate;
 
     @NotBlank
@@ -48,7 +50,7 @@ public class UserWorkoutDetailDataEntity {
     private String rest_time;
 
     @ManyToOne
-    @JoinColumn(name = "workout_list_id")  // Foreign key to UserWorkoutListDataEntity
+    @JoinColumn(name = "workoutCreatedDate")  // Foreign key to UserWorkoutListDataEntity
     private UserWorkoutListDataEntity userWorkoutList;
 
     public UserWorkoutDetailDataEntity(InputUserWorkoutDetailRequestDto dto) {

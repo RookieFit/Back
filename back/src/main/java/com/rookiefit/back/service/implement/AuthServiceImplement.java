@@ -75,7 +75,7 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = CertificationNumber.getCertificationNumber();
             certificationManager.saveCertificationNumber(userId, certificationNumber);
 
-            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumber, certificationNumber);
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber, certificationNumber);
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
 
@@ -169,7 +169,7 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = CertificationNumber.getCertificationNumber();
             certificationManager.saveCertificationNumber(phoneNumber, certificationNumber);
 
-            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumber,
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber,
                     certificationNumber);
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
@@ -193,7 +193,7 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = CertificationNumber.getCertificationNumber();// 인증번호 6자리 랜덤생성
             certificationManager.saveCertificationNumber(userId, certificationNumber);// hashmap에 인증번호 임시저장
 
-            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationSms(phoneNumber, certificationNumber); // 유저전화번호로
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber, certificationNumber); // 유저전화번호로
                                                                                                                         // 인증번호
                                                                                                                         // 발송
             if (!isSuccessed)

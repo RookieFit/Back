@@ -1,8 +1,5 @@
 package com.rookiefit.back.dto.request.userWorkoutData;
 
-import java.util.List;
-
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InputUserWorkoutListRequestDto {
-    
+public class DeleteUserWorkoutListRequestDto {
+
     @NotBlank
     private String token;
-
-    private String comment;
-
-    @NotBlank
-    private String workout_title;
 
     @NotBlank
     private String workoutCreatedData;
 
-    private List<InputUserWorkoutDetailRequestDto> workoutDetails;
 }
- 
