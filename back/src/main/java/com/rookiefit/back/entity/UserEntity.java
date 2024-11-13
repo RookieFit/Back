@@ -1,6 +1,6 @@
 package com.rookiefit.back.entity;
 
-import com.rookiefit.back.dto.request.SignUpRequestDto;
+import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

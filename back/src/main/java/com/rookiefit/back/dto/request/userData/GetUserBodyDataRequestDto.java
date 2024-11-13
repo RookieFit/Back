@@ -1,4 +1,4 @@
-package com.rookiefit.back.dto.request;
+package com.rookiefit.back.dto.request.userData;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -8,9 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class IdCheckRequestDto {
-
-    @NotBlank
-    private String userId;
+public class GetUserBodyDataRequestDto {
     
+    @NotBlank
+    private String token;
 }
