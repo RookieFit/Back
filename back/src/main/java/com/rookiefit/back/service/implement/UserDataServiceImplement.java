@@ -31,16 +31,16 @@ public class UserDataServiceImplement implements UserDataService {
 
     private final UserProfileRepository userProfileRepository;
     private final UserBodyDataRepository userBodyDataRepository;
-    private final UserProfileEntity userProfileEntity;
     private final JwtProvider jwtProvider;
 
     @Override
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(InputUserProfileRequestDto dto) {
         try {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
-            System.out.println(currentUserId);
+
             boolean isExsitedId = userProfileRepository.existsByUserId(currentUserId);
-            if (isExsitedId) {
+            if(isExsitedId){
+
                 userProfileRepository.deleteAllByUserId(currentUserId);
             }
             dto.setToken(currentUserId);
@@ -75,6 +75,11 @@ public class UserDataServiceImplement implements UserDataService {
     public ResponseEntity<? super InputUserBodyDataResponseDto> inputUserBodyData(InputUserBodyDataRequestDto dto) {
         try {
             String currentId = jwtProvider.getUserIdFromToken(dto.getToken());
+            String currentDate = CurrentDate.currentDateString();
+            boolean isExsitedId = userBodyDataRepository.existsByDate(currentDate);
+            if(isExsitedId){
+                userBodyDataRepository.deleteAllByDate(currentDate);
+            }
             dto.setToken(currentId);
             
             UserBodyDataEntity userBodyDataEntity = new UserBodyDataEntity(dto);
