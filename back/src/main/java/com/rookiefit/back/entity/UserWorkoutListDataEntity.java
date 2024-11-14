@@ -7,14 +7,13 @@ import org.springframework.stereotype.Component;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,14 +26,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_workout_list")
+@IdClass(UserWorkoutListDataId.class)
 public class UserWorkoutListDataEntity {
 
     @Id
-    @NotBlank
+    @Column(name = "workout_created_date")
     //@Pattern(regexp = "^\\d{2}-\\d{2}-\\d{2}$", message = "날짜 형식은 'yy-MM-dd'이어야 합니다.")
     private String workoutCreatedDate;
 
-    @NotBlank
+    @Id
+    @Column(name = "user_id")
     private String userId;
 
     private String comment;

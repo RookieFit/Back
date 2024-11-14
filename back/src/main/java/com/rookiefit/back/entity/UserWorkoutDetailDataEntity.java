@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -50,7 +51,10 @@ public class UserWorkoutDetailDataEntity {
     private String rest_time;
 
     @ManyToOne
-    @JoinColumn(name = "workoutCreatedDate")  // Foreign key to UserWorkoutListDataEntity
+   @JoinColumns({
+        @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+        @JoinColumn(name = "workout_created_date", referencedColumnName = "workout_created_date")
+    })
     private UserWorkoutListDataEntity userWorkoutList;
 
     public UserWorkoutDetailDataEntity(InputUserWorkoutDetailRequestDto dto) {
