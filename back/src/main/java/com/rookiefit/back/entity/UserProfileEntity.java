@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -48,15 +47,13 @@ public class UserProfileEntity {
     private String userNickname;
 
     public UserProfileEntity(InputUserProfileRequestDto dto) {
-        this.userId = dto.getToken(); //디코딩된 userId
+        this.userId = dto.getToken(); // 디코딩된 userId
         this.userProfileImageUri = dto.getUserProfileImageUri();
         this.gymName = dto.getGymName();
         this.userMessage = dto.getUserMessage();
         this.userName = dto.getUserName();
         this.userAddress = dto.getUserAddress();
         this.userNickname = dto.getUserNickname();
-    
+
     }
 }
-
-

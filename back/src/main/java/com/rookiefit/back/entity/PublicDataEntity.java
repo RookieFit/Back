@@ -19,6 +19,11 @@ public class PublicDataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String foodName;
+    private String food_First_Category;
+    private String chocdf;
+    private String prot;
+    private String fatce;
+    private String enerc;
+
 }
