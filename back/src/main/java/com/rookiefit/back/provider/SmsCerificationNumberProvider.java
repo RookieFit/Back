@@ -1,5 +1,7 @@
 package com.rookiefit.back.provider;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +28,14 @@ public class SmsCerificationNumberProvider {
 
     @Value("${coolsms.from}")
     private String from;
+
+    @Value("${kakaotalk.pfid}")
+    private String Pfid;
+
+    @Value("${kakaotalk.templateid}")
+    private String templateId;
     
-    public boolean sendCertificationSms(String phoneNumber , String certificationNumber ){
+    /*public boolean sendCertificationSms(String phoneNumber , String certificationNumber ){
         try {
 
              this.messageService = NurigoApp.INSTANCE.initialize( apiKey , apiSecret , "https://api.coolsms.co.kr" );
@@ -46,29 +54,27 @@ public class SmsCerificationNumberProvider {
             return false;
         }
 
-    }
+    }*/
 
     public boolean sendCertificationKakao(String phoneNumber , String certificationNumber) {
 
         try {
 
+            this.messageService = NurigoApp.INSTANCE.initialize( apiKey , apiSecret , "https://api.coolsms.co.kr" );
+
             KakaoOption kakaoOption = new KakaoOption();
 
-            //setDisableSms를 true로 할경우 문자로 대체발송 되지 않음
             //kakaoOption.setDisableSms(true);
 
             //등록된 카카오 비즈니스 채널의 pfId 입력
-            kakaoOption.setPfId("");
+            kakaoOption.setPfId(Pfid);
             //등록된 카카오 알림톡 템플릿의 templateId를 입력
-            kakaoOption.setTemplateId("");
-
+            kakaoOption.setTemplateId(templateId);
             // 알림톡 템플릿 내에 #{변수} 형태가 존재할 경우 variables를 설정해주세요.
-            /*
             HashMap<String, String> variables = new HashMap<>();
-            variables.put("#{변수명1}", "테스트");
-            variables.put("#{변수명2}", "치환문구 테스트2");
+            variables.put("#{certificationNumber}", certificationNumber);
             kakaoOption.setVariables(variables);
-            */
+
 
             Message message = new Message();
             message.setFrom(from);
