@@ -23,9 +23,9 @@ public class FindUserIdResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
-    public static ResponseEntity<? super ResponseDto> certificationFail() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.CERTIFICATION_FAIL, ResponseMessage.CERTIFICATION_FAIL);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    public static ResponseEntity<ResponseDto> smsSendFail() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.SMS_FAIL, ResponseMessage.SMS_FAIL);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
     public static ResponseEntity<? super ResponseDto> PhoneNumber_NOT_FOUND() {

@@ -44,5 +44,5 @@ public interface AuthService {
     ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
             CheckFindUserPasswordRequestDto dto);
 
-    ResponseEntity<? super UserDeleteResponseDto> withdraw(UserDeleteRequestDto dto);
+    ResponseEntity<? super UserDeleteResponseDto> userDelete(UserDeleteRequestDto dto);
 }

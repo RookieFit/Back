@@ -75,7 +75,8 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = CertificationNumber.getCertificationNumber();
             certificationManager.saveCertificationNumber(userId, certificationNumber);
 
-            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber, certificationNumber);
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber,
+                    certificationNumber);
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
 
@@ -193,9 +194,10 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = CertificationNumber.getCertificationNumber();// 인증번호 6자리 랜덤생성
             certificationManager.saveCertificationNumber(userId, certificationNumber);// hashmap에 인증번호 임시저장
 
-            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber, certificationNumber); // 유저전화번호로
-                                                                                                                        // 인증번호
-                                                                                                                        // 발송
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber,
+                    certificationNumber); // 유저전화번호로
+                                          // 인증번호
+                                          // 발송
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
 
@@ -239,7 +241,6 @@ public class AuthServiceImplement implements AuthService {
         }
     }
 
-
     @Override
     public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
             CheckFindUserPasswordRequestDto dto) {
@@ -259,7 +260,7 @@ public class AuthServiceImplement implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? super UserDeleteResponseDto> withdraw(UserDeleteRequestDto dto) {
+    public ResponseEntity<? super UserDeleteResponseDto> userDelete(UserDeleteRequestDto dto) {
         try {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
             UserEntity userEntity = userRepository.findByUserId(currentUserId);
