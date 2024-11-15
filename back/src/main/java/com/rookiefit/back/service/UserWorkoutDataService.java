@@ -1,5 +1,7 @@
 package com.rookiefit.back.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.rookiefit.back.dto.request.userWorkoutData.DeleteUserWorkoutListRequestDto;
@@ -16,9 +18,9 @@ public interface UserWorkoutDataService {
     
     ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto);
 
-    ResponseEntity<? super GetUserWorkoutListResponseDto> getUserWorkoutData(GetUserWorkoutListRequestDto dto);
+    ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto);
 
-    ResponseEntity<? super GetUserWorkoutDetailResponseDto> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto);
+    ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto);
     
     ResponseEntity<? super DeleteUserWorkoutListResponseDto> deleteUserWorkoutList(DeleteUserWorkoutListRequestDto dto);
 }

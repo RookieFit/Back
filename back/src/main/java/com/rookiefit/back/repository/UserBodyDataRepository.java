@@ -3,22 +3,28 @@ package com.rookiefit.back.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.entity.UserBodyDataEntity;
 
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface UserBodyDataRepository extends JpaRepository<UserBodyDataEntity ,Long> {
+public interface UserBodyDataRepository extends JpaRepository<UserBodyDataEntity ,String> {
     
-    boolean existsByUserId(String userId);
+    boolean existsByUserProfile_UserAuthEntity_UserId(String userId);
 
-    boolean existsByDate(String date);
+    boolean existsByInbodydate(String inbody_date);
 
-    List<UserBodyDataEntity> findByUserId(String userId);
+    List<UserBodyDataEntity> findByUserProfile_UserAuthEntity_UserId(String userId);
 
     @Transactional
-    void deleteAllByDate(String date);
+    void deleteAllByInbodydate(String inbody_date);
 
+    @Query("SELECT u FROM UserBodyDataEntity u WHERE u.userProfile.userAuthEntity.userId = :userId")
+    List<UserBodyDataEntity> findUserBodyDataByUserId(@Param("userId") String userId);
 }
+

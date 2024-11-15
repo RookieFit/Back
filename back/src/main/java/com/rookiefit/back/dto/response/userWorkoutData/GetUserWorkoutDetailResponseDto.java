@@ -1,6 +1,7 @@
 package com.rookiefit.back.dto.response.userWorkoutData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +13,25 @@ import lombok.Getter;
 
 @Getter
 public class GetUserWorkoutDetailResponseDto extends ResponseDto{
-    private List<UserWorkoutDetailDataEntity> userWorkoutDetailData;
-    private GetUserWorkoutDetailResponseDto(List<UserWorkoutDetailDataEntity> userWorkoutDetailDataEntity) {
+    private String workoutDetailCreatedDate;
+    private String workoutName;
+    private Integer reps;
+    private Integer sets;
+    private String restTime;
+    
+    private GetUserWorkoutDetailResponseDto(UserWorkoutDetailDataEntity userWorkoutDetailDataEntity) {
         super();
-        this.userWorkoutDetailData = userWorkoutDetailDataEntity;
+        this.workoutDetailCreatedDate = userWorkoutDetailDataEntity.getWorkoutDetailCreatedDate();
+        this.workoutName = userWorkoutDetailDataEntity.getWorkout_name();
+        this.reps = userWorkoutDetailDataEntity.getReps();
+        this.sets = userWorkoutDetailDataEntity.getSets();
+        this.restTime = userWorkoutDetailDataEntity.getRest_time();
     }
 
-    public static ResponseEntity<GetUserWorkoutDetailResponseDto> success(List<UserWorkoutDetailDataEntity> userWorkoutDetailDataEntity) {
-        GetUserWorkoutDetailResponseDto responseBody = new GetUserWorkoutDetailResponseDto(userWorkoutDetailDataEntity);
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    public static ResponseEntity<List<GetUserWorkoutDetailResponseDto>> success(List<UserWorkoutDetailDataEntity> userWorkoutDetailDataEntity) {
+        List<GetUserWorkoutDetailResponseDto> userWorkoutDetailDatas = userWorkoutDetailDataEntity.stream()
+            .map(GetUserWorkoutDetailResponseDto::new)  // Convert entities to DTOs
+            .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(userWorkoutDetailDatas);
     }
 }

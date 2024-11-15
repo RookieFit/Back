@@ -28,5 +28,8 @@ public class InputUserBodyDataRequestDto {
 
     @NotNull
     private Integer userFatMass;
+
+    @NotNull
+    private String inbodydate;
     
 }

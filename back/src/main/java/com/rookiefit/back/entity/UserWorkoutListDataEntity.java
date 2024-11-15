@@ -9,8 +9,11 @@ import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListReques
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -43,6 +46,10 @@ public class UserWorkoutListDataEntity {
     @NotBlank
     private String workoutTitle;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id" , referencedColumnName = "user_id", insertable = false, updatable = false)
+    private UserProfileEntity userProfile;
+
     @OneToMany(mappedBy = "userWorkoutList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<UserWorkoutDetailDataEntity> workoutDetails;
 
@@ -51,5 +58,9 @@ public class UserWorkoutListDataEntity {
         this.comment = dto.getComment();
         this.workoutTitle = dto.getWorkout_title();
         this.workoutCreatedDate = dto.getWorkoutCreatedData();
+    }
+
+    public void setUserProfileData(UserProfileEntity userProfileEntity) {
+        this.userProfile = userProfileEntity;
     }
 }

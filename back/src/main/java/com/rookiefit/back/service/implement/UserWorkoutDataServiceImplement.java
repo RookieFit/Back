@@ -43,8 +43,6 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
         
         if (userWorkoutListDataEntity != null) {
             // 이미 존재하는 경우 데이터 업데이트
-            System.out.println(dto.getComment());
-            System.out.println(dto.getWorkout_title());
             userWorkoutListDataEntity.setComment(dto.getComment());
             userWorkoutListDataEntity.setWorkoutTitle(dto.getWorkout_title());
             // 기존 WorkoutDetails 삭제 후 새로운 WorkoutDetails 저장
@@ -71,20 +69,19 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
     }
 
     @Override
-    public ResponseEntity<? super GetUserWorkoutListResponseDto> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
+    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
         boolean isExsitedId = userWorkoutListDataRepository.existsByUserId(currentUserId);
         if(!isExsitedId){System.out.println("아이디가존재하지않음");};
 
-        List<UserWorkoutListDataEntity> userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserId(currentUserId);
-        return GetUserWorkoutListResponseDto.success(userWorkoutListDataEntity);
+        List<UserWorkoutListDataEntity> userWorkoutListDataEntities = userWorkoutListDataRepository.findWorkoutListByUserId(currentUserId);
+        return GetUserWorkoutListResponseDto.success(userWorkoutListDataEntities);
     }
-
     @Override
-    public ResponseEntity<? super GetUserWorkoutDetailResponseDto> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto) {
+    public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto) {
         String currentDate = dto.getWorkoutDetailCreatedDate();
         List<UserWorkoutDetailDataEntity> userWorkoutDetailDataEntity = userWorkoutDetailDataRepository.findByWorkoutDetailCreatedDate(currentDate);
-        return GetUserWorkoutDetailResponseDto.success(userWorkoutDetailDataEntity);
+        return GetUserWorkoutDetailResponseDto.success(userWorkoutDetailDataEntity);  // Pass the entity list to the DTO's success method
     }
 
     @Override

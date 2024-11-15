@@ -1,4 +1,4 @@
-package com.rookiefit.back.common;
+package com.rookiefit.back.service.implement.AuthService;
 
 import java.util.concurrent.ConcurrentHashMap;
 

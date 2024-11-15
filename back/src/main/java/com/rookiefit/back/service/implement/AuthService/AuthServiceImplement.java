@@ -1,12 +1,10 @@
-package com.rookiefit.back.service.implement;
+package com.rookiefit.back.service.implement.AuthService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.rookiefit.back.common.CertificationManager;
-import com.rookiefit.back.common.CertificationNumber;
 import com.rookiefit.back.common.MaskingUserId;
 import com.rookiefit.back.dto.request.auth.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserIdRequestDto;
