@@ -17,6 +17,8 @@ import com.rookiefit.back.service.UserDataService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,9 +53,9 @@ public class UserDataController {
         }
     
     @GetMapping("/userbodydata")
-    public ResponseEntity<? super GetUserBodyDataResponseDto> getUserBodyData(
+    public ResponseEntity<List<GetUserBodyDataResponseDto>> getUserBodyData(
         @RequestBody @Valid GetUserBodyDataRequestDto dto) {
-            ResponseEntity<? super GetUserBodyDataResponseDto> reponseBody = userDataService.getUserBodyData(dto);
+            ResponseEntity<List<GetUserBodyDataResponseDto>> reponseBody = userDataService.getUserBodyData(dto);
             return reponseBody;
     }
 }

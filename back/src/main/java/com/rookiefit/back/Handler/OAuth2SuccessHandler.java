@@ -31,7 +31,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String userId = oAuth2User.getName();
         String token = jwtProvider.create(userId);
-
+        if (token != null) {
+            logger.info("Generated Token: " + token);
+        } else {
+            logger.error("Token generation failed!");
+        }
         response.sendRedirect("http://localhost:3000/auth/oauth-response/" + token + "/3600");
     }
 

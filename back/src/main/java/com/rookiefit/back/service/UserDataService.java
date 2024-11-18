@@ -1,5 +1,7 @@
 package com.rookiefit.back.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
@@ -19,5 +21,5 @@ public interface UserDataService {
 
     ResponseEntity<? super InputUserBodyDataResponseDto> inputUserBodyData(InputUserBodyDataRequestDto dto);
 
-    ResponseEntity<? super GetUserBodyDataResponseDto> getUserBodyData(GetUserBodyDataRequestDto dto);
+    ResponseEntity<List<GetUserBodyDataResponseDto>> getUserBodyData(GetUserBodyDataRequestDto dto);
 }

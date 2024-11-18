@@ -1,4 +1,4 @@
-package com.rookiefit.back.common;
+package com.rookiefit.back.service.implement.AuthService;
 
 public class CertificationNumber {
 
