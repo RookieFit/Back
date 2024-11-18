@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.rookiefit.back.dto.response.ResponseDto;
-import com.rookiefit.back.entity.UserWorkoutDetailDataEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutDetailDataEntity;
 
 import lombok.Getter;
 

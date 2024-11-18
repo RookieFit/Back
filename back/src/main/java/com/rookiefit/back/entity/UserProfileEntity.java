@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

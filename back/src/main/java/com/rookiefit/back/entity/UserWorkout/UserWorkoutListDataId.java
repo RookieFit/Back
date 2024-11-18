@@ -1,4 +1,4 @@
-package com.rookiefit.back.entity;
+package com.rookiefit.back.entity.UserWorkout;
 
 import java.io.Serializable;
 import java.util.Objects;

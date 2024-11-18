@@ -15,11 +15,11 @@ import com.rookiefit.back.dto.response.userWorkoutData.DeleteUserWorkoutListResp
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
-import com.rookiefit.back.entity.UserWorkoutDetailDataEntity;
-import com.rookiefit.back.entity.UserWorkoutListDataEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutDetailDataEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 import com.rookiefit.back.provider.JwtProvider;
-import com.rookiefit.back.repository.UserWorkoutDetailDataRepository;
-import com.rookiefit.back.repository.UserWorkoutListDataRepository;
+import com.rookiefit.back.repository.UserWorkout.UserWorkoutDetailDataRepository;
+import com.rookiefit.back.repository.UserWorkout.UserWorkoutListDataRepository;
 import com.rookiefit.back.service.UserWorkoutDataService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.rookiefit.back.repository;
+package com.rookiefit.back.repository.UserWorkout;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.rookiefit.back.entity.UserWorkoutListDataEntity;
-import com.rookiefit.back.entity.UserWorkoutListDataId;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataId;
 
 @Repository
 public interface UserWorkoutListDataRepository extends JpaRepository<UserWorkoutListDataEntity , UserWorkoutListDataId>{

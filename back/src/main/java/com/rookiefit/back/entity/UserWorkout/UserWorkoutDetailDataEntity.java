@@ -1,4 +1,4 @@
-package com.rookiefit.back.entity;
+package com.rookiefit.back.entity.UserWorkout;
 
 import org.springframework.stereotype.Component;
 

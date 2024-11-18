@@ -1,10 +1,11 @@
-package com.rookiefit.back.entity;
+package com.rookiefit.back.entity.UserWorkout;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
+import com.rookiefit.back.entity.UserProfileEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
