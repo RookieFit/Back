@@ -8,6 +8,7 @@ import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -58,24 +59,24 @@ public class UserProfileEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private UserEntity userAuthEntity;
 
-    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserBodyDataEntity> userBodyDatas;
 
-    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserWorkoutListDataEntity> userWorkoutLists;
 
     public UserProfileEntity(InputUserProfileRequestDto dto) {
 
-        this.userAuthEntity = new UserEntity();  // userAuthEntity 초기화
-        this.userAuthEntity.setUserId(dto.getToken());  // userId 설정
+        this.userAuthEntity = new UserEntity(); // userAuthEntity 초기화
+        this.userAuthEntity.setUserId(dto.getToken()); // userId 설정
         this.userProfileImageUri = dto.getUserProfileImageUri();
         this.gymName = dto.getGymName();
         this.userMessage = dto.getUserMessage();
         this.userName = dto.getUserName();
         this.userAddress = dto.getUserAddress();
         this.userNickname = dto.getUserNickname();
-    
-    } 
+
+    }
 
     public void setUser(UserEntity userEntity) {
         this.userAuthEntity = userEntity;

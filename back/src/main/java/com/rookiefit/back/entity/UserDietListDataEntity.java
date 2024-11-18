@@ -25,11 +25,11 @@ public class UserDietListDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL에서 AUTO_INCREMENT로 설정
-    @Column(name = "userdietid", nullable = false, unique = true) // 'userdietid'가 Primary Key
+    @Column(name = "userdietid")
     private Long userdietid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id") // 'user_id'는 외래 키
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserProfileEntity userProfile;
 
     @NotBlank
