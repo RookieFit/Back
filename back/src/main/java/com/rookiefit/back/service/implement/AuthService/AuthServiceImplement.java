@@ -1,12 +1,10 @@
-package com.rookiefit.back.service.implement;
+package com.rookiefit.back.service.implement.AuthService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.rookiefit.back.common.CertificationManager;
-import com.rookiefit.back.common.CertificationNumber;
 import com.rookiefit.back.common.MaskingUserId;
 import com.rookiefit.back.dto.request.auth.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserIdRequestDto;
@@ -50,21 +48,18 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public ResponseEntity<? super IdCheckResponseDto> idCheck(IdCheckRequestDto dto) {
-        try {
+
             String userId = dto.getUserId();
             boolean isExistId = userRepository.existsByUserId(userId);
             if (isExistId)
                 return IdCheckResponseDto.duplicatedId();
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return IdCheckResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super SmsCertificationResponseDto> smsCertification(SmsCertificationRequestDto dto) {
-        try {
+
             String userId = dto.getUserId();// 필요없음
             String phoneNumber = dto.getUser_phonenumber();// 키값으로 사용
 
@@ -80,15 +75,12 @@ public class AuthServiceImplement implements AuthService {
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return SmsCertificationResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
-        try {
+
             String userId = dto.getUserId();
             String certificationNumber = dto.getCertificationNumber();
 
@@ -101,15 +93,11 @@ public class AuthServiceImplement implements AuthService {
             if (!isMatch)
                 return CheckCertificationResponseDto.certificationFail();
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return CheckCertificationResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
-        try {
             String userId = dto.getUserId();
             boolean isExistId = userRepository.existsByUserId(userId);
             if (isExistId)
@@ -128,16 +116,12 @@ public class AuthServiceImplement implements AuthService {
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return SignUpResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
-        String token = null;
-        try {
+            String token = null;
             String userId = dto.getUserId();
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null)
@@ -150,19 +134,13 @@ public class AuthServiceImplement implements AuthService {
                 return SignInResponseDto.signInFail();
             token = jwtProvider.create(userId);
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return SignInResponseDto.success(token);
     }
 
     @Override
     public ResponseEntity<? super FindUserIdResponseDto> findUserId(FindUserIdRequestDto dto) {
 
-        try {
-
             String phoneNumber = dto.getUserPhoneNumber();
-
             boolean isExistId = userRepository.existsByUserPhoneNumber(phoneNumber);
             if (!isExistId)
                 return FindUserIdResponseDto.PhoneNumber_NOT_FOUND();
@@ -174,16 +152,12 @@ public class AuthServiceImplement implements AuthService {
                     certificationNumber);
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return FindUserIdResponseDto.success();
     }
 
     // 유저의 아이디와 전화번호를 입력받아 인증번호 메세지발송_김민준_2024_11_07_17:06
     @Override
     public ResponseEntity<? super FindUserPasswordResponseDto> findUserPassword(FindUserPasswordRequestDto dto) {
-        try {
             String userId = dto.getUserId();// 입력받은 아이디
             String phoneNumber = dto.getUser_phonenumber();// 입력받은 전화번호
 
@@ -194,23 +168,20 @@ public class AuthServiceImplement implements AuthService {
             String certificationNumber = CertificationNumber.getCertificationNumber();// 인증번호 6자리 랜덤생성
             certificationManager.saveCertificationNumber(userId, certificationNumber);// hashmap에 인증번호 임시저장
 
-            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber,
-                    certificationNumber); // 유저전화번호로
-                                          // 인증번호
-                                          // 발송
+
+            boolean isSuccessed = smsCerificationNumberProvider.sendCertificationKakao(phoneNumber, certificationNumber); // 유저전화번호로
+                                                                                                                         // 인증번호
+                                                                                                                        // 발송
             if (!isSuccessed)
                 return SmsCertificationResponseDto.smsSendFail();
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return FindUserPasswordResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super CheckFindUserIdResponseDto> checkFindUserId(CheckFindUserIdRequestDto dto) {
 
-        try {
+
             String phoneNumber = dto.getUserPhoneNumber();
             String certificationNumber = dto.getCertificationNumber();
 
@@ -234,17 +205,12 @@ public class AuthServiceImplement implements AuthService {
 
             // 마스킹된 아이디 반환
             return CheckFindUserIdResponseDto.success(maskedUserId);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
     }
 
     @Override
     public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
             CheckFindUserPasswordRequestDto dto) {
-        try {
+
             String userId = dto.getUserId();
             String phoneNumber = dto.getUser_phonenumber();
             String certificationNumber = dto.getCertificationNumber();
@@ -253,15 +219,11 @@ public class AuthServiceImplement implements AuthService {
             if (!isMatch)
                 return CheckFindUserPasswordResponseDto.certificationFail();
 
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return CheckFindUserPasswordResponseDto.success();
     }
 
     @Override
-    public ResponseEntity<? super UserDeleteResponseDto> userDelete(UserDeleteRequestDto dto) {
-        try {
+    public ResponseEntity<? super UserDeleteResponseDto> withdraw(UserDeleteRequestDto dto) {
             String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
             UserEntity userEntity = userRepository.findByUserId(currentUserId);
 
@@ -271,18 +233,14 @@ public class AuthServiceImplement implements AuthService {
             if (!passwordEncoder.matches(inputPassword, encodedPassword)) {
                 return UserDeleteResponseDto.passwordMismatch();
             }
+            // isDeleted 상태를 true로 변경
+            userEntity.setIsDeleted(true);
+            
+            // 업데이트된 엔티티 저장
+            userRepository.save(userEntity);
 
-            userRepository.delete(userEntity);
-
-        } catch (Exception exception) {
-            handleException(exception);
-        }
         return UserDeleteResponseDto.success();
     }
 
-    private ResponseEntity<ResponseDto> handleException(Exception exception) {
-        exception.printStackTrace();
-        return ResponseDto.databaseError();
-    }
 
 }

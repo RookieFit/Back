@@ -11,10 +11,10 @@ import jakarta.transaction.Transactional;
 public interface UserProfileRepository extends JpaRepository<UserProfileEntity, Long> {
 
     @Transactional
-    void deleteAllByUserId(String userId);
+    void deleteAllByUserAuthEntity_UserId(String userId);
 
-    boolean existsByUserId(String userId);
+    boolean existsByUserAuthEntity_UserId(String userId);
 
-    UserProfileEntity findByUserId(String userId);
-
+    UserProfileEntity findByUserAuthEntity_UserId(String userId);
+    
 }

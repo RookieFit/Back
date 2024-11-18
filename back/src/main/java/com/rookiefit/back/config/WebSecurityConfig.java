@@ -45,9 +45,10 @@ public class WebSecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/api/v1/auth/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/", "/api/v1/auth/**", "/oauth2/**","/ws/**").permitAll()
                         .requestMatchers("/api/v1/user/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        //.requestMatchers("/ws/**").hasRole("USER") //USER 권한인가자 실시간채팅가능
                         .anyRequest()
                         .authenticated())
                 .oauth2Login(oauth2 -> oauth2
@@ -57,6 +58,8 @@ public class WebSecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new FailedAuthenticationEntryPoint()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                /* .requiresChannel(channel -> channel
+                        .requestMatchers("/**").requiresSecure());*/  // 모든 요청을 HTTPS로 리디렉션
 
         return httpSecurity.build();
     }

@@ -1,5 +1,7 @@
 package com.rookiefit.back.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,16 +37,16 @@ public class UserWorkoutDataController {
     }
 
     @GetMapping("/userworkoutlistdata")
-    public ResponseEntity<? super GetUserWorkoutListResponseDto> getUserWorkoutData(
+    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(
         @RequestBody @Valid GetUserWorkoutListRequestDto dto){
-            ResponseEntity<? super GetUserWorkoutListResponseDto> responseBody = userWorkoutDataService.getUserWorkoutData(dto);
+            ResponseEntity<List<GetUserWorkoutListResponseDto>> responseBody = userWorkoutDataService.getUserWorkoutData(dto);
             return responseBody;
     }
 
     @GetMapping("/userworkoutdetaildata")
-    public ResponseEntity<? super GetUserWorkoutDetailResponseDto> getUserWorkoutDetail(
+    public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(
         @RequestBody @Valid GetUserWorkoutDetailRequestDto dto) {
-            ResponseEntity<? super GetUserWorkoutDetailResponseDto> responseBody = userWorkoutDataService.getUserWorkoutDetail(dto);
+            ResponseEntity<List<GetUserWorkoutDetailResponseDto>> responseBody = userWorkoutDataService.getUserWorkoutDetail(dto);
             return responseBody;
     }
 

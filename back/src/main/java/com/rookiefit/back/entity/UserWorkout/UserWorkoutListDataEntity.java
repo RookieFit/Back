@@ -1,20 +1,23 @@
-package com.rookiefit.back.entity;
+package com.rookiefit.back.entity.UserWorkout;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
+import com.rookiefit.back.entity.UserProfileEntity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,20 +30,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_workout_list")
+@IdClass(UserWorkoutListDataId.class)
 public class UserWorkoutListDataEntity {
 
     @Id
-    @NotBlank
+    @Column(name = "workout_created_date")
     //@Pattern(regexp = "^\\d{2}-\\d{2}-\\d{2}$", message = "날짜 형식은 'yy-MM-dd'이어야 합니다.")
     private String workoutCreatedDate;
 
-    @NotBlank
+    @Id
+    @Column(name = "user_id")
     private String userId;
 
     private String comment;
 
     @NotBlank
     private String workoutTitle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id" , referencedColumnName = "user_id", insertable = false, updatable = false)
+    private UserProfileEntity userProfile;
 
     @OneToMany(mappedBy = "userWorkoutList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<UserWorkoutDetailDataEntity> workoutDetails;
@@ -50,5 +59,9 @@ public class UserWorkoutListDataEntity {
         this.comment = dto.getComment();
         this.workoutTitle = dto.getWorkout_title();
         this.workoutCreatedDate = dto.getWorkoutCreatedData();
+    }
+
+    public void setUserProfileData(UserProfileEntity userProfileEntity) {
+        this.userProfile = userProfileEntity;
     }
 }
