@@ -27,7 +27,7 @@ public class SignInResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<ResponseDto> signInFail() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.Sign_IN_FAIL, ResponseMessage.Sign_IN_FAIL);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.SIGN_IN_FAIL, ResponseMessage.SIGN_IN_FAIL);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
     }
 }

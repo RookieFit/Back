@@ -1,4 +1,4 @@
-package com.rookiefit.back.dto.request;
+package com.rookiefit.back.dto.request.UserDietData;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class PublicDataRequestDto {
+public class GetDietDataRequestDto {
 
     @NotBlank
     private String foodName;

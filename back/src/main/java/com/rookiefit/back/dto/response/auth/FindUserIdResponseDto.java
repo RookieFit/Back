@@ -29,8 +29,8 @@ public class FindUserIdResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<? super ResponseDto> PhoneNumber_NOT_FOUND() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.PhoneNumber_NOT_FOUND,
-                ResponseMessage.PhoneNumber_NOT_FOUND);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.PHONENUMBER_NOT_FOUND,
+                ResponseMessage.PHONENUMBER_NOT_FOUND);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 }

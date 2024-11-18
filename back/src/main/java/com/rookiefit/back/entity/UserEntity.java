@@ -33,7 +33,7 @@ public class UserEntity {
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();
         this.user_password = dto.getUser_password();
-        this.user_email = dto.getUser_email();
+        // this.user_email = dto.getUser_email();
         this.userPhoneNumber = dto.getUser_phonenumber();
         this.type = "app";
         this.role = "ROLE_USER";

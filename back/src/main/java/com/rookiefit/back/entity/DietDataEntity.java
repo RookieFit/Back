@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PublicDataEntity {
+public class DietDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
