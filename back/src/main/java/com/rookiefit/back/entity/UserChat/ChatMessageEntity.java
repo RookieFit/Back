@@ -1,5 +1,7 @@
 package com.rookiefit.back.entity.UserChat;
 
+import java.time.LocalDateTime;
+
 import com.rookiefit.back.entity.UserEntity;
 
 import jakarta.persistence.Entity;
@@ -33,6 +35,8 @@ public class ChatMessageEntity {
 
     private String content;   // 메시지 내용
 
+    private LocalDateTime timestamp;
+    
     // 생성자
     public ChatMessageEntity (UserEntity sender, String content, ChatRoomEntity chatRoom) {
         this.sender = sender;

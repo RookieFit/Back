@@ -1,49 +1,61 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.5'
-	id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'com.rookiefit'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)  // Java 21 사용 설정
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()  // 중앙 Maven 저장소
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'net.nurigo:sdk:4.3.0'
-	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.0.1'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Spring Boot의 데이터 관련 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  
+    implementation 'org.springframework.boot:spring-boot-starter-mail'  
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'  
+    implementation 'org.springframework.boot:spring-boot-starter-security'  
+    implementation 'org.springframework.boot:spring-boot-starter-validation'  
+    implementation 'org.springframework.boot:spring-boot-starter-web'  // 웹 관련 기능
+
+    // WebSocket 및 STOMP 관련 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'  // WebSocket 지원
+    implementation 'org.springframework:spring-websocket'  // WebSocket 지원
+
+    // 외부 SDK 및 라이브러리 의존성
+    implementation 'net.nurigo:sdk:4.3.0'  // SMS API
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.0.1'  // Firebase Admin SDK
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'  // JWT 토큰 관련 라이브러리
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'  
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    // Lombok 관련 의존성 (컴파일 시 코드 생성)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // MySQL 연결을 위한 의존성
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // 테스트 의존성
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()  // JUnit 5 사용
 }

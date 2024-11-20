@@ -1,5 +1,6 @@
 package com.rookiefit.back.service.implement;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,21 @@ public class UserChatServiceImplement implements UserChatService {
     }
 
     @Override
+    public List<ChatMessageDto> getRecentMessages(Long chatRoomId) {
+        System.out.println("service task");
+         List<ChatMessageEntity> messages = chatMessageRepository.findByChatRoom_Id(chatRoomId);
+         if (messages.isEmpty()) {
+            System.out.println("No messages found for chatRoomId: " + chatRoomId);
+        }
+        return messages.stream()
+                .map(message -> new ChatMessageDto(
+                    message.getSender().getUserId(),
+                    message.getContent(), 
+                    message.getChatRoom().getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public List<ChatMessageDto> getMessages(Long chatRoomId) {
         System.out.println("service task");
@@ -61,18 +77,15 @@ public class UserChatServiceImplement implements UserChatService {
 
     @Override
     public void sendMessage(ChatMessageDto dto) {
-            // senderId로 UserEntity를 찾기
-        UserEntity sender = userRepository.findByUserId(dto.getSenderId());
-    
-        // chatRoomId로 ChatRoomEntity를 찾기
+        UserEntity sender = userRepository.findByUserId(dto.getSender());
         ChatRoomEntity chatRoom = chatRoomRepository.findById(dto.getChatRoomId())
-            .orElseThrow(() -> new IllegalArgumentException("Chat room not found"));
-
-        // 메시지 엔티티 생성
-        ChatMessageEntity message = new ChatMessageEntity(sender, dto.getContent(), chatRoom);
-
-        // 메시지 저장
-        chatMessageRepository.save(message);
+        .orElseThrow(() -> new IllegalArgumentException("Chat room not found"));
+        ChatMessageEntity messageEntity = new ChatMessageEntity();
+        messageEntity.setSender(sender);
+        messageEntity.setContent(dto.getContent());
+        messageEntity.setChatRoom(chatRoom);
+        messageEntity.setTimestamp(LocalDateTime.now());
+        chatMessageRepository.save(messageEntity); // DB에 저장
     }
     
 }
