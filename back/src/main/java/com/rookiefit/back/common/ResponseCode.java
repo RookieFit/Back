@@ -12,4 +12,5 @@ public interface ResponseCode {
     String SMS_FAIL = "SMS_F";
     String PhoneNumber_NOT_FOUND = "PF";
     String ID_NOT_FOUND = "IF";
+    String COMMUNITY_LIST_NOT_FOUND = "CLNF";
 }

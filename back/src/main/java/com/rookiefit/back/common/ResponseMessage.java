@@ -12,4 +12,5 @@ public interface ResponseMessage {
     String SMS_FAIL = "SMS SEND FAIL ..";
     String PhoneNumber_NOT_FOUND = "PhoneNumber is not found..";
     String ID_NOT_FOUND = "Id not Found..";
+    String COMMUNITY_LIST_NOT_FOUND = "Coummunity list id is not found..";
 }

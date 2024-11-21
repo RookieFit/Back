@@ -53,10 +53,8 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto);
             userWorkoutListDataEntity.setUserId(currentUserId);
         }
-        
         // WorkoutList 데이터 저장
         userWorkoutListDataRepository.save(userWorkoutListDataEntity);
-    
         // 새로운 WorkoutDetails 저장
         List<InputUserWorkoutDetailRequestDto> workoutDetails = dto.getWorkoutDetails();
         for (InputUserWorkoutDetailRequestDto workoutDetailDto : workoutDetails) {
