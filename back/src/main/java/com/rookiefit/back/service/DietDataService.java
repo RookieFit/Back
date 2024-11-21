@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.response.UserDietData.GetDietDataResponseDto;
-import com.rookiefit.back.entity.DietDataEntity;
+import com.rookiefit.back.entity.UserDiet.DietDataEntity;
 import com.rookiefit.back.repository.DietDataRepository;
 
 @Service

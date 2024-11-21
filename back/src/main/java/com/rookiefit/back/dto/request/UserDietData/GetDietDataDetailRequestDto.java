@@ -8,8 +8,11 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class GetDietDataRequestDto {
+public class GetDietDataDetailRequestDto {
 
     @NotBlank
-    private String food_name;
+    private String token;
+
+    @NotBlank
+    private String diet_created_date;
 }

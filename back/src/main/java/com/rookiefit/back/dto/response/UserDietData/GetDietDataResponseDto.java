@@ -2,7 +2,9 @@ package com.rookiefit.back.dto.response.UserDietData;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.rookiefit.back.entity.DietDataEntity;
+
+import com.rookiefit.back.entity.UserDiet.DietDataEntity;
+
 import lombok.Getter;
 
 import java.util.List;

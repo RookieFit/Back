@@ -1,4 +1,4 @@
-package com.rookiefit.back.entity;
+package com.rookiefit.back.entity.UserDiet;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DietDataEntity {
-
+    // TODO 이름 수정.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -13,22 +13,18 @@ import lombok.Setter;
 public class InputUserDietListRequestDto {
 
     @NotBlank
-    private String token;
+    private String token; // 사용자 인증 토큰
 
     @NotBlank
-    private String diet_create_date;
+    private String user_id;
 
-    private double total_calories; // 총 칼로리
+    @NotBlank
+    private String diet_created_date; // 식단 생성 날짜
 
-    private String userDietData;
+    private Double total_calories; // 총 칼로리
 
     private List<InputUserDietDetailRequestDto> dietDetails; // 세부 식단 리스트
 
-    // total_calories 값을 dietDetails에서 계산하는 메서드 추가
-    public void calculateTotalCalories() {
-        this.total_calories = dietDetails.stream()
-                .mapToDouble(InputUserDietDetailRequestDto::getEnerc) // 각 음식의 칼로리 합산
-                .sum();
-    }
+    private Long user_diet_detail_id; // 삭제에 필요한 필드
 
 }

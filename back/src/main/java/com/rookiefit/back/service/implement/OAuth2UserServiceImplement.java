@@ -33,8 +33,7 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
         if (oauthClientName.equals("kakao")) {
             // Kakao에서 id Long으로 받아오기
             Long kakaoId = (Long) oAuth2User.getAttributes().get("id");
-            userId = "kakao_" + String.valueOf(kakaoId).substring(0, 4);  // Long을 String으로 변환 후 처리
-            System.out.println("ffff");
+            userId = "kakao_" + String.valueOf(kakaoId).substring(0, 4); // Long을 String으로 변환 후 처리
             userEntity = new UserEntity(userId, email, userPhoneNumber, "kakao");
         }
 
@@ -47,7 +46,7 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
         if (oauthClientName.equals("Google")) {
             String googleId = "google_" + oAuth2User.getAttribute("sub");
-            userId = googleId.substring(0,10);
+            userId = googleId.substring(0, 10);
             userEntity = new UserEntity(userId, email, userPhoneNumber, "google");
         }
 

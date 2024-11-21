@@ -5,11 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class GetDietDataRequestDto {
+public class DeleteUserDietListRequestDto {
 
     @NotBlank
-    private String food_name;
+    private String token;
+
+    @NotBlank
+    private String diet_created_date;
+
 }

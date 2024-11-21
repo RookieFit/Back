@@ -1,5 +1,9 @@
 package com.rookiefit.back.dto.request.UserDietData;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +28,8 @@ public class InputUserDietDetailRequestDto {
 
     private double enerc;
 
+    private List<InputUserDietDetailRequestDto> dietDetails; // 세부 식단 리스트
+
+    @JsonProperty("user_diet_detail_id")
+    private Long userDietDetailId;
 }

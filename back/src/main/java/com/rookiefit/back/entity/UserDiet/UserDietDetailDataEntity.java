@@ -1,35 +1,38 @@
-package com.rookiefit.back.entity;
+package com.rookiefit.back.entity.UserDiet;
 
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietDetailRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "user_diet_detail")
 public class UserDietDetailDataEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL에서 AUTO_INCREMENT로 설정
-    @Column(name = "id", nullable = false, unique = true) // 'id'가 Primary Key
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_diet_detail_id", nullable = false, unique = true)
+    private Long userDietDetailId;
 
-    @NotBlank
-    @Column(name = "diet_createdDate", nullable = false) // 정확한 필드명
-    private UserDietListDataEntity dietCreatedDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diet_created_date", nullable = false)
+    private UserDietListDataEntity userDietListData;
 
-    @NotBlank
     @Column(name = "food_name", nullable = false)
     private String foodName;
-
-    @NotBlank
-    @Column(name = "food_first_category", nullable = false)
-    private String foodFirstCategory;
 
     @Column(name = "chocdf")
     private double chocdf;
@@ -43,17 +46,18 @@ public class UserDietDetailDataEntity {
     @Column(name = "enerc")
     private double enerc;
 
-    public UserDietDetailDataEntity(InputUserDietDetailRequestDto dto) {
+    @Column(name = "food_first_category", nullable = false)
+    private String foodFirstCategory;
+
+    public UserDietDetailDataEntity(InputUserDietDetailRequestDto dto, UserDietListDataEntity userDietListDataEntity) {
         this.foodName = dto.getFood_name();
         this.foodFirstCategory = dto.getFood_first_category();
         this.chocdf = dto.getChocdf();
         this.prot = dto.getProt();
         this.fat = dto.getFat();
         this.enerc = dto.getEnerc();
-    }
+        this.userDietListData = userDietListDataEntity;
 
-    public void setUserDietList(UserDietListDataEntity userDietListDataEntity) {
-        this.dietCreatedDate = userDietListDataEntity;
+        System.out.println(foodFirstCategory);
     }
-
 }
