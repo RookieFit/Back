@@ -13,17 +13,20 @@ import com.rookiefit.back.dto.request.auth.SignInRequestDto;
 import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
 import com.rookiefit.back.dto.request.auth.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.UserDeleteRequestDto;
+import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
+import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.service.AuthService;
+import com.rookiefit.back.service.TrainerService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final AuthService authService;
+    private final TrainerService trainerService;
 
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
@@ -110,4 +114,12 @@ public class AuthController {
         ResponseEntity<? super UserDeleteResponseDto> response = authService.userDelete(requestBody);
         return response;
     }
+
+    // 트레이너 등록 요청
+    @PostMapping("/trainer-register")
+    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
+            @RequestBody @Valid InputTrainerRequestDto requestDto) {
+        return trainerService.createTrainer(requestDto);
+    }
+
 }

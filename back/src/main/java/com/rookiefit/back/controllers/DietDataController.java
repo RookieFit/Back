@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rookiefit.back.dto.response.UserDietData.GetDietDataResponseDto;
 import com.rookiefit.back.service.DietDataService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/user/")
+@RequiredArgsConstructor
 public class DietDataController {
 
     private final DietDataService dietDataService;
-
-    public DietDataController(DietDataService dietDataService) {
-        this.dietDataService = dietDataService;
-    }
 
     @GetMapping("/search")
     public List<GetDietDataResponseDto> searchFoods(@RequestParam("keyword") String keyword) {

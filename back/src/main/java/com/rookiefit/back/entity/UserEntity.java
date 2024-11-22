@@ -6,9 +6,7 @@ import java.util.List;
 import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -42,6 +40,8 @@ public class UserEntity {
 
     private String subscriptedDate;
 
+    private Boolean isLicensed;
+
     public UserEntity(SignUpRequestDto dto) {
 
         String currentDate = LocalDate.now().toString();
@@ -54,7 +54,7 @@ public class UserEntity {
         this.role = "ROLE_USER";
         this.isDeleted = false;
         this.subscriptedDate = currentDate;
-
+        this.isLicensed = false;
     }
 
     public UserEntity(String userId, String user_phonenumber, String type) {
@@ -69,8 +69,16 @@ public class UserEntity {
         this.role = "ROLE_USER";
         this.isDeleted = false;
         this.subscriptedDate = currentDate;
+        this.isLicensed = false;
     }
 
     @OneToMany(mappedBy = "userAuthEntity", cascade = CascadeType.REMOVE)
     private List<UserProfileEntity> userProfiles;
+
+    @OneToMany(mappedBy = "userAuthEntity", cascade = CascadeType.REMOVE)
+    private List<TrainerEntity> trainerEntities;
+
+    public void approveLicense() {
+        this.isLicensed = true;
+    }
 }
