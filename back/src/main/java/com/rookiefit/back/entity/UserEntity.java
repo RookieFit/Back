@@ -28,7 +28,7 @@ public class UserEntity {
 
     private String user_password;
 
-    private String user_email;
+    // private String user_email;
 
     private String userPhoneNumber;
 
@@ -46,22 +46,22 @@ public class UserEntity {
 
         this.userId = dto.getUserId();
         this.user_password = dto.getUser_password();
-        this.user_email = dto.getUser_email();
+        // this.user_email = dto.getUser_email();
         this.userPhoneNumber = dto.getUser_phonenumber();
         this.type = "app";
         this.role = "ROLE_USER";
         this.isDeleted = false;
         this.subscriptedDate = currentDate;
-        
+
     }
 
-    public UserEntity(String userId, String email, String user_phonenumber, String type) {
+    public UserEntity(String userId, String user_phonenumber, String type) {
 
         String currentDate = LocalDate.now().toString();
 
         this.userId = userId;
         this.user_password = "password";
-        this.user_email = email;
+        // this.user_email = email;
         this.userPhoneNumber = "00000000000";
         this.type = "app";
         this.role = "ROLE_USER";
@@ -69,7 +69,6 @@ public class UserEntity {
         this.subscriptedDate = currentDate;
     }
 
-    @OneToMany(mappedBy = "userAuthEntity", cascade = CascadeType.REMOVE )
+    @OneToMany(mappedBy = "userAuthEntity", cascade = CascadeType.REMOVE)
     private List<UserProfileEntity> userProfiles;
 }
-   

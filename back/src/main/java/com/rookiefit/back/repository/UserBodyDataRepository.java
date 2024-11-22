@@ -12,8 +12,8 @@ import com.rookiefit.back.entity.UserBodyDataEntity;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface UserBodyDataRepository extends JpaRepository<UserBodyDataEntity ,String> {
-    
+public interface UserBodyDataRepository extends JpaRepository<UserBodyDataEntity, String> {
+
     boolean existsByUserProfile_UserAuthEntity_UserId(String userId);
 
     boolean existsByInbodydate(String inbody_date);
@@ -26,4 +26,3 @@ public interface UserBodyDataRepository extends JpaRepository<UserBodyDataEntity
     @Query("SELECT u FROM UserBodyDataEntity u WHERE u.userProfile.userAuthEntity.userId = :userId")
     List<UserBodyDataEntity> findUserBodyDataByUserId(@Param("userId") String userId);
 }
-
