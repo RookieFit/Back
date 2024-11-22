@@ -57,7 +57,5 @@ public class UserDietDetailDataEntity {
         this.fat = dto.getFat();
         this.enerc = dto.getEnerc();
         this.userDietListData = userDietListDataEntity;
-
-        System.out.println(foodFirstCategory);
     }
 }

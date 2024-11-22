@@ -27,27 +27,27 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
         UserEntity userEntity = null;
         String userId = null;
-        String email = "email@email.com";
+        // String email = "email@email.com";
         String userPhoneNumber = "00000000000";
 
         if (oauthClientName.equals("kakao")) {
             // Kakao에서 id Long으로 받아오기
             Long kakaoId = (Long) oAuth2User.getAttributes().get("id");
             userId = "kakao_" + String.valueOf(kakaoId).substring(0, 4); // Long을 String으로 변환 후 처리
-            userEntity = new UserEntity(userId, email, userPhoneNumber, "kakao");
+            userEntity = new UserEntity(userId, userPhoneNumber, "kakao");
         }
 
         if (oauthClientName.equals("naver")) {
             Map<String, String> responseMap = (Map<String, String>) oAuth2User.getAttributes().get("response");
             userId = "naver_" + responseMap.get("id").substring(0, 4);
-            email = responseMap.get("email");
-            userEntity = new UserEntity(userId, email, userPhoneNumber, "naver");
+            // email = responseMap.get("email");
+            userEntity = new UserEntity(userId, userPhoneNumber, "naver");
         }
 
         if (oauthClientName.equals("Google")) {
             String googleId = "google_" + oAuth2User.getAttribute("sub");
             userId = googleId.substring(0, 10);
-            userEntity = new UserEntity(userId, email, userPhoneNumber, "google");
+            userEntity = new UserEntity(userId, userPhoneNumber, "google");
         }
 
         userRepository.save(userEntity);

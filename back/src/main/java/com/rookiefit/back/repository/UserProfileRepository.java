@@ -16,5 +16,4 @@ public interface UserProfileRepository extends JpaRepository<UserProfileEntity, 
     boolean existsByUserAuthEntity_UserId(String userId);
 
     UserProfileEntity findByUserAuthEntity_UserId(String userId);
-
 }

@@ -57,7 +57,7 @@ public class UserEntity {
 
     }
 
-    public UserEntity(String userId, String email, String user_phonenumber, String type) {
+    public UserEntity(String userId, String user_phonenumber, String type) {
 
         String currentDate = LocalDate.now().toString();
 

@@ -239,5 +239,4 @@ public class AuthServiceImplement implements AuthService {
 
         return UserDeleteResponseDto.success();
     }
-
 }
