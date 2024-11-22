@@ -10,25 +10,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-    public class UserCommunityRequestDto {
+public class UserCommunityRequestDto {
 
-        @NotBlank
-        private String token;
+    @NotBlank
+    private String token;
 
-        private Long communityListId;
+    private Long communityListId;
 
-        @NotBlank
-        private String communityTitle;
+    @NotBlank
+    private String communityTitle;
 
-        @NotBlank
-        private String communityContent;
-        
-        private LocalDateTime createdDate;
+    @NotBlank
+    private String communityContent;
+    
+    private LocalDateTime createdDate;
 
-        private Boolean isModified;
+    private Boolean isModified;
 
-        private String communityImageUrl;
-        
-        @NotBlank
-        private String communityContentType;
+    private String communityImageUrl;
+    
+    @NotBlank
+    private String communityContentType;
 }

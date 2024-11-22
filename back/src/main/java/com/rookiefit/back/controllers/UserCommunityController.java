@@ -73,7 +73,7 @@ public class UserCommunityController {
             return responseBody;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/communitysearch")
     public ResponseEntity<List<GetSearchUserCommunityResponseDto>> getSearchUserCommunity(
         @RequestParam(required = false,value = "keyword") String keyword,
         @RequestParam(required = false,value = "field") String field

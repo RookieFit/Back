@@ -66,7 +66,6 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     public ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
         UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
-        System.out.println(userProfileEntity);
         Optional<UserCommunityEntity> optionaluserCommunity = userCommunityRepository.findById(dto.getCommunityListId());
 
         if(optionaluserCommunity.isEmpty()){
@@ -104,26 +103,26 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     }
 
     @Override
-public ResponseEntity<List<GetSearchUserCommunityResponseDto>> getSearchUserCommunity(String keyword, String field) {
-    List<UserCommunityEntity> userCommunityList;
-    // field 값에 따라 검색
-    if ("title".equals(field)) {
-        userCommunityList = userCommunityRepository.findByCommunityTitleContaining(keyword);
-    } else if ("content".equals(field)) {
-        userCommunityList = userCommunityRepository.findByCommunityContentContaining(keyword);
-    } else if ("author".equals(field)) {
-        userCommunityList = userCommunityRepository.findByCommunityAuthorContaining(keyword);
-    } else {
-        // field 값이 잘못된 경우 예외 처리
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<List<GetSearchUserCommunityResponseDto>> getSearchUserCommunity(String keyword, String field) {
+        List<UserCommunityEntity> userCommunityList;
+        // field 값에 따라 검색
+        if ("title".equals(field)) {
+            userCommunityList = userCommunityRepository.findByCommunityTitleContaining(keyword);
+        } else if ("content".equals(field)) {
+            userCommunityList = userCommunityRepository.findByCommunityContentContaining(keyword);
+        } else if ("author".equals(field)) {
+            userCommunityList = userCommunityRepository.findByCommunityAuthorContaining(keyword);
+        } else {
+            // field 값이 잘못된 경우 예외 처리
+            return ResponseEntity.badRequest().build();
+        }
+        // UserCommunityEntity를 GetSearchUserCommunityResponseDto로 변환
+        List<GetSearchUserCommunityResponseDto> responseList = userCommunityList.stream()
+            .map(GetSearchUserCommunityResponseDto::new) // 엔티티에서 DTO로 변환하는 생성자 사용
+            .toList();
+        // 성공 응답 반환
+        return ResponseEntity.ok(responseList);
     }
-    // UserCommunityEntity를 GetSearchUserCommunityResponseDto로 변환
-    List<GetSearchUserCommunityResponseDto> responseList = userCommunityList.stream()
-        .map(GetSearchUserCommunityResponseDto::new) // 엔티티에서 DTO로 변환하는 생성자 사용
-        .toList();
-    // 성공 응답 반환
-    return ResponseEntity.ok(responseList);
-}
 
 
     @Override
