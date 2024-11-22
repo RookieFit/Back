@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.entity.UserBodyDataEntity;
 
 import jakarta.transaction.Transactional;

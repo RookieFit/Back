@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -44,14 +45,17 @@ public class JwtProvider {
                     .getBody();
 
             return claims.getSubject();
-        } catch (MalformedJwtException exception) {
-            System.out.println("잘못된 JWT 형식입니다");
-        } catch (ExpiredJwtException exception) {
-            System.out.println("JWT가 만료되었습니다.");
-        } catch (Exception exception){
-            System.out.println("JWT 검증 중 오류발생");
+        } catch (JwtException exception) { // JwtException으로 공통 처리
+            String errorMessage;
+            if (exception instanceof MalformedJwtException) {
+                errorMessage = "잘못된 JWT 형식입니다.";
+            } else if (exception instanceof ExpiredJwtException) {
+                errorMessage = "JWT가 만료되었습니다.";
+            } else {
+                errorMessage = "JWT 검증 중 오류 발생.";
+            }
+            System.out.println(errorMessage);
         }
-
         return null;
 
     }

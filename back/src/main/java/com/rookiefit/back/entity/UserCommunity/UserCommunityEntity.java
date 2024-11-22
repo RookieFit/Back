@@ -3,6 +3,8 @@ package com.rookiefit.back.entity.UserCommunity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
 
@@ -28,6 +30,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@QuerydslPredicate
 public class UserCommunityEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +52,9 @@ public class UserCommunityEntity {
     @Column(name = "community_image_url")
     private String communityImageUrl;
 
+    @Column(name = "community_author")
+    private String communityAuthor;
+
     @Column(name = "community_content_type", nullable = false)
     private String communityContentType;
 
@@ -68,6 +74,7 @@ public class UserCommunityEntity {
         this.isModified = dto.getIsModified() != null ? dto.getIsModified() : false;
         this.communityImageUrl = dto.getCommunityImageUrl();
         this.communityContentType = dto.getCommunityContentType();
+        this.communityAuthor = userProfileEntity.getUserNickname();
         this.userProfile = userProfileEntity;
     }
 

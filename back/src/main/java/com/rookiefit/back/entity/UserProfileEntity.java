@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
+import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 
 import jakarta.persistence.CascadeType;
@@ -66,6 +67,9 @@ public class UserProfileEntity {
 
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
     private List<UserCommunityEntity> userCommunityEntities;
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    private List<UserCommunity_Answer_ListEntity> userCommunityAnswerListEntities;
 
     public UserProfileEntity(InputUserProfileRequestDto dto) {
         this.userAuthEntity = new UserEntity();  // userAuthEntity 초기화

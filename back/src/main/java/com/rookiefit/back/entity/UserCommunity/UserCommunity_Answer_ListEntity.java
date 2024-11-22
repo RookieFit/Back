@@ -3,6 +3,7 @@ package com.rookiefit.back.entity.UserCommunity;
 import java.time.LocalDateTime;
 
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
+import com.rookiefit.back.entity.UserProfileEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,11 +47,16 @@ public class UserCommunity_Answer_ListEntity {
     @JoinColumn(name = "community_list_id", referencedColumnName = "community_list_id", nullable = false)
     private UserCommunityEntity userCommunity; // UserCommunity와의 관계 설정
 
-    public UserCommunity_Answer_ListEntity(UserCommunityAnswerRequestDto dto, UserCommunityEntity userCommunity) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private UserProfileEntity userProfile; // UserProfile와의 관계 설정
+
+    public UserCommunity_Answer_ListEntity(UserCommunityAnswerRequestDto dto, UserCommunityEntity userCommunity ,UserProfileEntity userProfileEntity) {
         this.answerContent = dto.getAnswerContent();
         this.answerCreatedDate = dto.getAnswerCreatedDate() != null ? dto.getAnswerCreatedDate() : LocalDateTime.now();//date값이 안들어 오면 현재값 입력
         this.answerIsModified = dto.getAnswerIsModified() != null ? dto.getAnswerIsModified() : false;
-        this.answerAuthor =dto.getToken(); // 저자에 유저아이디 들어감
+        this.answerAuthor =userProfileEntity.getUserNickname(); // 저자에 유저아이디 들어감
         this.userCommunity = userCommunity;
+        this.userProfile=userProfileEntity;
     }
 }
