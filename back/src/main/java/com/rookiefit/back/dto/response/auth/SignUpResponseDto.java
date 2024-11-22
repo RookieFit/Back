@@ -9,7 +9,7 @@ import com.rookiefit.back.dto.response.ResponseDto;
 
 public class SignUpResponseDto extends ResponseDto {
 
-    private SignUpResponseDto() {
+    public SignUpResponseDto() {
         super();
     }
 

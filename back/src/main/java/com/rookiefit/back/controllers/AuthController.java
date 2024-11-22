@@ -97,7 +97,7 @@ public class AuthController {
     }
 
     @PostMapping("/check-find-password")
-    public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
+    public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPassword(
             @RequestBody @Valid CheckFindUserPasswordRequestDto requestBody) {
         ResponseEntity<? super CheckFindUserPasswordResponseDto> response = authService
                 .checkFindUserPasswordResponseDto(requestBody);
@@ -107,7 +107,7 @@ public class AuthController {
     @GetMapping("/user-delete")
     public ResponseEntity<? super UserDeleteResponseDto> userDelete(
             @RequestBody @Valid UserDeleteRequestDto requestBody) {
-        ResponseEntity<? super UserDeleteResponseDto> response = authService.withdraw(requestBody);
+        ResponseEntity<? super UserDeleteResponseDto> response = authService.userDelete(requestBody);
         return response;
     }
 }

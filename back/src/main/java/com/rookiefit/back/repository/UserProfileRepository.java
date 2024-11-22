@@ -8,7 +8,7 @@ import com.rookiefit.back.entity.UserProfileEntity;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface UserProfileRepository extends JpaRepository<UserProfileEntity, Long>{
+public interface UserProfileRepository extends JpaRepository<UserProfileEntity, Long> {
 
     @Transactional
     void deleteAllByUserAuthEntity_UserId(String userId);
@@ -16,5 +16,4 @@ public interface UserProfileRepository extends JpaRepository<UserProfileEntity, 
     boolean existsByUserAuthEntity_UserId(String userId);
 
     UserProfileEntity findByUserAuthEntity_UserId(String userId);
-    
 }

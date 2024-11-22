@@ -48,7 +48,7 @@ public class JwtProvider {
             System.out.println("잘못된 JWT 형식입니다");
         } catch (ExpiredJwtException exception) {
             System.out.println("JWT가 만료되었습니다.");
-        } catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println("JWT 검증 중 오류발생");
         }
 
