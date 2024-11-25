@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
+import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
+import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.entity.UserDiet.UserDietListDataEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 
@@ -69,6 +71,12 @@ public class UserProfileEntity {
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserWorkoutListDataEntity> userWorkoutLists;
 
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    private List<UserCommunityEntity> userCommunityEntities;
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    private List<UserCommunity_Answer_ListEntity> userCommunityAnswerListEntities;
+
     public UserProfileEntity(InputUserProfileRequestDto dto) {
 
         this.userAuthEntity = new UserEntity(); // userAuthEntity 초기화
@@ -79,7 +87,6 @@ public class UserProfileEntity {
         this.userName = dto.getUserName();
         this.userAddress = dto.getUserAddress();
         this.userNickname = dto.getUserNickname();
-
     }
 
     public void setUser(UserEntity userEntity) {

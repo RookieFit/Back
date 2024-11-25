@@ -86,8 +86,6 @@ public class UserDataServiceImplement implements UserDataService {
                 if (!isExsitedId) {
                         System.out.println("아이디가존재하지않음");
                 }
-                ;
-
                 List<UserBodyDataEntity> responseDtos = userBodyDataRepository.findUserBodyDataByUserId(currentUserId);
                 return GetUserBodyDataResponseDto.success(responseDtos);
         }

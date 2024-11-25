@@ -18,9 +18,8 @@ public class DietDataController {
 
     private final DietDataService dietDataService;
 
-    @GetMapping("/search")
+    @GetMapping("/dietsearch")
     public List<GetDietDataResponseDto> searchFoods(@RequestParam("keyword") String keyword) {
         return dietDataService.searchFoodByName(keyword);
     }
-
 }
