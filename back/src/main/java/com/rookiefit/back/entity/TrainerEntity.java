@@ -1,8 +1,6 @@
 package com.rookiefit.back.entity;
 
 import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
-import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,8 +27,8 @@ public class TrainerEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
-    private UserEntity userId;
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
+    private UserEntity userAuthEntity;
 
     private String licenseNumber;
 
@@ -45,6 +43,9 @@ public class TrainerEntity {
         this.licenseImageUrl = dto.getLicenseImageUrl();
         this.businessRegisterNumber = dto.getBusinessRegisterNumber();
         this.businessRegisterImageUrl = dto.getBusinessRegisterImageUrl();
-        this.userId = userEntity;
+    }
+
+    public void setUser(UserEntity userEntity) {
+        this.userAuthEntity = userEntity;
     }
 }

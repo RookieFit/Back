@@ -10,12 +10,19 @@ import lombok.Getter;
 @AllArgsConstructor
 public class InputTrainerResponseDto {
 
-    private String userId;
+    private String userId; // 사용자 ID
+    private boolean isLicensed; // 라이센스 승인 여부
 
-    private boolean isLicensed;
-
-    public static ResponseEntity<InputTrainerResponseDto> success(String userId, boolean isLicensed) {
-        InputTrainerResponseDto responseBody = new InputTrainerResponseDto(userId, isLicensed);
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    public static InputTrainerResponseDto success(String userId, boolean isLicensed) {
+        return new InputTrainerResponseDto(userId, isLicensed);
     }
+
+    // public InputTrainerResponseDto() {
+    // super();
+    // }
+
+    // public static ResponseEntity<InputTrainerResponseDto> success() {
+    // InputTrainerResponseDto responseBody = new InputTrainerResponseDto();
+    // return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    // }
 }

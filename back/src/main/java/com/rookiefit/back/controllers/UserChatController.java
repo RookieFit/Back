@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.UserChatDto.ChatMessageDto;
@@ -32,7 +31,7 @@ public class UserChatController {
     @PostMapping("/create")
     public ResponseEntity<ChatRoomDto> createChatRoom(@RequestBody ChatRoomDto chatRoomDto) {
         ChatRoomDto createdChatRoom = userChatService.createChatRoom(chatRoomDto);
-        return ResponseEntity.ok(createdChatRoom);  // 생성된 채팅방 반환
+        return ResponseEntity.ok(createdChatRoom); // 생성된 채팅방 반환
     }
 
     // 채팅방 메시지 조회
@@ -41,12 +40,13 @@ public class UserChatController {
         logger.debug("chatRoomId: {}", chatRoomId);
         System.out.println("controller task");
         List<ChatMessageDto> messages = userChatService.getMessages(chatRoomId);
-        return ResponseEntity.ok(messages);  // 해당 채팅방의 메시지 목록 반환
+        return ResponseEntity.ok(messages); // 해당 채팅방의 메시지 목록 반환
     }
+
     // 메시지 전송
     @PostMapping("/send")
     public ResponseEntity<Void> sendMessage(@RequestBody ChatMessageDto chatMessageDto) {
-        userChatService.sendMessage(chatMessageDto);  // 메시지 저장
-        return ResponseEntity.ok().build();  // 응답으로 HTTP 200 OK
+        userChatService.sendMessage(chatMessageDto); // 메시지 저장
+        return ResponseEntity.ok().build(); // 응답으로 HTTP 200 OK
     }
 }

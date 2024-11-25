@@ -18,7 +18,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -85,6 +84,5 @@ public class UserProfileEntity {
 
     public void setUser(UserEntity userEntity) {
         this.userAuthEntity = userEntity;
-
     }
 }

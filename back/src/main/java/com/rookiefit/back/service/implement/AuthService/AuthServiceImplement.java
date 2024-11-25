@@ -16,7 +16,6 @@ import com.rookiefit.back.dto.request.auth.SignInRequestDto;
 import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
 import com.rookiefit.back.dto.request.auth.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.UserDeleteRequestDto;
-import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;

@@ -4,7 +4,9 @@ import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface TrainerService {
 
     // 트레이너 인증 요청 등록
