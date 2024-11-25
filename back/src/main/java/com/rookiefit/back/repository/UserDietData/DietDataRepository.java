@@ -1,4 +1,4 @@
-package com.rookiefit.back.repository;
+package com.rookiefit.back.repository.UserDietData;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

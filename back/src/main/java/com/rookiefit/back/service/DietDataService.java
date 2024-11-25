@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.response.UserDietData.GetDietDataResponseDto;
 import com.rookiefit.back.entity.UserDiet.DietDataEntity;
-import com.rookiefit.back.repository.DietDataRepository;
+import com.rookiefit.back.repository.UserDietData.DietDataRepository;
 
 @Service
 public class DietDataService {

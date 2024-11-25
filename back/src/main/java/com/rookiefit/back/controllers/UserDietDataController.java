@@ -5,7 +5,9 @@ import com.rookiefit.back.dto.request.UserDietData.GetDietDataDetailRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietListRequestDto;
 import com.rookiefit.back.dto.response.UserDietData.DeleteUserDietListResponseDto;
 import com.rookiefit.back.dto.response.UserDietData.GetDietDataDetailResponseDto;
+import com.rookiefit.back.dto.response.UserDietData.GetDietDataResponseDto;
 import com.rookiefit.back.dto.response.UserDietData.InputUserDietListResponseDto;
+import com.rookiefit.back.service.DietDataService;
 import com.rookiefit.back.service.UserDietDataService;
 
 import jakarta.validation.Valid;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserDietDataController {
 
     private final UserDietDataService userDietDataService;
+    private final DietDataService dietDataService;
 
     @PostMapping("/input-userdietlistdata")
     public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(
@@ -44,5 +47,11 @@ public class UserDietDataController {
         ResponseEntity<List<GetDietDataDetailResponseDto>> responseBody = userDietDataService
                 .getUserDietListData(dto);
         return responseBody;
+    }
+
+    // 식단 검색
+    @GetMapping("/dietsearch")
+    public List<GetDietDataResponseDto> searchFoods(@RequestParam("keyword") String keyword) {
+        return dietDataService.searchFoodByName(keyword);
     }
 }

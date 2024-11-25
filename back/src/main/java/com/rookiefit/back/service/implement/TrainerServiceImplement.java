@@ -43,6 +43,7 @@ public class TrainerServiceImplement implements TrainerService {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
+    // TODO ADMIN 파트 다시 하기..
     // 관리자가 트레이너 요청 승인
     @Override
     public ResponseEntity<? super InputTrainerResponseDto> approveTrainer(String userId) {
