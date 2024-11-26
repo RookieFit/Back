@@ -3,6 +3,7 @@ package com.rookiefit.back.controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.Market.MarketItemListRequestDto;
+import com.rookiefit.back.dto.response.Market.DeleteMarketItemResponseDto;
 import com.rookiefit.back.dto.response.Market.GetAllMarketItemListResponseDto;
 import com.rookiefit.back.dto.response.Market.GetMarketItemResponseDto;
 import com.rookiefit.back.dto.response.Market.InputMarketItemListResponseDto;
@@ -58,6 +60,12 @@ public class MarketController {
         @RequestParam(required = false,value = "keyword") String keyword,
         @RequestParam(required = false,value = "field") String field) {
         ResponseEntity<List<GetAllMarketItemListResponseDto>> responseBody = marketService.getByKeywordMarketList(keyword,field);
+        return responseBody;
+    }
+
+    @DeleteMapping("/deletemarketitem/{id}")
+    public ResponseEntity<? super DeleteMarketItemResponseDto> deleteMarketItem(@PathVariable("id") Long id) {
+        ResponseEntity<? super DeleteMarketItemResponseDto> responseBody = marketService.deleteMarketItem(id);
         return responseBody;
     }
 }

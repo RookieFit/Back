@@ -14,4 +14,5 @@ public interface ResponseMessage {
     String ID_NOT_FOUND = "Id not Found..";
     String COMMUNITY_LIST_NOT_FOUND = "Coummunity list id is not found..";
     String DATABASE_DELETE_FAIL = "Database Delete Fail ..";
+    String MARKET_LIST_NOT_FOUND = "Market list id is not found..";
 }

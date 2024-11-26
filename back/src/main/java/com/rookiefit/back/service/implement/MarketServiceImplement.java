@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.request.Market.MarketItemListRequestDto;
 import com.rookiefit.back.dto.request.Market.MarketProductRequestDto;
+import com.rookiefit.back.dto.response.Market.DeleteMarketItemResponseDto;
 import com.rookiefit.back.dto.response.Market.GetAllMarketItemListResponseDto;
 import com.rookiefit.back.dto.response.Market.GetMarketItemResponseDto;
 import com.rookiefit.back.dto.response.Market.InputMarketItemListResponseDto;
@@ -122,4 +123,12 @@ public class MarketServiceImplement implements MarketService{
         return ResponseEntity.ok(responseList);
     }
 
+    @Override
+    public ResponseEntity<? super DeleteMarketItemResponseDto> deleteMarketItem(Long id) {
+        if (!marketItemListRepository.existsById(id)) {
+            return DeleteMarketItemResponseDto.marketListNotFound();
+        }
+        marketItemListRepository.deleteById(id);
+        return DeleteMarketItemResponseDto.success();
+    }
 }
