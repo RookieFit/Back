@@ -14,7 +14,7 @@ import com.rookiefit.back.dto.response.userData.InputUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
 
 public interface UserDataService {
-    
+
     ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(InputUserProfileRequestDto dto);
 
     ResponseEntity<? super GetUserProfileResponseDto> getUserProfile(GetUserProfileRequestDto dto);

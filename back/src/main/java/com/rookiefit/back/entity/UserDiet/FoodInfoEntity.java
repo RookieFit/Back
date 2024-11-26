@@ -1,35 +1,30 @@
 package com.rookiefit.back.entity.UserDiet;
 
-import com.rookiefit.back.dto.request.UserDietData.InputUserDietDetailRequestDto;
+import com.rookiefit.back.dto.request.UserDietData.InputFoodInfoRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
+@Table(name = "foodinfo")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "user_diet_detail")
-public class UserDietDetailDataEntity {
+@AllArgsConstructor
+public class FoodInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_diet_detail_id", nullable = false, unique = true)
-    private Long userDietDetailId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diet_created_date", nullable = false)
-    private UserDietListDataEntity userDietListData;
+    private Long id;
 
     @Column(name = "food_name", nullable = false)
     private String foodName;
@@ -49,13 +44,12 @@ public class UserDietDetailDataEntity {
     @Column(name = "food_first_category", nullable = false)
     private String foodFirstCategory;
 
-    public UserDietDetailDataEntity(InputUserDietDetailRequestDto dto, UserDietListDataEntity userDietListDataEntity) {
+    public FoodInfoEntity(InputFoodInfoRequestDto dto) {
         this.foodName = dto.getFood_name();
-        this.foodFirstCategory = dto.getFood_first_category();
+        this.foodFirstCategory = "사용자 지정 카테고리";
         this.chocdf = dto.getChocdf();
         this.prot = dto.getProt();
         this.fatce = dto.getFatce();
         this.enerc = dto.getEnerc();
-        this.userDietListData = userDietListDataEntity;
     }
 }

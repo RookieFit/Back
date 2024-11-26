@@ -2,11 +2,10 @@ package com.rookiefit.back.service.implement;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.rookiefit.back.common.CurrentDate;
+import com.rookiefit.back.dto.request.UserDietData.InputFoodInfoRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
@@ -89,5 +88,4 @@ public class UserDataServiceImplement implements UserDataService {
                 List<UserBodyDataEntity> responseDtos = userBodyDataRepository.findUserBodyDataByUserId(currentUserId);
                 return GetUserBodyDataResponseDto.success(responseDtos);
         }
-
 }
