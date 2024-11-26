@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
+import com.rookiefit.back.entity.Market.MarketItemListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.entity.UserDiet.UserDietListDataEntity;
@@ -76,6 +77,9 @@ public class UserProfileEntity {
 
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
     private List<UserCommunity_Answer_ListEntity> userCommunityAnswerListEntities;
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    private List<MarketItemListEntity> MarketItemEntities;
 
     public UserProfileEntity(InputUserProfileRequestDto dto) {
 
