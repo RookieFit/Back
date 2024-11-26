@@ -1,8 +1,6 @@
 package com.rookiefit.back.entity.Market;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 import com.rookiefit.back.dto.request.Market.MarketItemListRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
@@ -68,6 +66,5 @@ public class MarketItemListEntity {
         this.createdAt = dto.getCreatedAt()!= null ? dto.getCreatedAt() : new Date();
         this.updatedAt = dto.getUpdatedAt();
         this.userProfile = userProfile;
-        System.out.println(userProfile.getUserProfileId());
     }
 }

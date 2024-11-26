@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum ShippingMethod {
-    DIRECT("direct"),
-    DELIVERY("delivery"),
-    BOTH("both");
+    DIRECT("DIRECT"),
+    DELIVERY("DELIVERY"),
+    BOTH("BOTH");
 
     private final String method;
 
