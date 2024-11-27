@@ -14,6 +14,5 @@ public class DeleteUserWorkoutListRequestDto {
     private String token;
 
     @NotBlank
-    private String workoutCreatedData;
-
+    private String workoutCreatedDate;
 }

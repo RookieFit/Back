@@ -18,6 +18,7 @@ import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
+import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
@@ -28,7 +29,12 @@ import com.rookiefit.back.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -97,7 +103,7 @@ public class AuthController {
     }
 
     @PostMapping("/check-find-password")
-    public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPasswordResponseDto(
+    public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPassword(
             @RequestBody @Valid CheckFindUserPasswordRequestDto requestBody) {
         ResponseEntity<? super CheckFindUserPasswordResponseDto> response = authService
                 .checkFindUserPasswordResponseDto(requestBody);
@@ -107,7 +113,16 @@ public class AuthController {
     @GetMapping("/user-delete")
     public ResponseEntity<? super UserDeleteResponseDto> userDelete(
             @RequestBody @Valid UserDeleteRequestDto requestBody) {
-        ResponseEntity<? super UserDeleteResponseDto> response = authService.withdraw(requestBody);
+        ResponseEntity<? super UserDeleteResponseDto> response = authService.userDelete(requestBody);
         return response;
+    }
+
+    //관리자인지 인증
+    @GetMapping("/roles")
+    public ResponseEntity<List<String>> getUserRoles(Authentication authentication) {
+        List<String> roles = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .toList();
+        return ResponseEntity.ok(roles);
     }
 }
