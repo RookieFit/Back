@@ -9,4 +9,5 @@ public interface UserChatService {
     ChatRoomDto createChatRoom(ChatRoomDto dto);
     List<ChatMessageDto> getMessages(Long chatRoomId);  // 메시지 조회
     void sendMessage(ChatMessageDto dto);
+    List<ChatMessageDto> getRecentMessages(Long chatRoomId);
 }

@@ -8,13 +8,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ChatMessageDto {
-    private String senderId;
+    private String sender;
     private String content;
     private Long chatRoomId;
 
     // 생성자 및 getter, setter
     public ChatMessageDto (String senderId, String content, Long chatRoomId) {
-        this.senderId = senderId;
+        this.sender = senderId;
         this.content = content;
         this.chatRoomId = chatRoomId;
     }
