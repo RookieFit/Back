@@ -17,5 +17,4 @@ public class InputUserWorkoutListResponseDto extends ResponseDto {
         InputUserWorkoutListResponseDto reponseBody = new InputUserWorkoutListResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
     }
-
 }

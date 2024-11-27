@@ -12,15 +12,19 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-public class TrainerController {
+public class AdminController {
 
     private final TrainerService trainerService;
 
     // 트레이너 승인 처리
-    @PutMapping("/approve/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<? super InputTrainerResponseDto> approveTrainer(@PathVariable String userId) {
-        // 트레이너 승인 요청 처리
-        return trainerService.approveTrainer(userId);
-    }
+    /*
+     * @PutMapping("/approve/{userId}")
+     * 
+     * @PreAuthorize("hasRole('ADMIN')")
+     * public ResponseEntity<? super InputTrainerResponseDto>
+     * approveTrainer(@PathVariable String userId) {
+     * // 트레이너 승인 요청 처리
+     * return trainerService.approveTrainer(userId);
+     * }
+     */
 }

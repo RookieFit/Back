@@ -13,18 +13,21 @@ import com.rookiefit.back.dto.request.auth.SignInRequestDto;
 import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
 import com.rookiefit.back.dto.request.auth.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.UserDeleteRequestDto;
+import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
-import com.rookiefit.back.entity.UserEntity;
+import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.service.AuthService;
+import com.rookiefit.back.service.TrainerService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +36,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final AuthService authService;
+    private final TrainerService trainerService;
 
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
@@ -116,12 +119,20 @@ public class AuthController {
         return response;
     }
 
-    //관리자인지 인증
+    // 관리자인지 인증
     @GetMapping("/roles")
     public ResponseEntity<List<String>> getUserRoles(Authentication authentication) {
         List<String> roles = authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .toList();
+                .map(GrantedAuthority::getAuthority)
+                .toList();
         return ResponseEntity.ok(roles);
+    }
+
+    // 트레이너 등록 요청
+    @PostMapping("/trainer-register")
+    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
+            @RequestBody @Valid InputTrainerRequestDto requestBody) {
+        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(requestBody);
+        return response;
     }
 }

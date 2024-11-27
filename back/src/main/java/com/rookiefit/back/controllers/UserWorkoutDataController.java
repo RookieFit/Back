@@ -31,29 +31,33 @@ public class UserWorkoutDataController {
 
     @PostMapping("/input-userworkoutlistdata")
     public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(
-        @RequestBody @Valid InputUserWorkoutListRequestDto dto) {
-            ResponseEntity<? super InputUserWorkoutListResponseDto> responseBody = userWorkoutDataService.inputUserWorkoutData(dto);
-            return responseBody;
+            @RequestBody @Valid InputUserWorkoutListRequestDto dto) {
+        ResponseEntity<? super InputUserWorkoutListResponseDto> responseBody = userWorkoutDataService
+                .inputUserWorkoutData(dto);
+        return responseBody;
     }
 
     @GetMapping("/userworkoutlistdata")
     public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(
-        @RequestBody @Valid GetUserWorkoutListRequestDto dto){
-            ResponseEntity<List<GetUserWorkoutListResponseDto>> responseBody = userWorkoutDataService.getUserWorkoutData(dto);
-            return responseBody;
+            @RequestBody @Valid GetUserWorkoutListRequestDto dto) {
+        ResponseEntity<List<GetUserWorkoutListResponseDto>> responseBody = userWorkoutDataService
+                .getUserWorkoutData(dto);
+        return responseBody;
     }
 
     @GetMapping("/userworkoutdetaildata")
     public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(
-        @RequestBody @Valid GetUserWorkoutDetailRequestDto dto) {
-            ResponseEntity<List<GetUserWorkoutDetailResponseDto>> responseBody = userWorkoutDataService.getUserWorkoutDetail(dto);
-            return responseBody;
+            @RequestBody @Valid GetUserWorkoutDetailRequestDto dto) {
+        ResponseEntity<List<GetUserWorkoutDetailResponseDto>> responseBody = userWorkoutDataService
+                .getUserWorkoutDetail(dto);
+        return responseBody;
     }
 
     @DeleteMapping("/delete-userworkoutlistdata")
     public ResponseEntity<? super DeleteUserWorkoutListResponseDto> deleteUserWorkoutList(
-        @RequestBody @Valid DeleteUserWorkoutListRequestDto dto) {
-            ResponseEntity<? super DeleteUserWorkoutListResponseDto> responseBody = userWorkoutDataService.deleteUserWorkoutList(dto);
-            return responseBody;
+            @RequestBody @Valid DeleteUserWorkoutListRequestDto dto) {
+        ResponseEntity<? super DeleteUserWorkoutListResponseDto> responseBody = userWorkoutDataService
+                .deleteUserWorkoutList(dto);
+        return responseBody;
     }
 }

@@ -13,7 +13,8 @@ public interface TrainerService {
     ResponseEntity<? super InputTrainerResponseDto> createTrainer(InputTrainerRequestDto dto);
 
     // 관리자 승인 후 라이센스 승인 처리
-    ResponseEntity<? super InputTrainerResponseDto> approveTrainer(String userId);
+    // ResponseEntity<? super InputTrainerResponseDto> approveTrainer(String
+    // userId);
 
     // 트레이너 정보 삭제
     // ResponseEntity<? super DeleteTrainerResponseDto>

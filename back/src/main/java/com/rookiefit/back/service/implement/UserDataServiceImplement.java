@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.rookiefit.back.dto.request.UserDietData.InputFoodInfoRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;

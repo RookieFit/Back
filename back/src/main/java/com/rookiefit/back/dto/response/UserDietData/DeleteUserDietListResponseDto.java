@@ -26,5 +26,4 @@ public class DeleteUserDietListResponseDto extends ResponseDto {
                 ResponseMessage.DATABASE_DELETE_FAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
-
 }

@@ -45,5 +45,4 @@ public class FoodInfoServiceImplement implements FoodInfoService {
         // 성공 응답 반환
         return InputFoodInfoResponseDto.success();
     }
-
 }

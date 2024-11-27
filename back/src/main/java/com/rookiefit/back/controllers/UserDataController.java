@@ -4,16 +4,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
-import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
-import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserBodyDataResponseDto;
-import com.rookiefit.back.service.TrainerService;
 import com.rookiefit.back.service.UserDataService;
 
 import jakarta.validation.Valid;
@@ -31,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class UserDataController {
     private final UserDataService userDataService;
-    private final TrainerService trainerService;
 
     @PostMapping("/input-userprofile")
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(
@@ -59,13 +55,5 @@ public class UserDataController {
             @RequestBody @Valid GetUserBodyDataRequestDto dto) {
         ResponseEntity<List<GetUserBodyDataResponseDto>> reponseBody = userDataService.getUserBodyData(dto);
         return reponseBody;
-    }
-
-    // 트레이너 등록 요청
-    @PostMapping("/trainer-register")
-    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto requestBody) {
-        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(requestBody);
-        return response;
     }
 }

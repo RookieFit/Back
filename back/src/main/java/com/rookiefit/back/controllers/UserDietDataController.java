@@ -62,5 +62,4 @@ public class UserDietDataController {
     public ResponseEntity<? super InputFoodInfoResponseDto> insertFoodInfo(@RequestBody InputFoodInfoRequestDto dto) {
         return foodInfoService.insertFoodInfo(dto);
     }
-
 }
