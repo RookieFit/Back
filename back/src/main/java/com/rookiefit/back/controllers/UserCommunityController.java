@@ -13,8 +13,10 @@ import com.rookiefit.back.dto.response.userCommunity.UserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityAnswerResponseDto;
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
+import com.rookiefit.back.dto.response.Market.GetMarketItemResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.DeleteUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetAllUserCommunityResponseDto;
+import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetSearchUserCommunityResponseDto;
 import com.rookiefit.back.service.UserCommunityService;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -39,24 +42,30 @@ public class UserCommunityController {
             return responseBody;
     }
 
-    @PostMapping("/input-usercommunityanswer")
+    @PostMapping("/input-usercommunity-answer")
     public ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(
         @RequestBody @Valid UserCommunityAnswerRequestDto dto) {
             ResponseEntity<? super UserCommunityAnswerResponseDto> responseBody = userCommunityService.inputUserCommunityAnswer(dto);
             return responseBody;
     }
 
-    @GetMapping("/get-allusercommunity")
+    @GetMapping("/get-all-usercommunity")
     public ResponseEntity<? super GetAllUserCommunityResponseDto> getAllUserCommunity(){
             ResponseEntity<? super GetAllUserCommunityResponseDto> responseBody = userCommunityService.getAllUserCommunity();
             return responseBody;
     }
 
-    @GetMapping("/get-usercommunity")
-    public ResponseEntity<List<GetUserCommunityResponseDto>> getUserCommunity(
+    @GetMapping("/get-bycontenttype-usercommunity")
+    public ResponseEntity<List<GetByContentTypeUserCommunityResponseDto>> getByContentTypeUserCommunity(
         @RequestParam(required = false,value = "communityContentType") String communityContentType){
-            ResponseEntity<List<GetUserCommunityResponseDto>> responseBody = userCommunityService.getUserCommunity(communityContentType);
+            ResponseEntity<List<GetByContentTypeUserCommunityResponseDto>> responseBody = userCommunityService.getByContentTypeUserCommunity(communityContentType);
             return responseBody;
+    }
+
+    @GetMapping("/getusercommunity/{id}")
+    public ResponseEntity<? super GetUserCommunityResponseDto> getUserCommunity(@PathVariable("id") Long id) {
+        ResponseEntity<? super GetUserCommunityResponseDto> responseBody = userCommunityService.getUserCommunity(id);
+        return responseBody;
     }
 
     @DeleteMapping("/delete-usercommunity")
@@ -66,7 +75,7 @@ public class UserCommunityController {
             return responseBody;
     }
 
-    @DeleteMapping("/delete-usercommunityanswer")
+    @DeleteMapping("/delete-usercommunity-answer")
     public ResponseEntity<? super DeleteUserCommunityResponseDto> deleteUserCommunityAnswer(
         @RequestParam(required = false,value = "communityAnswerListId") Long communityAnswerListId) {
             ResponseEntity<? super DeleteUserCommunityResponseDto> responseBody = userCommunityService.deleteUserCommunityAnswer(communityAnswerListId);

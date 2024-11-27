@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.firebase.database.annotations.NotNull;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDetailRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

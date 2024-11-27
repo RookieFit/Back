@@ -3,18 +3,22 @@ package com.rookiefit.back.service.implement;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityRequestDto;
+import com.rookiefit.back.dto.response.Market.GetMarketItemResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.DeleteUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetAllUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetSearchUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetUserCommunityResponseDto;
+import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityAnswerResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityResponseDto;
 import com.rookiefit.back.entity.UserProfileEntity;
+import com.rookiefit.back.entity.Market.MarketItemListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.provider.JwtProvider;
@@ -97,9 +101,9 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     }
 
     @Override
-    public ResponseEntity<List<GetUserCommunityResponseDto>> getUserCommunity(String communityContentType) {
+    public ResponseEntity<List<GetByContentTypeUserCommunityResponseDto>> getByContentTypeUserCommunity(String communityContentType) {
         List<UserCommunityEntity> userCommunityList = userCommunityRepository.findByCommunityContentType(communityContentType);
-        return GetUserCommunityResponseDto.success(userCommunityList);
+        return GetByContentTypeUserCommunityResponseDto.success(userCommunityList);
     }
 
     @Override
@@ -124,6 +128,18 @@ public class UserCommunityServiceImplement implements UserCommunityService{
         return ResponseEntity.ok(responseList);
     }
 
+    @Override
+    public ResponseEntity<? super GetUserCommunityResponseDto> getUserCommunity(Long id) {
+        // 해당 게시물 조회
+        Optional<UserCommunityEntity> usercommnunity = userCommunityRepository.findById(id);
+        if (usercommnunity == null) {
+            // 게시물이 없는 경우 404 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // DTO 변환
+        GetUserCommunityResponseDto response = new GetUserCommunityResponseDto(usercommnunity.get());
+        return ResponseEntity.ok(response);
+    }
 
     @Override
     public  ResponseEntity<? super DeleteUserCommunityResponseDto> deleteUserCommunity(Long communityListId) {
