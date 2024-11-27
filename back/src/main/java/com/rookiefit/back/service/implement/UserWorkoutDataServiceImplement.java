@@ -88,7 +88,7 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
 
         // 삭제할 운동 목록을 DB에서 찾기
-        UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, dto.getWorkoutCreatedData());
+        UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, dto.getWorkoutCreatedDate());
         // 운동 목록이 존재하는지 확인
         if (userWorkoutListDataEntity == null) {
         // 운동 목록이 없으면 에러 응답 반환

@@ -13,6 +13,7 @@ public interface ResponseCode {
     String PHONENUMBER_NOT_FOUND = "PF";
     String ID_NOT_FOUND = "IF";
     String COMMUNITY_LIST_NOT_FOUND = "CLNF";
+    String MARKET_LIST_NOT_FOUND = "MLNF";
     String DATABASE_DELETE_FAIL = "DDF";
     String FOODINFO_INSERT_FAIL = "FIF";
 }
