@@ -1,4 +1,4 @@
-package com.rookiefit.back.config;
+/*package com.rookiefit.back.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,3 +35,4 @@ public class FirebaseConfig {
             return StorageClient.getInstance();
         }
 }
+*/

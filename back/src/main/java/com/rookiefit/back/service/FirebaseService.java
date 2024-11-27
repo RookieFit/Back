@@ -1,4 +1,4 @@
-package com.rookiefit.back.service;
+/*package com.rookiefit.back.service;
 
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -36,11 +36,12 @@ public class FirebaseService {
         return "https://firebasestorage.googleapis.com/v0/b/" + bucketName + "/o/" + fileName + "?alt=media";
     }
 
-    /*public byte[] downloadFile(String fileName) {
+    public byte[] downloadFile(String fileName) {
         Blob blob = storageClient.bucket().get(fileName);
         // 파일을 바이트 배열로 다운로드
         try (ReadableByteChannel readChannel = blob.reader()) {
             //return Channels.newInputStream(readChannel).readAllBytes();
         }
-    }*/
+    }
 }
+*/
