@@ -11,14 +11,16 @@ import com.rookiefit.back.dto.response.userCommunity.UserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.DeleteUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetAllUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetSearchUserCommunityResponseDto;
+import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetUserCommunityResponseDto;
 
 public interface UserCommunityService {
     ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto);
     ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto);
     ResponseEntity<? super GetAllUserCommunityResponseDto> getAllUserCommunity();
-    ResponseEntity<List<GetUserCommunityResponseDto>> getUserCommunity(String communityContentType);
+    ResponseEntity<List<GetByContentTypeUserCommunityResponseDto>> getByContentTypeUserCommunity(String communityContentType);
     ResponseEntity<? super DeleteUserCommunityResponseDto> deleteUserCommunity(Long communityListId);
     ResponseEntity<? super DeleteUserCommunityResponseDto> deleteUserCommunityAnswer(Long communityAnswerListId);
     ResponseEntity<List<GetSearchUserCommunityResponseDto>> getSearchUserCommunity(String keyword, String field);
+    ResponseEntity<? super GetUserCommunityResponseDto> getUserCommunity(Long id);
 }
