@@ -17,4 +17,5 @@ public interface MarketService {
     ResponseEntity<List<GetAllMarketItemListResponseDto>> getByKeywordMarketList(String keyword, String field);
     ResponseEntity<? super GetMarketItemResponseDto> getMarketItem(Long id);
     ResponseEntity<? super DeleteMarketItemResponseDto> deleteMarketItem(Long id);
+    ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(MarketItemListRequestDto dto, Long marketListId);
 }

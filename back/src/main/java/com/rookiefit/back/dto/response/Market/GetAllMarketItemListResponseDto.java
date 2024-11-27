@@ -40,6 +40,7 @@ public class GetAllMarketItemListResponseDto extends ResponseDto{
         this.marketItemTitle = marketItemListEntity.getMarketItemTitle();
         this.marketItemImageUrl = marketItemListEntity.getMarketItemImageUrl();
         this.createdAt = marketItemListEntity.getCreatedAt();
+        this.updatedAt = marketItemListEntity.getUpdatedAt();
         this.isSold = marketItemListEntity.isSold();
         this.productPrice = marketProductsEntity.getProductPrice();
         this.location = marketProductsEntity.getLocation();

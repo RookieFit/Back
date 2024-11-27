@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,13 @@ public class MarketController {
     public ResponseEntity<? super InputMarketItemListResponseDto> inputMarketItemList(
         @RequestBody @Valid MarketItemListRequestDto dto) {
             ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.inputMarketItemList(dto);
+            return responseBody;
+    }
+
+    @PutMapping("/updatemarketlist/{id}")
+    public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(
+        @PathVariable("id") Long marketListId, @RequestBody MarketItemListRequestDto dto) {
+            ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.updateMarketItemList(dto, marketListId);
             return responseBody;
     }
 

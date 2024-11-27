@@ -53,7 +53,7 @@ public class MarketItemListEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @OneToOne(mappedBy = "marketItemList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToOne(mappedBy = "marketItemList", cascade = CascadeType.ALL)
     private MarketProductsEntity product;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,5 +66,12 @@ public class MarketItemListEntity {
         this.createdAt = dto.getCreatedAt()!= null ? dto.getCreatedAt() : new Date();
         this.updatedAt = dto.getUpdatedAt();
         this.userProfile = userProfile;
+    }
+
+    public void update(MarketItemListRequestDto dto) {
+        this.marketItemTitle = dto.getMarketItemTitle();
+        this.marketItemImageUrl = dto.getMarketItemImageUrl();
+        this.isSold = dto.isSold();
+        this.updatedAt = dto.getUpdatedAt()!=null ? dto.getUpdatedAt() : new Date();
     }
 }

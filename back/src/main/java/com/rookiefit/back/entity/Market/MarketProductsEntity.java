@@ -94,4 +94,11 @@ public class MarketProductsEntity {
         this.productSeller = user.getUserNickname();
         this.marketItemList = marketItemListEntity; // MarketItemListEntity와 연관
     }
+
+    public void update(MarketProductRequestDto dto) {
+        this.productPrice = dto.getProductPrice();
+        this.location = dto.getLocation();
+        this.saleStatus = SaleStatus.valueOf(dto.getSaleStatus().toUpperCase());
+        this.productUpdatedAt = dto.getProductUpdatedAt()!=null ? dto.getProductUpdatedAt() : new Date();
+    }
 }

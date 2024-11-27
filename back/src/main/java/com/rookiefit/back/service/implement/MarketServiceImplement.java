@@ -1,6 +1,7 @@
 package com.rookiefit.back.service.implement;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Locale.Category;
 
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import com.rookiefit.back.entity.enums.SaleStatus;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.repository.Market.MarketItemListRepository;
+import com.rookiefit.back.repository.Market.MarketProductsRepository;
 import com.rookiefit.back.service.MarketService;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class MarketServiceImplement implements MarketService{
 
     private final JwtProvider jwtProvider;
     private final MarketItemListRepository marketItemListRepository;
+    private final MarketProductsRepository marketProductsRepository;
     private final UserProfileRepository userProfileRepository;
 
     @Override
@@ -47,6 +50,33 @@ public class MarketServiceImplement implements MarketService{
         marketItemList.setProduct(product);
         marketItemListRepository.save(marketItemList);
         
+        return InputMarketItemListResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(MarketItemListRequestDto dto, Long marketListId) {
+        // 1. MarketItemListEntity 조회
+        Optional<MarketItemListEntity> optionalMarketItemList = marketItemListRepository.findById(marketListId);
+        if (optionalMarketItemList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Market item not found with ID: " + marketListId);
+        }
+        MarketItemListEntity marketItemList = optionalMarketItemList.get();
+
+        // 2. Entity의 update 메서드 호출
+        marketItemList.update(dto);
+
+        // 3. Product 업데이트 (필요 시 별도 로직)
+        MarketProductRequestDto productDto = dto.getProduct();
+        if (productDto != null) {
+            MarketProductsEntity product = marketItemList.getProduct();
+            if (product != null) {
+                product.update(productDto); // Product의 업데이트 메서드 호출
+            }
+        }
+        
+        // 4. 엔티티 저장
+        marketItemListRepository.save(marketItemList);
         return InputMarketItemListResponseDto.success();
     }
 

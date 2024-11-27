@@ -16,6 +16,7 @@ public class GetMarketItemResponseDto extends ResponseDto{
     private String marketItemDescription;
     private String marketItemImageUrl;
     private Date createdAt;
+    private Date updatedAt;
     private boolean isSold;
 
     // Product 관련 정보
@@ -28,6 +29,7 @@ public class GetMarketItemResponseDto extends ResponseDto{
         this.marketItemTitle = marketItem.getMarketItemTitle();
         this.marketItemImageUrl = marketItem.getMarketItemImageUrl();
         this.createdAt = marketItem.getCreatedAt();
+        this.updatedAt = marketItem.getUpdatedAt();
         this.isSold = marketItem.isSold();
 
         // 상품 정보 가져오기

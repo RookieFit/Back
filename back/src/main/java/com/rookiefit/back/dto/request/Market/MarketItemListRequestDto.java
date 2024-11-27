@@ -17,6 +17,10 @@ public class MarketItemListRequestDto {
     @NotBlank
     private String token;
 
+    private boolean isSold;
+
+    private Long marketListId;
+
     @NotBlank
     private String marketItemTitle;
 
