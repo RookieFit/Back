@@ -1,23 +1,15 @@
 package com.rookiefit.back.controllers;
 
-import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.rookiefit.back.dto.UserChatDto.ChatMessageDto;
-import com.rookiefit.back.dto.UserChatDto.ChatRoomDto;
-import com.rookiefit.back.repository.UserChat.ChatMessageRepository;
-import com.rookiefit.back.repository.UserChat.ChatRoomRepository;
+import com.rookiefit.back.dto.chat.ChatMessageDto;
+import com.rookiefit.back.dto.chat.ChatRoomDto;
+import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.service.UserChatService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,28 +18,45 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final SimpMessagingTemplate messagingTemplate;
     private final UserChatService userChatService;
-    private final ChatMessageRepository chatMessageRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @SubscribeMapping("/topic/public")
-    public void onSubscribe() {
-        System.out.println("Subscription to /topic/public received.");
+    // 채팅방 생성
+    @MessageMapping("/createchatroom")
+    @SendTo("/topic/chatroom")  // /topic/chatroom 경로로 메시지를 보내기 위해 @SendTo 사용
+    public Long createChatRoom(ChatRoomDto chatRoomDto, SimpMessageHeaderAccessor headerAccessor) {
+        UserEntity sessionUserId = (UserEntity) headerAccessor.getSessionAttributes().get("user");
+        String currentUserId = sessionUserId.getUserId();
+        System.out.println("Current User ID: " + currentUserId);
+
+        // 채팅방 생성 서비스 호출
+        Long createdChatRoomId = userChatService.createChatRoom(chatRoomDto, currentUserId);
+        System.out.println("Created Chat Room ID: " + createdChatRoomId);
+
+        // 채팅방 ID 반환 (클라이언트로 전송)
+        return createdChatRoomId;
     }
-    
+
+    // 메시지 전송
     @MessageMapping("/sendmessage")
-    @SendTo("/topic/public")
-    public ChatMessageDto sendMessage(@Payload ChatMessageDto chatMessageDto) {
+    public void sendMessage(ChatMessageDto chatMessageDto, SimpMessageHeaderAccessor headerAccessor) {
+        UserEntity sessionUserId = (UserEntity) headerAccessor.getSessionAttributes().get("user");
+        String currentUserId = sessionUserId.getUserId();
+        chatMessageDto.setSenderUserId(currentUserId);
+
+        // 채팅방 ID를 통해 메시지 전송
+        Long chatRoomId = chatMessageDto.getChatRoomId();  // 클라이언트에서 받은 채팅방 ID
         userChatService.sendMessage(chatMessageDto);
-        return chatMessageDto;  // @SendTo에 의해 자동으로 메시지가 전송됩니다.
+
+        // 해당 채팅방으로 메시지 전송
+        simpMessagingTemplate.convertAndSend("/topic/"+chatRoomId, chatMessageDto);
     }
 
-    @MessageMapping("/createChatRoom")
-    public List<ChatMessageDto> fetchMessagesForRoom(ChatRoomDto chatRoomDto) {
-        System.out.println("controller task");
-        Long chatRoomId = chatRoomDto.getId();
-        List<ChatMessageDto> messages = userChatService.getMessages(chatRoomId);
-        return messages;  // 해당 채팅방의 메시지 목록 반환
+    // 채팅방 삭제
+    @MessageMapping("/deletechatroom")
+    public void deleteChatRoom(Long chatRoomId) {
+        userChatService.deleteChatRoom(chatRoomId);
     }
+
+
 }

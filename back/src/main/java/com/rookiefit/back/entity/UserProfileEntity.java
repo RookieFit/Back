@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 import com.rookiefit.back.entity.Market.MarketItemListEntity;
+import com.rookiefit.back.entity.UserChat.UserChatMessageEntity;
+import com.rookiefit.back.entity.UserChat.UserChatRoomEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.entity.UserDiet.UserDietListDataEntity;
@@ -19,6 +21,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -80,6 +83,12 @@ public class UserProfileEntity {
 
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
     private List<MarketItemListEntity> MarketItemEntities;
+
+    @ManyToMany(mappedBy = "participants")
+    private List<UserChatRoomEntity> chatRooms;  // 사용자가 참여한 채팅방들
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserChatMessageEntity> messages;  // 사용자가 보낸 메시지들
 
     public UserProfileEntity(InputUserProfileRequestDto dto) {
 

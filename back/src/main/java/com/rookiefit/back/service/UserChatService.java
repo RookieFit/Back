@@ -1,13 +1,14 @@
 package com.rookiefit.back.service;
 
-import java.util.List;
-
-import com.rookiefit.back.dto.UserChatDto.ChatMessageDto;
-import com.rookiefit.back.dto.UserChatDto.ChatRoomDto;
+import com.rookiefit.back.dto.chat.ChatMessageDto;
+import com.rookiefit.back.dto.chat.ChatRoomDto;
+import com.rookiefit.back.entity.UserChat.UserChatRoomEntity;
 
 public interface UserChatService {
-    ChatRoomDto createChatRoom(ChatRoomDto dto);
-    List<ChatMessageDto> getMessages(Long chatRoomId);  // 메시지 조회
-    void sendMessage(ChatMessageDto dto);
-    List<ChatMessageDto> getRecentMessages(Long chatRoomId);
+    
+    Long createChatRoom(ChatRoomDto chatRoomDto , String currentUserId);
+
+    void sendMessage(ChatMessageDto chatMessageDto);
+
+    void deleteChatRoom(Long chatRoomId);
 }
