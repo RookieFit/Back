@@ -1,12 +1,17 @@
 package com.rookiefit.back.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
+import com.rookiefit.back.dto.request.admin.LicenseApproveRequestDto;
+import com.rookiefit.back.dto.response.admin.LicenseApproveResponseDto;
+import com.rookiefit.back.service.LicenseStatusService;
 import com.rookiefit.back.service.TrainerService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -15,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final TrainerService trainerService;
+    private final LicenseStatusService licenseApproveService;
 
     // 트레이너 승인 처리
     /*
@@ -27,4 +33,5 @@ public class AdminController {
      * return trainerService.approveTrainer(userId);
      * }
      */
+
 }
