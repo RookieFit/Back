@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.rookiefit.back.common.ResponseCode;
-import com.rookiefit.back.common.ResponseMessage;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.entity.UserDiet.UserDietDetailDataEntity;
 
@@ -26,14 +24,17 @@ public class GetDietDataDetailResponseDto extends ResponseDto {
     public static class DietDetail {
         private String foodName;
         private String foodFirstCategory;
-        private double chocdf;
-        private double prot;
-        private double fat;
-        private double enerc;
+        private Double chocdf;
+        private Double prot;
+        private Double fat;
+        private Double enerc;
 
         // 생성자 추가
-        public DietDetail(String foodName, String foodFirstCategory, double chocdf, double prot, double fat,
-                double enerc) {
+        public DietDetail(String foodName, String foodFirstCategory,
+                Double chocdf,
+                Double prot,
+                Double fat,
+                Double enerc) {
             this.foodName = foodName;
             this.foodFirstCategory = foodFirstCategory;
             this.chocdf = chocdf;
@@ -44,14 +45,14 @@ public class GetDietDataDetailResponseDto extends ResponseDto {
     }
 
     // 생성자 추가
-    public GetDietDataDetailResponseDto(String dietCreatedDate, double totalCalories, List<DietDetail> dietDetails) {
+    public GetDietDataDetailResponseDto(String dietCreatedDate, Double totalCalories, List<DietDetail> dietDetails) {
         this.dietCreatedDate = dietCreatedDate;
         this.totalCalories = totalCalories;
         this.dietDetails = dietDetails;
     }
 
     public static ResponseEntity<List<GetDietDataDetailResponseDto>> success(
-            List<UserDietDetailDataEntity> userDietDetailDataEntities, String dietCreatedDate, double totalCalories) {
+            List<UserDietDetailDataEntity> userDietDetailDataEntities, String dietCreatedDate, Double totalCalories) {
 
         // BigDecimal로 소수점 둘째 자리까지 반올림
         BigDecimal totalCaloriesBigDecimal = new BigDecimal(totalCalories).setScale(2, RoundingMode.HALF_UP);
@@ -64,7 +65,7 @@ public class GetDietDataDetailResponseDto extends ResponseDto {
                         detail.getFoodFirstCategory(),
                         detail.getChocdf(),
                         detail.getProt(),
-                        detail.getFat(),
+                        detail.getFatce(),
                         detail.getEnerc()))
                 .collect(Collectors.toList());
 

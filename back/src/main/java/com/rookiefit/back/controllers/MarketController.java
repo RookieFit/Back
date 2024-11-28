@@ -32,16 +32,17 @@ public class MarketController {
 
     @PostMapping("/input-marketlist")
     public ResponseEntity<? super InputMarketItemListResponseDto> inputMarketItemList(
-        @RequestBody @Valid MarketItemListRequestDto dto) {
-            ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.inputMarketItemList(dto);
-            return responseBody;
+            @RequestBody @Valid MarketItemListRequestDto dto) {
+        ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.inputMarketItemList(dto);
+        return responseBody;
     }
 
     @PutMapping("/updatemarketlist/{id}")
     public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(
-        @PathVariable("id") Long marketListId, @RequestBody MarketItemListRequestDto dto) {
-            ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.updateMarketItemList(dto, marketListId);
-            return responseBody;
+            @PathVariable("id") Long marketListId, @RequestBody MarketItemListRequestDto dto) {
+        ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.updateMarketItemList(dto,
+                marketListId);
+        return responseBody;
     }
 
     @GetMapping("/getallmarketlist")
@@ -52,8 +53,9 @@ public class MarketController {
 
     @GetMapping("/getmarketlistbysalestatus")
     public ResponseEntity<List<GetAllMarketItemListResponseDto>> getBySaleStatusMarketList(
-        @RequestParam(required = false,value = "saleStatus") String saleStatus) {
-        ResponseEntity<List<GetAllMarketItemListResponseDto>> responseBody = marketService.getBySaleStatusMarketList(saleStatus);
+            @RequestParam(required = false, value = "saleStatus") String saleStatus) {
+        ResponseEntity<List<GetAllMarketItemListResponseDto>> responseBody = marketService
+                .getBySaleStatusMarketList(saleStatus);
         return responseBody;
     }
 
@@ -65,9 +67,10 @@ public class MarketController {
 
     @GetMapping("/marketlistsearch")
     public ResponseEntity<List<GetAllMarketItemListResponseDto>> getByKeywordMarketList(
-        @RequestParam(required = false,value = "keyword") String keyword,
-        @RequestParam(required = false,value = "field") String field) {
-        ResponseEntity<List<GetAllMarketItemListResponseDto>> responseBody = marketService.getByKeywordMarketList(keyword,field);
+            @RequestParam(required = false, value = "keyword") String keyword,
+            @RequestParam(required = false, value = "field") String field) {
+        ResponseEntity<List<GetAllMarketItemListResponseDto>> responseBody = marketService
+                .getByKeywordMarketList(keyword, field);
         return responseBody;
     }
 

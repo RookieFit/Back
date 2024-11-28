@@ -1,0 +1,15 @@
+package com.rookiefit.back.repository.UserDietData;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.rookiefit.back.entity.UserDiet.FoodInfoEntity;
+
+@Repository
+public interface FoodInfoRepository extends JpaRepository<FoodInfoEntity, Long> {
+    List<FoodInfoEntity> findByFoodNameContaining(String foodName);
+
+    boolean existsByFoodName(String foodName);
+}

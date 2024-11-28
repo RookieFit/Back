@@ -12,7 +12,7 @@ import com.rookiefit.back.entity.UserBodyDataEntity;
 import lombok.Getter;
 
 @Getter
-public class GetUserBodyDataResponseDto extends ResponseDto{
+public class GetUserBodyDataResponseDto extends ResponseDto {
 
     private Integer userAge;
     private Integer userWeight;
@@ -30,11 +30,11 @@ public class GetUserBodyDataResponseDto extends ResponseDto{
         this.inbodyDate = entity.getInbodydate();
     }
 
-    public static ResponseEntity<List<GetUserBodyDataResponseDto>> success(List<UserBodyDataEntity> userBodyDataEntity) {
+    public static ResponseEntity<List<GetUserBodyDataResponseDto>> success(
+            List<UserBodyDataEntity> userBodyDataEntity) {
         List<GetUserBodyDataResponseDto> responseBody = userBodyDataEntity.stream()
-            .map(GetUserBodyDataResponseDto::new)
-            .collect(Collectors.toList());
+                .map(GetUserBodyDataResponseDto::new)
+                .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
-
     }
 }

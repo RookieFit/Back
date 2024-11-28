@@ -15,4 +15,5 @@ public interface ResponseCode {
     String COMMUNITY_LIST_NOT_FOUND = "CLNF";
     String MARKET_LIST_NOT_FOUND = "MLNF";
     String DATABASE_DELETE_FAIL = "DDF";
+    String FOODINFO_INSERT_FAIL = "FIF";
 }

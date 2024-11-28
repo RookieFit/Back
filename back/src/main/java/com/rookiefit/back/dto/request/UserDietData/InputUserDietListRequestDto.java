@@ -23,5 +23,4 @@ public class InputUserDietListRequestDto {
     private List<InputUserDietDetailRequestDto> dietDetails; // 세부 식단 리스트
 
     private Long user_diet_detail_id; // 삭제에 필요한 필드
-
 }

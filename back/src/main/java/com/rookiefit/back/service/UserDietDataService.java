@@ -18,5 +18,6 @@ public interface UserDietDataService {
     // 식단 데이터를 삭제하는 메서드
     ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(DeleteUserDietListRequestDto dto);
 
+    // 해당 날짜의 식단 목록을 가져오는 메서드
     ResponseEntity<List<GetDietDataDetailResponseDto>> getUserDietListData(GetDietDataDetailRequestDto dto);
 }

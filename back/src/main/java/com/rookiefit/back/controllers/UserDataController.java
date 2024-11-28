@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
-import com.google.rpc.context.AttributeContext.Response;
 import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/api/v1/user/")
 @RequiredArgsConstructor
@@ -32,30 +30,30 @@ public class UserDataController {
     private final UserDataService userDataService;
 
     @PostMapping("/input-userprofile")
-    public ResponseEntity<? super InputUserProfileResponseDto>inputUserProfile(
-        @RequestBody @Valid InputUserProfileRequestDto dto) {
-            ResponseEntity<? super InputUserProfileResponseDto> responseBody = userDataService.inputUserProfile(dto);
-            return responseBody;
+    public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(
+            @RequestBody @Valid InputUserProfileRequestDto dto) {
+        ResponseEntity<? super InputUserProfileResponseDto> responseBody = userDataService.inputUserProfile(dto);
+        return responseBody;
     }
 
     @GetMapping("/userprofile")
-    public ResponseEntity<? super GetUserProfileResponseDto>userProfile(
-        @RequestBody @Valid GetUserProfileRequestDto dto) {
-            ResponseEntity<? super GetUserProfileResponseDto> responseBody = userDataService.getUserProfile(dto);
-            return responseBody;
+    public ResponseEntity<? super GetUserProfileResponseDto> userProfile(
+            @RequestBody @Valid GetUserProfileRequestDto dto) {
+        ResponseEntity<? super GetUserProfileResponseDto> responseBody = userDataService.getUserProfile(dto);
+        return responseBody;
     }
 
     @PostMapping("/input-userbodydata")
-    public ResponseEntity<? super InputUserBodyDataResponseDto>inputUserBodyData(
-        @RequestBody @Valid InputUserBodyDataRequestDto dto) {
-            ResponseEntity<? super InputUserBodyDataResponseDto> responseBody = userDataService.inputUserBodyData(dto);
-            return responseBody;
-        }
-    
+    public ResponseEntity<? super InputUserBodyDataResponseDto> inputUserBodyData(
+            @RequestBody @Valid InputUserBodyDataRequestDto dto) {
+        ResponseEntity<? super InputUserBodyDataResponseDto> responseBody = userDataService.inputUserBodyData(dto);
+        return responseBody;
+    }
+
     @GetMapping("/userbodydata")
     public ResponseEntity<List<GetUserBodyDataResponseDto>> getUserBodyData(
-        @RequestBody @Valid GetUserBodyDataRequestDto dto) {
-            ResponseEntity<List<GetUserBodyDataResponseDto>> reponseBody = userDataService.getUserBodyData(dto);
-            return reponseBody;
+            @RequestBody @Valid GetUserBodyDataRequestDto dto) {
+        ResponseEntity<List<GetUserBodyDataResponseDto>> reponseBody = userDataService.getUserBodyData(dto);
+        return reponseBody;
     }
 }
