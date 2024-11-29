@@ -1,5 +1,6 @@
 package com.rookiefit.back.entity.UserWorkout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -53,6 +54,9 @@ public class UserWorkoutListDataEntity {
 
     @OneToMany(mappedBy = "userWorkoutList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<UserWorkoutDetailDataEntity> workoutDetails;
+
+    @OneToMany(mappedBy = "userWorkoutList", cascade = CascadeType.ALL)
+    private List<UserWorkoutImagesEntity> userWorkoutImages = new ArrayList<>();
 
     public UserWorkoutListDataEntity(InputUserWorkoutListRequestDto dto) {
         this.userId = dto.getToken();  // Extracted userId from token

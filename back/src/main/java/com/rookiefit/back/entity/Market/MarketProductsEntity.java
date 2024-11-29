@@ -82,7 +82,7 @@ public class MarketProductsEntity {
     @Column(name = "product_seller")
     private String productSeller;
 
-    public MarketProductsEntity(MarketProductRequestDto dto, MarketItemListEntity marketItemListEntity, String userid, UserProfileEntity user) {
+    public MarketProductsEntity(MarketProductRequestDto dto, MarketItemListEntity marketItemListEntity, UserProfileEntity user) {
         this.productDescription = dto.getProductDescription();
         this.productPrice = dto.getProductPrice();
         this.location = dto.getLocation();
@@ -95,10 +95,11 @@ public class MarketProductsEntity {
         this.marketItemList = marketItemListEntity; // MarketItemListEntity와 연관
     }
 
-    public void update(MarketProductRequestDto dto) {
+    public void update(MarketProductRequestDto dto, UserProfileEntity user) {
         this.productPrice = dto.getProductPrice();
         this.location = dto.getLocation();
         this.saleStatus = SaleStatus.valueOf(dto.getSaleStatus().toUpperCase());
         this.productUpdatedAt = dto.getProductUpdatedAt()!=null ? dto.getProductUpdatedAt() : new Date();
+        this.productSeller = user.getUserNickname();
     }
 }

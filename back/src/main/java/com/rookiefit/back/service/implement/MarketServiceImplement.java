@@ -2,7 +2,6 @@ package com.rookiefit.back.service.implement;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Locale.Category;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ import com.rookiefit.back.entity.enums.SaleStatus;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.repository.Market.MarketItemListRepository;
-import com.rookiefit.back.repository.Market.MarketProductsRepository;
 import com.rookiefit.back.service.MarketService;
 
 import lombok.AllArgsConstructor;
@@ -32,7 +30,6 @@ public class MarketServiceImplement implements MarketService{
 
     private final JwtProvider jwtProvider;
     private final MarketItemListRepository marketItemListRepository;
-    private final MarketProductsRepository marketProductsRepository;
     private final UserProfileRepository userProfileRepository;
 
     @Override
@@ -46,7 +43,7 @@ public class MarketServiceImplement implements MarketService{
 
         // MarketProductsEntity 생성 및 매핑
         MarketProductRequestDto productDto = dto.getProduct();
-        MarketProductsEntity product = new MarketProductsEntity(productDto, marketItemList, currentUserId, userProfile);
+        MarketProductsEntity product = new MarketProductsEntity(productDto, marketItemList, userProfile);
         marketItemList.setProduct(product);
         marketItemListRepository.save(marketItemList);
         
@@ -55,6 +52,7 @@ public class MarketServiceImplement implements MarketService{
 
     @Override
     public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(MarketItemListRequestDto dto, Long marketListId) {
+        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
         // 1. MarketItemListEntity 조회
         Optional<MarketItemListEntity> optionalMarketItemList = marketItemListRepository.findById(marketListId);
         if (optionalMarketItemList.isEmpty()) {
@@ -68,10 +66,14 @@ public class MarketServiceImplement implements MarketService{
 
         // 3. Product 업데이트 (필요 시 별도 로직)
         MarketProductRequestDto productDto = dto.getProduct();
+        UserProfileEntity userProfile = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
+        if (userProfile == null) {
+            return ResponseEntity.badRequest().body("User profile not found");
+        }
         if (productDto != null) {
             MarketProductsEntity product = marketItemList.getProduct();
             if (product != null) {
-                product.update(productDto); // Product의 업데이트 메서드 호출
+                product.update(productDto,userProfile); // Product의 업데이트 메서드 호출
             }
         }
         

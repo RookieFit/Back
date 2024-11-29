@@ -62,8 +62,4 @@ public class UserWorkoutDetailDataEntity {
         this.sets = dto.getSets();
         this.rest_time = dto.getRest_time();
     }
-
-    public void setUserWorkoutList(UserWorkoutListDataEntity userWorkoutList) {
-        this.userWorkoutList = userWorkoutList;
-    }
 }

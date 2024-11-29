@@ -24,4 +24,6 @@ public class InputUserWorkoutListRequestDto {
     private String workoutCreatedData;
 
     private List<InputUserWorkoutDetailRequestDto> workoutDetails;
+
+    private List<String> workoutImageUris;
 }
