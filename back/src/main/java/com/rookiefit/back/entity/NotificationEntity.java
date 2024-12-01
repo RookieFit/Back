@@ -51,7 +51,7 @@ public class NotificationEntity {
         this.notificationAuthor = currentUserId;
         this.notificationContent = dto.getNotificationContent();
         this.notificationTitle = dto.getNotificationTitle();
-        this.notificationCreatedTime = dto.getNotificationCreatedTime() !=null ? dto.getNotificationCreatedTime():LocalDateTime.now();
+        this.notificationCreatedTime = dto.getNotificationCreatedTime() !=null ? dto.getNotificationCreatedTime() : LocalDateTime.now();
         this.notificationImageUri = dto.getNotificationImageUri();
     }
 

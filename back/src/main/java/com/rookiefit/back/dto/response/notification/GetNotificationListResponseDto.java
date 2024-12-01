@@ -26,6 +26,10 @@ public class GetNotificationListResponseDto extends ResponseDto{
     private String notificationContent;
     private String notificationTitle;
     private LocalDateTime notificationCreatedTime;
+    private Boolean notificationIsModified;
+    private String notificationImageUri;
+    private Boolean notificationBoardDown;
+    private LocalDateTime notificationBoardUpdatedTime;
 
     private GetNotificationListResponseDto(NotificationEntity notificationEntity) {
         this.notificationId = notificationEntity.getNotificationId();
@@ -33,6 +37,10 @@ public class GetNotificationListResponseDto extends ResponseDto{
         this.notificationContent = notificationEntity.getNotificationContent();
         this.notificationTitle = notificationEntity.getNotificationTitle();
         this.notificationCreatedTime = notificationEntity.getNotificationCreatedTime();
+        this.notificationIsModified = notificationEntity.getNotificationIsModified();
+        this.notificationImageUri = notificationEntity.getNotificationImageUri();
+        this.notificationBoardDown = notificationEntity.getNotificationBoardDown();
+        this.notificationBoardUpdatedTime = notificationEntity.getNotificationBoardUpdatedTime();
     }
 
     //공지게시글 가져오기(241201_김민준)

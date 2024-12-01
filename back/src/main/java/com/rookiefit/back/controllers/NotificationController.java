@@ -28,7 +28,7 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @PostMapping("/admin/createnotification")
+    @PostMapping("/admin/create-notification")
     public ResponseEntity<? super InputNotificationResponseDto> createNotification(
         @RequestBody @Valid NotificationRequestDto dto) {
             ResponseEntity<? super InputNotificationResponseDto> responseBody = notificationService.createNotification(dto);
