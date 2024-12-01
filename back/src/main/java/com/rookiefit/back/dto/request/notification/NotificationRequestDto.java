@@ -1,4 +1,4 @@
-package com.rookiefit.back.dto.request.admin;
+package com.rookiefit.back.dto.request.notification;
 
 import java.time.LocalDateTime;
 

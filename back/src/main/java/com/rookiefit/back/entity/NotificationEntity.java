@@ -2,7 +2,7 @@ package com.rookiefit.back.entity;
 
 import java.time.LocalDateTime;
 
-import com.rookiefit.back.dto.request.admin.NotificationRequestDto;
+import com.rookiefit.back.dto.request.notification.NotificationRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,7 +51,16 @@ public class NotificationEntity {
         this.notificationAuthor = currentUserId;
         this.notificationContent = dto.getNotificationContent();
         this.notificationTitle = dto.getNotificationTitle();
-        this.notificationCreatedTime = dto.getNotificationCreatedTime()!=null ? dto.getNotificationCreatedTime():LocalDateTime.now();
+        this.notificationCreatedTime = dto.getNotificationCreatedTime() !=null ? dto.getNotificationCreatedTime():LocalDateTime.now();
         this.notificationImageUri = dto.getNotificationImageUri();
+    }
+
+    public void update(NotificationRequestDto dto) {
+        this.notificationContent = dto.getNotificationContent();
+        this.notificationTitle = dto.getNotificationTitle();
+        this.notificationIsModified = true;
+        this.notificationImageUri = dto.getNotificationImageUri();
+        this.notificationBoardDown = dto.getNotificationBoardDown();
+        this.notificationBoardUpdatedTime = dto.getNotificationBoardUpdatedTime() != null ? dto.getNotificationBoardUpdatedTime() : LocalDateTime.now();
     }
 }

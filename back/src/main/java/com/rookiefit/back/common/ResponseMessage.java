@@ -16,4 +16,5 @@ public interface ResponseMessage {
     String DATABASE_DELETE_FAIL = "Database Delete Fail ..";
     String FOODINFO_INSERT_FAIL = "FoodInfo Insert Fail ..";
     String MARKET_LIST_NOT_FOUND = "Market list id is not found..";
+    String NOTIFICATION_NOT_FOUND = "Notification not found..";
 }
