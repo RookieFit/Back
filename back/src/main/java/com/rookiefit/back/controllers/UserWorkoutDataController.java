@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +32,14 @@ public class UserWorkoutDataController {
 
     @PostMapping("/input-userworkoutlistdata")
     public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(
-            @RequestBody @Valid InputUserWorkoutListRequestDto dto) {
+            @ModelAttribute @Valid InputUserWorkoutListRequestDto dto) {
         ResponseEntity<? super InputUserWorkoutListResponseDto> responseBody = userWorkoutDataService
                 .inputUserWorkoutData(dto);
         return responseBody;
     }
 
-    @GetMapping("/userworkoutlistdata")
+    //todo : 이거 GetMapping으로 바꿔서 requestparam으로 바꿔야함
+    @PostMapping("/userworkoutlistdata")
     public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(
             @RequestBody @Valid GetUserWorkoutListRequestDto dto) {
         ResponseEntity<List<GetUserWorkoutListResponseDto>> responseBody = userWorkoutDataService
@@ -45,7 +47,8 @@ public class UserWorkoutDataController {
         return responseBody;
     }
 
-    @GetMapping("/userworkoutdetaildata")
+    //todo : 이거 GetMapping으로 바꿔서 requestparam으로 바꿔야함
+    @PostMapping("/userworkoutdetaildata")
     public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(
             @RequestBody @Valid GetUserWorkoutDetailRequestDto dto) {
         ResponseEntity<List<GetUserWorkoutDetailResponseDto>> responseBody = userWorkoutDataService

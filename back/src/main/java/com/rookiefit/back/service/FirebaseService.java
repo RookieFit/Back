@@ -52,7 +52,7 @@ public class FirebaseService {
         return downloadUrl;
     }
 
-    public List<String> uploadFiles(@RequestParam("files") List<MultipartFile> files) throws IOException {
+    public List<String> uploadFiles(List<MultipartFile> files) throws IOException {
         return files.stream()
                 .map(file -> {
                     try {

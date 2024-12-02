@@ -1,12 +1,9 @@
 package com.rookiefit.back.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
-import com.google.firebase.internal.FirebaseService;
 import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
 import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
@@ -41,6 +38,7 @@ public class UserDataController {
         return responseBody;
     }
     
+    //todo : GetMapping으로 바꾸고 token을 requestparam으로 받을것(241202_18:31)
     @PostMapping("/userprofile")
     public ResponseEntity<? super GetUserProfileResponseDto> userProfile(
             @RequestBody @Valid GetUserProfileRequestDto dto) {
