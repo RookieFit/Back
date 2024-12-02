@@ -24,7 +24,7 @@ public class GetAllUserCommunityResponseDto extends ResponseDto{
     private Long communityListId;
     private String communityTitle;
     private String communityContent;
-    private String communityImageUrl; 
+    private String communityImageUrl;
     private String communityContentType;
     private LocalDateTime createdDate;
 

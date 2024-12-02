@@ -76,10 +76,8 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
                 userWorkoutImagesRepository.save(userWorkoutImagesEntity);
             }
         }
-    
         return InputUserWorkoutListResponseDto.success();
     }
-    
     
     @Override
     public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
