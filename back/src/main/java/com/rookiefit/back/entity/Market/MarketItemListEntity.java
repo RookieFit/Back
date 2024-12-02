@@ -2,6 +2,9 @@ package com.rookiefit.back.entity.Market;
 
 import java.util.Date;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.rookiefit.back.dto.request.Market.MarketItemListRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
 
@@ -58,6 +61,7 @@ public class MarketItemListEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserProfileEntity userProfile;
 
     public MarketItemListEntity(MarketItemListRequestDto dto, UserProfileEntity userProfile) {
