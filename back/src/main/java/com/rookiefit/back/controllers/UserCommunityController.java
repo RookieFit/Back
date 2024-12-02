@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -35,7 +36,7 @@ public class UserCommunityController {
 
     @PostMapping("/input-usercommunity")
     public ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(
-            @RequestBody @Valid UserCommunityRequestDto dto) {
+            @ModelAttribute @Valid UserCommunityRequestDto dto) {
         ResponseEntity<? super UserCommunityResponseDto> responseBody = userCommunityService.inputUserCommunity(dto);
         return responseBody;
     }
@@ -49,10 +50,8 @@ public class UserCommunityController {
     }
 
     @GetMapping("/get-all-usercommunity")
-    public ResponseEntity<? super GetAllUserCommunityResponseDto> getAllUserCommunity() {
-        ResponseEntity<? super GetAllUserCommunityResponseDto> responseBody = userCommunityService
-                .getAllUserCommunity();
-        return responseBody;
+    public ResponseEntity<List<GetAllUserCommunityResponseDto>> getAllUserCommunity() {
+        return userCommunityService.getAllUserCommunity();
     }
 
     @GetMapping("/get-bycontenttype-usercommunity")

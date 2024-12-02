@@ -1,6 +1,7 @@
 package com.rookiefit.back.entity.UserCommunity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
@@ -70,6 +71,9 @@ public class UserCommunityEntity {
     @OneToMany(mappedBy = "userCommunity", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     private List<UserCommunity_Answer_ListEntity> userCommunityAnswerLists;
 
+    @OneToMany(mappedBy = "userCommunity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<CommunityImageListEntity> communityImages;
+    
     public UserCommunityEntity(UserCommunityRequestDto dto , UserProfileEntity userProfileEntity) {
         this.communityTitle = dto.getCommunityTitle();
         this.communityContent = dto.getCommunityContent();
@@ -79,6 +83,14 @@ public class UserCommunityEntity {
         this.communityContentType = dto.getCommunityContentType();
         this.communityAuthor = userProfileEntity.getUserNickname();
         this.userProfile = userProfileEntity;
+    }
+
+    public void addCommunityImages(List<String> imageUris) {
+        for (String imageUri : imageUris) {
+            CommunityImageListEntity imageEntity = new CommunityImageListEntity(imageUri);
+            imageEntity.setUserCommunity(this);
+            this.communityImages.add(imageEntity);
+        }
     }
 
 }

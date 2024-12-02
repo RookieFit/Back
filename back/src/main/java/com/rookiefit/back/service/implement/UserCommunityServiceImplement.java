@@ -1,11 +1,15 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityRequestDto;
@@ -17,12 +21,16 @@ import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommuni
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityAnswerResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityResponseDto;
 import com.rookiefit.back.entity.UserProfileEntity;
+import com.rookiefit.back.entity.UserCommunity.CommunityImageListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
+import com.rookiefit.back.repository.UserCommunity.CommunityImageListRepository;
 import com.rookiefit.back.repository.UserCommunity.UserCommunityAnswerRepository;
 import com.rookiefit.back.repository.UserCommunity.UserCommunityRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.UserCommunityService;
 
 import jakarta.transaction.Transactional;
@@ -35,8 +43,11 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     private final JwtProvider jwtProvider;
     private final UserCommunityRepository userCommunityRepository;
     private final UserCommunityAnswerRepository userCommunityAnswerRepository;
+    private final CommunityImageListRepository communityImageListRepository;
+    private final FirebaseService firebaseService;
     private final UserProfileRepository userProfileRepository;
 
+    //todo : 이미지 수정시 처리하는 기능 추가
     @Transactional
     @Override
     public ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto){
@@ -58,8 +69,24 @@ public class UserCommunityServiceImplement implements UserCommunityService{
                 return UserCommunityAnswerResponseDto.communityListIdNotFound();
             }
         }else {
+            List<String> communityImages = new ArrayList<>();
+            // 파일 업로드 처리
+            if (dto.getCommnunityImages() != null && dto.getCommnunityImages().length > 0) {
+                List<MultipartFile> fileList = Arrays.asList(dto.getCommnunityImages());
+                try {
+                    communityImages = firebaseService.uploadFiles(fileList); // Firebase에 업로드 후 URI 리스트 반환
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+            //이미지와 커뮤니티 리스트 저장
             UserCommunityEntity userCommunityEntity = new UserCommunityEntity(dto,userProfileEntity);
             userCommunityRepository.save(userCommunityEntity);
+            for (String imageUri : communityImages) {
+                CommunityImageListEntity communityImageEntity = new CommunityImageListEntity(imageUri);
+                communityImageEntity.setUserCommunity(userCommunityEntity);  // 커뮤니티와 연관 설정
+                communityImageListRepository.save(communityImageEntity);  // 이미지 저장
+            }
         } 
         return UserCommunityResponseDto.success();
     }
@@ -93,7 +120,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     }
 
     @Override
-    public ResponseEntity<? super GetAllUserCommunityResponseDto> getAllUserCommunity() {
+    public ResponseEntity<List<GetAllUserCommunityResponseDto>> getAllUserCommunity() {
         List<UserCommunityEntity> communityEntities = userCommunityRepository.findAll();
         return GetAllUserCommunityResponseDto.success(communityEntities);
     }

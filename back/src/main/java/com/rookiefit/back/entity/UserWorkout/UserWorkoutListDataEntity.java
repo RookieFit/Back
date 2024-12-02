@@ -75,15 +75,9 @@ public class UserWorkoutListDataEntity {
     }
 
     public void addWorkoutDetails(List<InputUserWorkoutDetailRequestDto> workoutDetails) {
-        System.out.println(workoutDetails);
         for (InputUserWorkoutDetailRequestDto workoutDetailDto : workoutDetails) {
             UserWorkoutDetailDataEntity detail = new UserWorkoutDetailDataEntity(workoutDetailDto);
             detail.setUserWorkoutList(this);  // 외래 키 설정
-            System.out.println(detail.getReps());
-            System.out.println(detail.getSets());
-            System.out.println(detail.getWorkoutDetailCreatedDate());
-            System.out.println(detail.getRest_time());
-            System.out.println(detail.getWorkout_name());
             this.workoutDetails.add(detail);
         }
     }
