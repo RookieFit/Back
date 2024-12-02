@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.notification.NotificationRequestDto;
 import com.rookiefit.back.dto.response.notification.InputNotificationResponseDto;
+import com.rookiefit.back.service.NotificationService;
 import com.rookiefit.back.dto.response.notification.DeleteNotificationResponseDto;
 import com.rookiefit.back.dto.response.notification.GetNotificationListResponseDto;
 import com.rookiefit.back.dto.response.notification.GetNotificationResponseDto;
-import com.rookiefit.back.service.NotificationService;
+
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,20 +43,20 @@ public class NotificationController {
             return responseBody;
     }
 
-    @GetMapping("/user/get-all-notification")
+    @GetMapping("/get-all-notification")
     public ResponseEntity<? super GetNotificationListResponseDto> getAllNotification() {
         ResponseEntity<? super GetNotificationListResponseDto> responseBody = notificationService.getAllNotification();
         return responseBody;
     }
 
-    @GetMapping("/user/get-notification/{id}")
+    @GetMapping("/get-notification/{id}")
     public ResponseEntity<? super GetNotificationResponseDto> getNotification(
         @PathVariable("id") Long notificationId) {
         ResponseEntity<? super GetNotificationResponseDto> responseBody = notificationService.getNotification(notificationId);
         return responseBody;
     }
 
-    @GetMapping("/user/search-notification")
+    @GetMapping("/search-notification")
     public ResponseEntity<? super GetNotificationListResponseDto> searchNotification(
         @RequestParam(required = false, value = "keyword") String keyword,
         @RequestParam(required = false, value = "field") String field) {

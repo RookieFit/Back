@@ -2,6 +2,8 @@ package com.rookiefit.back.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
@@ -64,6 +66,7 @@ public class UserProfileEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity userAuthEntity;
 
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

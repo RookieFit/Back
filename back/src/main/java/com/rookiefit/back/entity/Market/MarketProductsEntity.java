@@ -3,6 +3,9 @@ package com.rookiefit.back.entity.Market;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.rookiefit.back.dto.request.Market.MarketProductRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
 import com.rookiefit.back.entity.enums.ProductCondition;
@@ -42,6 +45,7 @@ public class MarketProductsEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "market_list_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MarketItemListEntity marketItemList;  // `MarketItemList`와 연관
 
     @ManyToOne(fetch = FetchType.LAZY)

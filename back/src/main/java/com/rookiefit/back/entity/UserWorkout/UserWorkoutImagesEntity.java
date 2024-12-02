@@ -1,5 +1,8 @@
 package com.rookiefit.back.entity.UserWorkout;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +34,7 @@ public class UserWorkoutImagesEntity {
             @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             @JoinColumn(name = "workout_created_date", referencedColumnName = "workout_created_date")
         })
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserWorkoutListDataEntity userWorkoutList;
 
     public UserWorkoutImagesEntity(String workoutimageuri) {

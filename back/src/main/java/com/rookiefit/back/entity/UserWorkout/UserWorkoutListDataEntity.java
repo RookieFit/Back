@@ -3,6 +3,8 @@ package com.rookiefit.back.entity.UserWorkout;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
@@ -50,6 +52,7 @@ public class UserWorkoutListDataEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" , referencedColumnName = "user_id", insertable = false, updatable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserProfileEntity userProfile;
 
     @OneToMany(mappedBy = "userWorkoutList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
