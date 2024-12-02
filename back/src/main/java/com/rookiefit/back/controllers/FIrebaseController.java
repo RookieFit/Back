@@ -1,11 +1,9 @@
 package com.rookiefit.back.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,22 +33,16 @@ public class FIrebaseController {
         }
     }
 
-    @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadFile(@RequestParam("fileName") String fileName) throws IOException {
+    @PostMapping("/uploadMultiple")
+    public ResponseEntity<?> uploadFiles(@RequestParam("files") List<MultipartFile> files) throws IOException{
+        System.out.println("File upload initiated");
         try {
-            byte[] fileContent = firebaseService.downloadFile(fileName);
-
-            // 파일의 MIME 타입을 설정
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", fileName);  // 파일 다운로드로 설정
-
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(fileContent);
+            List<String> fileUrl = firebaseService.uploadFiles(files);
+            System.out.println("File uploaded successfully: " + fileUrl);
+            return ResponseEntity.ok(fileUrl);  // 업로드된 파일의 URL 반환
         } catch (IOException e) {
-            System.out.println("Error during file download: " + e.getMessage());
-            return ResponseEntity.status(500).body(("File download failed: " + e.getMessage()).getBytes());
+            System.out.println("Error during file upload: " + e.getMessage());
+            return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.rookiefit.back.dto.request.userData;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,7 @@ public class InputUserProfileRequestDto {
     @NotBlank
     private String token;
     
-    @NotBlank
-    private String userProfileImageUri;
+    private MultipartFile userProfileImageFile;
 
     @NotBlank
     private String gymName;

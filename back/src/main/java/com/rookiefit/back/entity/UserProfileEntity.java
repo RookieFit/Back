@@ -93,11 +93,11 @@ public class UserProfileEntity {
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatMessageEntity> messages;  // 사용자가 보낸 메시지들
 
-    public UserProfileEntity(InputUserProfileRequestDto dto) {
+    public UserProfileEntity(InputUserProfileRequestDto dto, String uploadedFileUrl) {
 
         this.userAuthEntity = new UserEntity(); // userAuthEntity 초기화
         this.userAuthEntity.setUserId(dto.getToken()); // userId 설정
-        this.userProfileImageUri = dto.getUserProfileImageUri();
+        this.userProfileImageUri = uploadedFileUrl;
         this.gymName = dto.getGymName();
         this.userMessage = dto.getUserMessage();
         this.userName = dto.getUserName();
