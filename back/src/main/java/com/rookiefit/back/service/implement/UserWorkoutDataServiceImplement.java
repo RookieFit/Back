@@ -16,9 +16,11 @@ import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailRespo
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutDetailDataEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutDetailDataRepository;
+import com.rookiefit.back.repository.UserWorkout.UserWorkoutImagesRepository;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutListDataRepository;
 import com.rookiefit.back.service.UserWorkoutDataService;
 
@@ -31,13 +33,14 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
     private final JwtProvider jwtProvider;
     private final UserWorkoutListDataRepository userWorkoutListDataRepository;
     private final UserWorkoutDetailDataRepository userWorkoutDetailDataRepository;
+    private final UserWorkoutImagesRepository userWorkoutImagesRepository;
 
     @Transactional
     @Override
     public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
         dto.setToken(currentUserId); // userId 저장
-    
+        
         // 기존 WorkoutList 데이터 조회
         UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, dto.getWorkoutCreatedData());
         
@@ -47,14 +50,15 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             userWorkoutListDataEntity.setWorkoutTitle(dto.getWorkout_title());
             // 기존 WorkoutDetails 삭제 후 새로운 WorkoutDetails 저장
             userWorkoutDetailDataRepository.deleteByUserWorkoutList(userWorkoutListDataEntity);
-            
         } else {
             // 새로운 엔티티 생성
             userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto);
             userWorkoutListDataEntity.setUserId(currentUserId);
         }
+    
         // WorkoutList 데이터 저장
         userWorkoutListDataRepository.save(userWorkoutListDataEntity);
+    
         // 새로운 WorkoutDetails 저장
         List<InputUserWorkoutDetailRequestDto> workoutDetails = dto.getWorkoutDetails();
         for (InputUserWorkoutDetailRequestDto workoutDetailDto : workoutDetails) {
@@ -62,10 +66,19 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             userWorkoutDetailDataEntity.setUserWorkoutList(userWorkoutListDataEntity); // 외래 키 설정
             userWorkoutDetailDataRepository.save(userWorkoutDetailDataEntity);
         }
-        
+    
+        // Workout Images 저장
+        List<String> workoutimages = dto.getWorkoutImageUris();
+        if (workoutimages != null && !workoutimages.isEmpty()) {
+            for (String workoutimageuri : workoutimages) {
+                UserWorkoutImagesEntity userWorkoutImagesEntity = new UserWorkoutImagesEntity(workoutimageuri);
+                userWorkoutImagesEntity.setUserWorkoutList(userWorkoutListDataEntity);
+                userWorkoutImagesRepository.save(userWorkoutImagesEntity);
+            }
+        }
         return InputUserWorkoutListResponseDto.success();
     }
-
+    
     @Override
     public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());

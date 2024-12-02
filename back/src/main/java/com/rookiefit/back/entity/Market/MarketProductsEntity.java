@@ -3,6 +3,9 @@ package com.rookiefit.back.entity.Market;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.rookiefit.back.dto.request.Market.MarketProductRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
 import com.rookiefit.back.entity.enums.ProductCondition;
@@ -42,6 +45,7 @@ public class MarketProductsEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "market_list_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MarketItemListEntity marketItemList;  // `MarketItemList`와 연관
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -82,7 +86,7 @@ public class MarketProductsEntity {
     @Column(name = "product_seller")
     private String productSeller;
 
-    public MarketProductsEntity(MarketProductRequestDto dto, MarketItemListEntity marketItemListEntity, String userid, UserProfileEntity user) {
+    public MarketProductsEntity(MarketProductRequestDto dto, MarketItemListEntity marketItemListEntity, UserProfileEntity user) {
         this.productDescription = dto.getProductDescription();
         this.productPrice = dto.getProductPrice();
         this.location = dto.getLocation();
@@ -95,10 +99,11 @@ public class MarketProductsEntity {
         this.marketItemList = marketItemListEntity; // MarketItemListEntity와 연관
     }
 
-    public void update(MarketProductRequestDto dto) {
+    public void update(MarketProductRequestDto dto, UserProfileEntity user) {
         this.productPrice = dto.getProductPrice();
         this.location = dto.getLocation();
         this.saleStatus = SaleStatus.valueOf(dto.getSaleStatus().toUpperCase());
         this.productUpdatedAt = dto.getProductUpdatedAt()!=null ? dto.getProductUpdatedAt() : new Date();
+        this.productSeller = user.getUserNickname();
     }
 }

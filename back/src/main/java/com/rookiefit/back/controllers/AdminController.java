@@ -21,7 +21,6 @@ public class AdminController {
 
     private final TrainerService trainerService;
     private final LicenseStatusService licenseApproveService;
-
     // 트레이너 승인 처리
     /*
      * @PutMapping("/approve/{userId}")

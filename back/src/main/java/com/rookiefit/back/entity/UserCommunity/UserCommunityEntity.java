@@ -3,6 +3,8 @@ package com.rookiefit.back.entity.UserCommunity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityRequestDto;
@@ -61,6 +63,7 @@ public class UserCommunityEntity {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserProfileEntity userProfile; // UserProfile과의 관계 설정
 
     // UserCommunityAnswerList와의 관계 설정 (1:N)

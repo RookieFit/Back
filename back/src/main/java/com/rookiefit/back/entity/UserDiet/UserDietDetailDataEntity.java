@@ -1,5 +1,8 @@
 package com.rookiefit.back.entity.UserDiet;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietDetailRequestDto;
 
 import jakarta.persistence.Column;
@@ -29,6 +32,7 @@ public class UserDietDetailDataEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diet_created_date", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserDietListDataEntity userDietListData;
 
     @Column(name = "food_name", nullable = false)

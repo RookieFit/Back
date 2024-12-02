@@ -1,5 +1,7 @@
 package com.rookiefit.back.entity.UserWorkout;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
 import com.google.firebase.database.annotations.NotNull;
@@ -53,6 +55,7 @@ public class UserWorkoutDetailDataEntity {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
         @JoinColumn(name = "workout_created_date", referencedColumnName = "workout_created_date")
     })
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserWorkoutListDataEntity userWorkoutList;
 
     public UserWorkoutDetailDataEntity(InputUserWorkoutDetailRequestDto dto) {
@@ -61,9 +64,5 @@ public class UserWorkoutDetailDataEntity {
         this.reps = dto.getReps();
         this.sets = dto.getSets();
         this.rest_time = dto.getRest_time();
-    }
-
-    public void setUserWorkoutList(UserWorkoutListDataEntity userWorkoutList) {
-        this.userWorkoutList = userWorkoutList;
     }
 }

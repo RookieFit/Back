@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityRequestDto;
-import com.rookiefit.back.dto.response.Market.GetMarketItemResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.DeleteUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetAllUserCommunityResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.GetSearchUserCommunityResponseDto;
@@ -18,7 +17,6 @@ import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommuni
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityAnswerResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityResponseDto;
 import com.rookiefit.back.entity.UserProfileEntity;
-import com.rookiefit.back.entity.Market.MarketItemListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.provider.JwtProvider;

@@ -2,6 +2,9 @@ package com.rookiefit.back.entity.UserCommunity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
 
@@ -45,10 +48,12 @@ public class UserCommunity_Answer_ListEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "community_list_id", referencedColumnName = "community_list_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserCommunityEntity userCommunity; // UserCommunity와의 관계 설정
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserProfileEntity userProfile; // UserProfile와의 관계 설정
 
     public UserCommunity_Answer_ListEntity(UserCommunityAnswerRequestDto dto, UserCommunityEntity userCommunity ,UserProfileEntity userProfileEntity) {
