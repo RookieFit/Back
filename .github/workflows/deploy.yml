@@ -53,12 +53,9 @@ jobs:
           key: ${{ runner.os }}-docker-${{ github.sha }}
 
 
-      - name: Build and Deploy
-        run: |
-          cd ROOKIEFIT_PRJ/back  # 프로젝트의 정확한 경로로 이동
-          chmod +x gradlew
-          ./gradlew clean build -x test
-          docker build -t rookiefitserver .
+      - name: Build Docker image
+        run: docker build -t rookiefitserver -f Dockerfile .
+        working-directory: /home/ubuntu/Back/back
 
 
       - name: Docker 이미지에 Tag 붙이기
