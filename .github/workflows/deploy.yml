@@ -39,8 +39,8 @@ jobs:
 
       - name: ECR에 로그인하기
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        
+        uses: aws-actions/amazon-ecr-login@v2  
+
       - name: Build Docker image
         run: docker build -t rookiefitserver -f ./back/Dockerfile ./back
         working-directory: ./back
