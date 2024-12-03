@@ -20,6 +20,7 @@ jobs:
 
       - name: 테스트 및 빌드하기
         run: ./gradlew clean build
+        working-directory: ./back
 
       - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
         uses: aws-actions/configure-aws-credentials@v4
@@ -33,13 +34,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         
       - name: Docker 이미지 생성
-        run: docker build -t instagram-server .
+        run: docker build -t RookieFitServer .
 
       - name: Docker 이미지에 Tag 붙이기
-        run: docker tag instagram-server ${{ steps.login-ecr.outputs.registry }}/instagram-server:latest
+        run: docker tag RookieFitServer ${{ steps.login-ecr.outputs.registry }}/RookieFitServer:latest
 
       - name: ECR에 Docker 이미지 Push하기
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/instagram-server:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/RookieFitServer:latest
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -49,7 +50,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            docker stop instagram-server || true
-            docker rm instagram-server || true
-            docker pull ${{ steps.login-ecr.outputs.registry }}/instagram-server:latest
-            docker run -d --name instagram-server -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/instagram-server:latest
+            docker stop RookieFitServer || true
+            docker rm RookieFitServer || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/RookieFitServer:latest
+            docker run -d --name RookieFitServer -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/instagram-server:latest
