@@ -76,12 +76,10 @@ public class MarketProductsEntity {
     private SaleStatus saleStatus;
 
     @Column(name = "product_created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date productCreatedAt;
+    private String productCreatedAt;
 
     @Column(name = "product_updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date productUpdatedAt;
+    private String productUpdatedAt;
 
     @Column(name = "product_seller")
     private String productSeller;
@@ -93,7 +91,7 @@ public class MarketProductsEntity {
         this.shippingMethod = ShippingMethod.valueOf(dto.getShippingMethod().toUpperCase());
         this.productCondition = ProductCondition.valueOf(dto.getProductCondition().toUpperCase());
         this.saleStatus = SaleStatus.valueOf(dto.getSaleStatus().toUpperCase());
-        this.productCreatedAt = dto.getProductCreatedAt()!= null ? dto.getProductCreatedAt() : new Date();
+        this.productCreatedAt = dto.getProductCreatedAt();
         this.productUpdatedAt = dto.getProductUpdatedAt();
         this.productSeller = user.getUserNickname();
         this.marketItemList = marketItemListEntity; // MarketItemListEntity와 연관
@@ -103,7 +101,7 @@ public class MarketProductsEntity {
         this.productPrice = dto.getProductPrice();
         this.location = dto.getLocation();
         this.saleStatus = SaleStatus.valueOf(dto.getSaleStatus().toUpperCase());
-        this.productUpdatedAt = dto.getProductUpdatedAt()!=null ? dto.getProductUpdatedAt() : new Date();
+        this.productUpdatedAt = dto.getProductUpdatedAt();
         this.productSeller = user.getUserNickname();
     }
 }

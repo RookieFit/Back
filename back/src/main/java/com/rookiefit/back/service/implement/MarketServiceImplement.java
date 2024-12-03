@@ -1,11 +1,14 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rookiefit.back.dto.request.Market.MarketItemListRequestDto;
 import com.rookiefit.back.dto.request.Market.MarketProductRequestDto;
@@ -14,12 +17,14 @@ import com.rookiefit.back.dto.response.Market.GetAllMarketItemListResponseDto;
 import com.rookiefit.back.dto.response.Market.GetMarketItemResponseDto;
 import com.rookiefit.back.dto.response.Market.InputMarketItemListResponseDto;
 import com.rookiefit.back.entity.UserProfileEntity;
+import com.rookiefit.back.entity.Market.ItemImageEntity;
 import com.rookiefit.back.entity.Market.MarketItemListEntity;
 import com.rookiefit.back.entity.Market.MarketProductsEntity;
 import com.rookiefit.back.entity.enums.SaleStatus;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.repository.Market.MarketItemListRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.MarketService;
 
 import lombok.AllArgsConstructor;
@@ -31,22 +36,51 @@ public class MarketServiceImplement implements MarketService{
     private final JwtProvider jwtProvider;
     private final MarketItemListRepository marketItemListRepository;
     private final UserProfileRepository userProfileRepository;
+    private final FirebaseService firebaseService;
 
     @Override
     public ResponseEntity<? super InputMarketItemListResponseDto> inputMarketItemList(MarketItemListRequestDto dto) {
+        // 현재 사용자 ID를 추출
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+
+        // 사용자 프로필 조회
         UserProfileEntity userProfile = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
         if (userProfile == null) {
             return ResponseEntity.badRequest().body("User profile not found");
         }
+
+        // MarketItemListEntity 생성 및 매핑
         MarketItemListEntity marketItemList = new MarketItemListEntity(dto, userProfile);
 
         // MarketProductsEntity 생성 및 매핑
         MarketProductRequestDto productDto = dto.getProduct();
         MarketProductsEntity product = new MarketProductsEntity(productDto, marketItemList, userProfile);
         marketItemList.setProduct(product);
-        marketItemListRepository.save(marketItemList);
-        
+
+        // MarketItemListEntity 저장
+        marketItemList = marketItemListRepository.save(marketItemList);
+
+        // 이미지 파일 처리 및 저장
+        if (dto.getItemImageFiles() != null && dto.getItemImageFiles().length > 0) {
+            List<MultipartFile> files = Arrays.asList(dto.getItemImageFiles());
+
+            try {
+                // Firebase에 파일 업로드
+                List<String> imageUris = firebaseService.uploadFiles(files);
+                // 이미지 엔티티 생성 및 마켓 아이템과 연결
+                for (String imageUri : imageUris) {
+                    ItemImageEntity itemImageEntity = new ItemImageEntity(imageUri);
+                    itemImageEntity.setMarketItemList(marketItemList);  // 이미지와 마켓 아이템 연결
+                    marketItemList.addItemImage(itemImageEntity);  // 마켓 아이템에 이미지 추가
+                }
+                // 이미지 엔티티들을 DB에 저장
+                marketItemListRepository.save(marketItemList); // 수정된 marketItemList와 그에 포함된 이미지들 저장
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
+            }
+        }
+
         return InputMarketItemListResponseDto.success();
     }
 

@@ -15,8 +15,8 @@ public class GetMarketItemResponseDto extends ResponseDto{
     private String marketItemTitle;
     private String marketItemDescription;
     private String marketItemImageUrl;
-    private Date createdAt;
-    private Date updatedAt;
+    private String createdAt;
+    private String updatedAt;
     private boolean isSold;
 
     // Product 관련 정보

@@ -1,9 +1,5 @@
 package com.rookiefit.back.entity.UserCommunity;
 
-import java.util.List;
-
-import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,5 +36,4 @@ public class CommunityImageListEntity {
     public CommunityImageListEntity(String communityImageUri) {
         this.communityImageUri = communityImageUri;
     }
-    
 }

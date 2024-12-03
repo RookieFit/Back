@@ -20,9 +20,9 @@ public class GetAllMarketItemListResponseDto extends ResponseDto {
     private String marketItemImageUrl;
 
     @NotNull
-    private Date createdAt;
+    private String createdAt;
 
-    private Date updatedAt;
+    private String updatedAt;
 
     private boolean isSold;
 

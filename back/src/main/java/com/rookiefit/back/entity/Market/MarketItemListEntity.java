@@ -1,6 +1,8 @@
 package com.rookiefit.back.entity.Market;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -17,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -50,11 +53,11 @@ public class MarketItemListEntity {
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private String createdAt;
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private String updatedAt;
 
     @OneToOne(mappedBy = "marketItemList", cascade = CascadeType.ALL)
     private MarketProductsEntity product;
@@ -64,10 +67,17 @@ public class MarketItemListEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UserProfileEntity userProfile;
 
+    @OneToMany(mappedBy = "marketItemList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ItemImageEntity> itemImages = new ArrayList<>();  // 이미지 목록 추가
+
+    public void addItemImage(ItemImageEntity itemImage) {
+        this.itemImages.add(itemImage);
+    }
+
     public MarketItemListEntity(MarketItemListRequestDto dto, UserProfileEntity userProfile) {
         this.marketItemTitle = dto.getMarketItemTitle();
         this.marketItemImageUrl = dto.getMarketItemImageUrl();
-        this.createdAt = dto.getCreatedAt()!= null ? dto.getCreatedAt() : new Date();
+        this.createdAt = dto.getCreatedAt();
         this.updatedAt = dto.getUpdatedAt();
         this.userProfile = userProfile;
     }
@@ -76,6 +86,6 @@ public class MarketItemListEntity {
         this.marketItemTitle = dto.getMarketItemTitle();
         this.marketItemImageUrl = dto.getMarketItemImageUrl();
         this.isSold = dto.isSold();
-        this.updatedAt = dto.getUpdatedAt()!=null ? dto.getUpdatedAt() : new Date();
+        this.updatedAt = dto.getUpdatedAt();
     }
 }

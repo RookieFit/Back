@@ -48,6 +48,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     private final UserProfileRepository userProfileRepository;
 
     //todo : 이미지 수정시 처리하는 기능 추가
+    //todo : 인풋과 업데이트 분리하기
     @Transactional
     @Override
     public ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto){
@@ -87,7 +88,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
                 communityImageEntity.setUserCommunity(userCommunityEntity);  // 커뮤니티와 연관 설정
                 communityImageListRepository.save(communityImageEntity);  // 이미지 저장
             }
-        } 
+        }
         return UserCommunityResponseDto.success();
     }
 
