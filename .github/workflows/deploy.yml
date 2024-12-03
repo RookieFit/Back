@@ -41,6 +41,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2  
 
+      - name: Set working directory
+        run: |
+          echo "Current working directory:"
+          pwd
+
       - name: Build Docker image
         run: docker build -t rookiefitserver -f ./back/Dockerfile .
         working-directory: ./Back/back
