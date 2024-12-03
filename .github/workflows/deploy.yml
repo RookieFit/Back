@@ -37,6 +37,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         
       - name: Docker 이미지 생성
+        working-directory: ./back
         run: docker build -t rookiefitserver .
 
       - name: Docker 이미지에 Tag 붙이기
