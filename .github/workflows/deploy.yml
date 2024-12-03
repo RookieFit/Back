@@ -17,6 +17,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+
+      - name: application.yml 파일 만들기
+        working-directory: ./back  # 이 단계에서 ./back 디렉토리로 이동
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         working-directory: ./back
@@ -41,9 +46,11 @@ jobs:
         run: docker build -t rookiefitserver .
 
       - name: Docker 이미지에 Tag 붙이기
+        working-directory: ./back
         run: docker tag rookiefitserver ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
 
       - name: ECR에 Docker 이미지 Push하기
+        working-directory: ./back
         run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
 
       - name: SSH로 EC2에 접속하기
