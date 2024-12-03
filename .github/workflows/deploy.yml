@@ -41,11 +41,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2  
 
-      - name: Build Docker Image
-        working-directory: ./back
-        run: |
-          docker build -t rookiefitserver -f Dockerfile .
-
+      - name: Build Docker image
+        run: docker build -t rookiefitserver -f ./back/Dockerfile .
+        working-directory: ./Back/back
 
       - name: Docker 이미지에 Tag 붙이기
         working-directory: ./back
