@@ -37,13 +37,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         
       - name: Docker 이미지 생성
-        run: docker build -t RookieFitServer .
+        run: docker build -t rookiefitserver .
 
       - name: Docker 이미지에 Tag 붙이기
-        run: docker tag RookieFitServer ${{ steps.login-ecr.outputs.registry }}/RookieFitServer:latest
+        run: docker tag rookiefitserver ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
 
       - name: ECR에 Docker 이미지 Push하기
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/RookieFitServer:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -53,7 +53,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            docker stop RookieFitServer || true
-            docker rm RookieFitServer || true
-            docker pull ${{ steps.login-ecr.outputs.registry }}/RookieFitServer:latest
-            docker run -d --name RookieFitServer -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/instagram-server:latest
+            docker stop rookiefitserver || true
+            docker rm rookiefitserver || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
+            docker run -d --name rookiefitserver -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
