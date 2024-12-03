@@ -53,15 +53,15 @@ jobs:
           key: ${{ runner.os }}-docker-${{ github.sha }}
 
       - name: Build Docker image
-        run: docker build -t rookiefitserver ./back
+        run: docker build -t rookiefit-server ./back
 
       - name: Docker 이미지에 Tag 붙이기
         working-directory: ./back
-        run: docker tag rookiefitserver ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
+        run: docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
       - name: ECR에 Docker 이미지 Push하기
         working-directory: ./back
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -71,7 +71,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            docker stop rookiefitserver || true
-            docker rm rookiefitserver || true
-            docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
-            docker run -d --name rookiefitserver -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/rookiefitserver:latest
+            docker stop rookiefit-server || true
+            docker rm rookiefit-server || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+            docker run -d --name rookiefit-server -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
