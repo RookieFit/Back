@@ -42,7 +42,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2  
 
       - name: Build Docker Image
-        run: docker build -t rookiefitserver -f ./home/ubuntu/Back/back/Dockerfile
+        run: docker build -t rookiefitserver -f /home/ubuntu/Back/back/Dockerfile .
 
       - name: Docker 이미지에 Tag 붙이기
         working-directory: ./back
