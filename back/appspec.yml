@@ -6,7 +6,7 @@ files:
   # / 이라고 지정하면 S3에 저장한 전체 파일을 뜻한다.
   - source: /
     # EC2의 어떤 경로에 저장할 지 지정한다. 
-    destination: /home/ubuntu/rookiefit
+    destination: /home/ubuntu/RookieFit/Back
 
 permissions:
   - object: /
