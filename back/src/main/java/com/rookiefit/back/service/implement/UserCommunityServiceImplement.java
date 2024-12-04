@@ -46,8 +46,6 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     private final FirebaseService firebaseService;
     private final UserProfileRepository userProfileRepository;
 
-    //todo : 이미지 수정시 처리하는 기능 추가
-    //todo : 인풋과 업데이트 분리하기
     @Transactional
     @Override
     public ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto){
@@ -78,25 +76,56 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     }
 
     //usercommunity input 와 update 분리 완(241204-11:26_김민준)
+    //이미지 업데이트 추가 완(241204-14:15_김민준)
     @Override
+    @Transactional
     public ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
-        UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
+        UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);// profile에서 존재하는 userid인지 체크
         if (userProfileEntity == null) {
             return UserCommunityResponseDto.idNotFound();
         }
-        Optional<UserCommunityEntity> optionalUserCommunity = userCommunityRepository.findById(userCommunityId);
+
+        Optional<UserCommunityEntity> optionalUserCommunity = userCommunityRepository.findById(userCommunityId); // 게시물 id로 해당하는 게시물 찾기
         if (optionalUserCommunity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Market item not found with ID: " + userCommunityId);
+                    .body("User Community not found with ID: " + userCommunityId);
         }
-        UserCommunityEntity userCommunityEntity = optionalUserCommunity.get();
-        userCommunityEntity.update(dto);
 
-        userCommunityRepository.save(userCommunityEntity);
-        return UserCommunityResponseDto.success();
+        UserCommunityEntity userCommunityEntity = optionalUserCommunity.get();
+        userCommunityEntity.update(dto,userProfileEntity);// 게시물 업데이트
+
+        // 기존 이미지 삭제
+        List<CommunityImageListEntity> existingImages =
+                communityImageListRepository.findByUserCommunity_CommunityListId(userCommunityId);// 게시물 id에 해당하는 이미지리스트 찾기
+        if(existingImages != null){
+            for (CommunityImageListEntity image : existingImages) { // 이미지리스트가 존재한다면 
+                communityImageListRepository.delete(image); // DB에서 삭제
+                firebaseService.deleteFile(image.getCommunityImageUri()); // Firebase에서 삭제
+            }
+        }
+        // 새 이미지 업로드 및 저장
+        if (dto.getCommnunityImages() != null && dto.getCommnunityImages().length > 0) {
+            List<MultipartFile> fileList = Arrays.asList(dto.getCommnunityImages()); // 이미지 파일들 리스트화
+            try {
+                List<String> uploadedUrls = firebaseService.uploadFiles(fileList); // Firebase 업로드 후 이미지 주소 반환
+                for (String url : uploadedUrls) {// 이미지 DB에 저장
+                    CommunityImageListEntity newImage = new CommunityImageListEntity(url);
+                    newImage.setUserCommunity(userCommunityEntity);
+                    communityImageListRepository.save(newImage);
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Image upload failed");
+            }
+        }
+        userCommunityRepository.save(userCommunityEntity); // 게시물 최종 저장
+        return UserCommunityResponseDto.success(); // 성공 메세지 반환
     }
 
+
+    //todo : 댓글도 인풋과 수정을 분리
     @Override
     public ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());

@@ -63,4 +63,25 @@ public class FirebaseService {
                 })
                 .collect(Collectors.toList());
     }
+
+    //firebase에 이미지 파일 삭제구현(241204)
+    public void deleteFile(String fileUrl) {
+        String bucketName = "rookiefit-edf53"; // Firebase Storage 버킷 이름
+    
+        try {
+            // 파일 경로 추출: Firebase Storage URL에서 경로만 추출
+            String fileName = fileUrl.substring(fileUrl.indexOf("/o/") + 3, fileUrl.indexOf("?alt=media"));
+            fileName = java.net.URLDecoder.decode(fileName, "UTF-8"); // 경로 디코딩
+    
+            // Firebase Storage에서 파일 삭제
+            boolean deleted = storageClient.bucket(bucketName).get(fileName).delete();
+            
+            if (!deleted) {
+                throw new RuntimeException("Failed to delete file: " + fileName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error while deleting file from Firebase Storage", e);
+        }
+    }
+    
 }

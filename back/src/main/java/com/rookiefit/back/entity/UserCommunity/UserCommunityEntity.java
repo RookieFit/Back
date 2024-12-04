@@ -84,12 +84,13 @@ public class UserCommunityEntity {
         this.userProfile = userProfileEntity;
     }
 
-    public void update(UserCommunityRequestDto dto) {
+    public void update(UserCommunityRequestDto dto, UserProfileEntity userProfileEntity) {
         this.communityTitle = dto.getCommunityTitle() != null ? dto.getCommunityTitle() : communityTitle;
         this.communityContent = dto.getCommunityContent() != null ? dto.getCommunityTitle() : communityContent;
         this.isModified = dto.getIsModified() != null ? dto.getIsModified() : true;
         this.communityImageUrl = dto.getCommunityImageUrl() != null ? dto.getCommunityImageUrl() : communityImageUrl;
         this.communityContentType = dto.getCommunityContentType() != null ? dto.getCommunityContentType() : communityContentType;
+        this.userProfile = userProfileEntity;
     }
 
     public void addCommunityImages(List<String> imageUris) {
