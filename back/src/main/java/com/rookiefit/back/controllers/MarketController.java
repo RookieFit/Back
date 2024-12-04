@@ -40,7 +40,7 @@ public class MarketController {
 
     @PutMapping("/updatemarketlist/{id}")
     public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(
-            @PathVariable("id") Long marketListId, @RequestBody MarketItemListRequestDto dto) {
+            @PathVariable("id") Long marketListId, @ModelAttribute MarketItemListRequestDto dto) {
         ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.updateMarketItemList(dto,
                 marketListId);
         return responseBody;
