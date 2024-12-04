@@ -18,7 +18,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: application.api.properties 파일 만들기.
+      - name: application.api.properties 파일 만들기
         working-directory: ./back 
         run: echo "${{ secrets.API_PROPERTIES }}" >> ./src/main/resources/application.api.properties
 
