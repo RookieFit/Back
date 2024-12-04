@@ -1,5 +1,8 @@
 package com.rookiefit.back.entity.Market;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +34,7 @@ public class ItemImageEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)  // Many to One 관계 설정 (다수의 이미지는 하나의 마켓게시물과 관련)
     @JoinColumn(name = "market_list_id", referencedColumnName = "market_list_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MarketItemListEntity marketItemList;
 
     public ItemImageEntity(String itemImageUri) {

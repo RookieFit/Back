@@ -120,7 +120,6 @@ public class MarketServiceImplement implements MarketService{
     public ResponseEntity<List<GetAllMarketItemListResponseDto>> getAllMarketItemList() {
         // 모든 MarketItemListEntity와 관련된 MarketProductsEntity를 함께 조회
         List<MarketItemListEntity> marketItemList = marketItemListRepository.findAllWithProducts();
-
         if (marketItemList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
