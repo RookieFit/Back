@@ -77,7 +77,7 @@ jobs:
           pwd
 
       - name: 파일 압축하기
-        run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
+        run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts
 
       - name: S3에 프로젝트 폴더 업로드하기!
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefit-server/$GITHUB_SHA.tar.gz
