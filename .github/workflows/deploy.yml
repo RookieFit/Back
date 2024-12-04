@@ -87,5 +87,5 @@ jobs:
           aws deploy create-deployment \
             --application-name RookieFit_Code_Deploy \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --deployment-group-name Production \
+            --deployment-group-name RookieFit_Code_Deploy_Group \
             --s3-location bucket=rookiefits3,bundleType=tgz,key=$GITHUB_SHA.tar.gz
