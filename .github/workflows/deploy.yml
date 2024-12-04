@@ -85,7 +85,7 @@ jobs:
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
         run: |
           aws deploy create-deployment \
-            --application-name rookiefit-server \
+            --application-name RookieFit_Code_Deploy \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --deployment-group-name Production \
-            --s3-location bucket=rookiefit-server,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+            --s3-location bucket=rookiefits3,bundleType=tgz,key=$GITHUB_SHA.tar.gz
