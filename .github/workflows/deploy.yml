@@ -23,9 +23,9 @@ jobs:
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       - name: application.api.properties 파일 만들기
-        working-directory: ./src/main/resources
+        working-directory: ./back/src/main/resources
         run: echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > application.api.properties
-
+        
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         working-directory: ./back
