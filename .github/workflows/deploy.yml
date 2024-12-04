@@ -19,11 +19,10 @@ jobs:
           java-version: 21
 
       - name: application.properties 파일 만들기
-        working-directory: ./back  # 이 단계에서 ./back 디렉토리로 이동
+        working-directory: ./back 
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       - name: application.api.properties 파일 만들기
-        working-directory: ./back  # 이 단계에서 ./back 디렉토리로 이동
         run: echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > ./src/main/resources/application.api.properties
 
 
