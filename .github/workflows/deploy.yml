@@ -72,7 +72,7 @@ jobs:
             docker stop rookiefit-server || true
             docker rm rookiefit-server || true
             docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-            docker run -d --name rookiefit-server -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+            docker run -d --name rookiefit-server -p 4040:4040 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
       - name: 위치 확인 및 파일 목록 출력..
         run: |
