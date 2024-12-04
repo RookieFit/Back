@@ -1,7 +1,6 @@
 package com.rookiefit.back.entity.UserCommunity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
@@ -83,6 +82,14 @@ public class UserCommunityEntity {
         this.communityContentType = dto.getCommunityContentType();
         this.communityAuthor = userProfileEntity.getUserNickname();
         this.userProfile = userProfileEntity;
+    }
+
+    public void update(UserCommunityRequestDto dto) {
+        this.communityTitle = dto.getCommunityTitle() != null ? dto.getCommunityTitle() : communityTitle;
+        this.communityContent = dto.getCommunityContent() != null ? dto.getCommunityTitle() : communityContent;
+        this.isModified = dto.getIsModified() != null ? dto.getIsModified() : true;
+        this.communityImageUrl = dto.getCommunityImageUrl() != null ? dto.getCommunityImageUrl() : communityImageUrl;
+        this.communityContentType = dto.getCommunityContentType() != null ? dto.getCommunityContentType() : communityContentType;
     }
 
     public void addCommunityImages(List<String> imageUris) {

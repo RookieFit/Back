@@ -84,6 +84,7 @@ public class MarketServiceImplement implements MarketService{
         return InputMarketItemListResponseDto.success();
     }
 
+    //todo : 여기도 이미지 업로드 처리구현
     @Override
     public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(MarketItemListRequestDto dto, Long marketListId) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());

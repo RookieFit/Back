@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,14 @@ public class UserCommunityController {
         ResponseEntity<? super UserCommunityAnswerResponseDto> responseBody = userCommunityService
                 .inputUserCommunityAnswer(dto);
         return responseBody;
+    }
+
+    @PutMapping("/update-usercommunity/{id}")
+    public ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity( 
+        @PathVariable("id") Long userCommunityId, 
+        @ModelAttribute @Valid UserCommunityRequestDto dto) {
+            ResponseEntity<? super UserCommunityResponseDto> responseBody = userCommunityService.updateUserCommunity(dto,userCommunityId);
+            return responseBody;
     }
 
     @GetMapping("/get-all-usercommunity")

@@ -24,7 +24,6 @@ import com.rookiefit.back.entity.UserProfileEntity;
 import com.rookiefit.back.entity.UserCommunity.CommunityImageListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
-import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.repository.UserCommunity.CommunityImageListRepository;
@@ -57,38 +56,44 @@ public class UserCommunityServiceImplement implements UserCommunityService{
         if (userProfileEntity == null) {
             return UserCommunityResponseDto.idNotFound();
         }
-        if(dto.getCommunityListId() != null){
-            Optional<UserCommunityEntity> optionalUserCommunity = userCommunityRepository.findById(dto.getCommunityListId());
-            if (!optionalUserCommunity.isEmpty()) {
-                UserCommunityEntity userCommunityEntity = optionalUserCommunity.get();
-                userCommunityEntity.setCommunityContent(dto.getCommunityContent()); // 내용 수정s
-                userCommunityEntity.setCommunityTitle(dto.getCommunityTitle()); // 제목 수정
-                userCommunityEntity.setCommunityImageUrl(dto.getCommunityImageUrl()); // 이미지 URL 수정t
-                userCommunityEntity.setIsModified(true); // 수정 여부 표시
-                userCommunityRepository.save(userCommunityEntity);
-            }else{
-                return UserCommunityAnswerResponseDto.communityListIdNotFound();
-            }
-        }else {
-            List<String> communityImages = new ArrayList<>();
-            // 파일 업로드 처리
-            if (dto.getCommnunityImages() != null && dto.getCommnunityImages().length > 0) {
-                List<MultipartFile> fileList = Arrays.asList(dto.getCommnunityImages());
-                try {
-                    communityImages = firebaseService.uploadFiles(fileList); // Firebase에 업로드 후 URI 리스트 반환
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-            }
-            //이미지와 커뮤니티 리스트 저장
-            UserCommunityEntity userCommunityEntity = new UserCommunityEntity(dto,userProfileEntity);
-            userCommunityRepository.save(userCommunityEntity);
-            for (String imageUri : communityImages) {
-                CommunityImageListEntity communityImageEntity = new CommunityImageListEntity(imageUri);
-                communityImageEntity.setUserCommunity(userCommunityEntity);  // 커뮤니티와 연관 설정
-                communityImageListRepository.save(communityImageEntity);  // 이미지 저장
+        List<String> communityImages = new ArrayList<>();
+        // 파일 업로드 처리
+        if (dto.getCommnunityImages() != null && dto.getCommnunityImages().length > 0) {
+            List<MultipartFile> fileList = Arrays.asList(dto.getCommnunityImages());
+            try {
+                communityImages = firebaseService.uploadFiles(fileList); // Firebase에 업로드 후 URI 리스트 반환
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         }
+        //이미지와 커뮤니티 리스트 저장
+        UserCommunityEntity userCommunityEntity = new UserCommunityEntity(dto,userProfileEntity);
+        userCommunityRepository.save(userCommunityEntity);
+        for (String imageUri : communityImages) {
+            CommunityImageListEntity communityImageEntity = new CommunityImageListEntity(imageUri);
+            communityImageEntity.setUserCommunity(userCommunityEntity);  // 커뮤니티와 연관 설정
+            communityImageListRepository.save(communityImageEntity);  // 이미지 저장
+        }
+        return UserCommunityResponseDto.success();
+    }
+
+    //usercommunity input 와 update 분리 완(241204-11:26_김민준)
+    @Override
+    public ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId) {
+        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
+        UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
+        if (userProfileEntity == null) {
+            return UserCommunityResponseDto.idNotFound();
+        }
+        Optional<UserCommunityEntity> optionalUserCommunity = userCommunityRepository.findById(userCommunityId);
+        if (optionalUserCommunity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Market item not found with ID: " + userCommunityId);
+        }
+        UserCommunityEntity userCommunityEntity = optionalUserCommunity.get();
+        userCommunityEntity.update(dto);
+
+        userCommunityRepository.save(userCommunityEntity);
         return UserCommunityResponseDto.success();
     }
 
