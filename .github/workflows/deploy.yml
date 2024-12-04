@@ -61,7 +61,7 @@ jobs:
         working-directory: ./back
         run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
-      - name: SSH로 EC2에 접속하기
+      - name: SSH로 EC2에 접속하여 Rolling Update
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -69,10 +69,13 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            # 새로운 컨테이너를 백그라운드에서 실행
+            docker run -d --name rookiefit-server-new -p 4041:4040 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+            # 기존 컨테이너를 교체 (Rolling Update)
             docker stop rookiefit-server || true
             docker rm rookiefit-server || true
-            docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-            docker run -d --name rookiefit-server -p 4040:4040 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+            docker rename rookiefit-server-new rookiefit-server
+            docker restart rookiefit-server
 
       - name: 위치 확인 및 파일 목록 출력
         run: |
