@@ -18,9 +18,9 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: application.yml 파일 만들기
+      - name: application.properties 파일 만들기
         working-directory: ./back  # 이 단계에서 ./back 디렉토리로 이동
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
