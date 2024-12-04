@@ -31,10 +31,11 @@ public class MarketController {
 
     private final MarketService marketService;
 
-    @PostMapping("input-marketlist")
+    @PostMapping("/input-marketlist")
     public ResponseEntity<? super InputMarketItemListResponseDto> inputMarketItemList(
             @ModelAttribute @Valid MarketItemListRequestDto dto) {
         ResponseEntity<? super InputMarketItemListResponseDto> responseBody = marketService.inputMarketItemList(dto);
+
         return responseBody;
     }
 
