@@ -23,6 +23,7 @@ jobs:
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       - name: application.api.properties 파일 만들기
+        working-directory: ./back
         run: echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > ./src/main/resources/application.api.properties
 
 
