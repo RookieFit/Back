@@ -1,7 +1,6 @@
 package com.rookiefit.back.dto.request.Market;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +19,6 @@ public class MarketProductRequestDto {
     private String productCondition; // 제품 상태 (NEW, USED, LIKE_NEW, REFURBISHED)
     private String saleStatus; // 판매여부 (SELLING, BUYING, SOLD, BOUGHT)
     private String productSeller;
-    private Date productCreatedAt;
-    private Date productUpdatedAt;
+    private String productCreatedAt; // Date 타입에서 String 타입으로 변경
+    private String productUpdatedAt; // Date 타입에서 String 타입으로 변경
 }

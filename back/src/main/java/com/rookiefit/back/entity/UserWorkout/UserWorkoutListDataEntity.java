@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
+import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.entity.UserProfileEntity;
 
@@ -56,7 +57,7 @@ public class UserWorkoutListDataEntity {
     private UserProfileEntity userProfile;
 
     @OneToMany(mappedBy = "userWorkoutList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private List<UserWorkoutDetailDataEntity> workoutDetails;
+    private List<UserWorkoutDetailDataEntity> workoutDetails = new ArrayList<>();
 
     @OneToMany(mappedBy = "userWorkoutList", cascade = CascadeType.ALL)
     private List<UserWorkoutImagesEntity> userWorkoutImages = new ArrayList<>();
@@ -66,6 +67,27 @@ public class UserWorkoutListDataEntity {
         this.comment = dto.getComment();
         this.workoutTitle = dto.getWorkout_title();
         this.workoutCreatedDate = dto.getWorkoutCreatedData();
+    }
+
+    public void updateWorkoutData(InputUserWorkoutListRequestDto dto) {
+        this.comment = dto.getComment();
+        this.workoutTitle = dto.getWorkout_title();
+    }
+
+    public void addWorkoutDetails(List<InputUserWorkoutDetailRequestDto> workoutDetails) {
+        for (InputUserWorkoutDetailRequestDto workoutDetailDto : workoutDetails) {
+            UserWorkoutDetailDataEntity detail = new UserWorkoutDetailDataEntity(workoutDetailDto);
+            detail.setUserWorkoutList(this);  // 외래 키 설정
+            this.workoutDetails.add(detail);
+        }
+    }
+
+    public void addWorkoutImages(List<String> imageUris) {
+        for (String imageUri : imageUris) {
+            UserWorkoutImagesEntity imageEntity = new UserWorkoutImagesEntity(imageUri);
+            imageEntity.setUserWorkoutList(this);
+            this.userWorkoutImages.add(imageEntity);
+        }
     }
 
     public void setUserProfileData(UserProfileEntity userProfileEntity) {

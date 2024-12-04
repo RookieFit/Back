@@ -1,11 +1,15 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityAnswerRequestDto;
 import com.rookiefit.back.dto.request.userCommunity.UserCommunityRequestDto;
@@ -17,12 +21,15 @@ import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommuni
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityAnswerResponseDto;
 import com.rookiefit.back.dto.response.userCommunity.UserCommunityResponseDto;
 import com.rookiefit.back.entity.UserProfileEntity;
+import com.rookiefit.back.entity.UserCommunity.CommunityImageListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
+import com.rookiefit.back.repository.UserCommunity.CommunityImageListRepository;
 import com.rookiefit.back.repository.UserCommunity.UserCommunityAnswerRepository;
 import com.rookiefit.back.repository.UserCommunity.UserCommunityRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.UserCommunityService;
 
 import jakarta.transaction.Transactional;
@@ -35,6 +42,8 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     private final JwtProvider jwtProvider;
     private final UserCommunityRepository userCommunityRepository;
     private final UserCommunityAnswerRepository userCommunityAnswerRepository;
+    private final CommunityImageListRepository communityImageListRepository;
+    private final FirebaseService firebaseService;
     private final UserProfileRepository userProfileRepository;
 
     @Transactional
@@ -45,25 +54,78 @@ public class UserCommunityServiceImplement implements UserCommunityService{
         if (userProfileEntity == null) {
             return UserCommunityResponseDto.idNotFound();
         }
-        if(dto.getCommunityListId() != null){
-            Optional<UserCommunityEntity> optionalUserCommunity = userCommunityRepository.findById(dto.getCommunityListId());
-            if (!optionalUserCommunity.isEmpty()) {
-                UserCommunityEntity userCommunityEntity = optionalUserCommunity.get();
-                userCommunityEntity.setCommunityContent(dto.getCommunityContent()); // 내용 수정s
-                userCommunityEntity.setCommunityTitle(dto.getCommunityTitle()); // 제목 수정
-                userCommunityEntity.setCommunityImageUrl(dto.getCommunityImageUrl()); // 이미지 URL 수정t
-                userCommunityEntity.setIsModified(true); // 수정 여부 표시
-                userCommunityRepository.save(userCommunityEntity);
-            }else{
-                return UserCommunityAnswerResponseDto.communityListIdNotFound();
+        List<String> communityImages = new ArrayList<>();
+        // 파일 업로드 처리
+        if (dto.getCommnunityImages() != null && dto.getCommnunityImages().length > 0) {
+            List<MultipartFile> fileList = Arrays.asList(dto.getCommnunityImages());
+            try {
+                communityImages = firebaseService.uploadFiles(fileList); // Firebase에 업로드 후 URI 리스트 반환
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
-        }else {
-            UserCommunityEntity userCommunityEntity = new UserCommunityEntity(dto,userProfileEntity);
-            userCommunityRepository.save(userCommunityEntity);
-        } 
+        }
+        //이미지와 커뮤니티 리스트 저장
+        UserCommunityEntity userCommunityEntity = new UserCommunityEntity(dto,userProfileEntity);
+        userCommunityRepository.save(userCommunityEntity);
+        for (String imageUri : communityImages) {
+            CommunityImageListEntity communityImageEntity = new CommunityImageListEntity(imageUri);
+            communityImageEntity.setUserCommunity(userCommunityEntity);  // 커뮤니티와 연관 설정
+            communityImageListRepository.save(communityImageEntity);  // 이미지 저장
+        }
         return UserCommunityResponseDto.success();
     }
 
+    //usercommunity input 와 update 분리 완(241204-11:26_김민준)
+    //이미지 업데이트 추가 완(241204-14:15_김민준)
+    @Override
+    @Transactional
+    public ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId) {
+        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
+        UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);// profile에서 존재하는 userid인지 체크
+        if (userProfileEntity == null) {
+            return UserCommunityResponseDto.idNotFound();
+        }
+
+        Optional<UserCommunityEntity> optionalUserCommunity = userCommunityRepository.findById(userCommunityId); // 게시물 id로 해당하는 게시물 찾기
+        if (optionalUserCommunity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User Community not found with ID: " + userCommunityId);
+        }
+
+        UserCommunityEntity userCommunityEntity = optionalUserCommunity.get();
+        userCommunityEntity.update(dto,userProfileEntity);// 게시물 업데이트
+
+        // 기존 이미지 삭제
+        List<CommunityImageListEntity> existingImages =
+                communityImageListRepository.findByUserCommunity_CommunityListId(userCommunityId);// 게시물 id에 해당하는 이미지리스트 찾기
+        if(existingImages != null){
+            for (CommunityImageListEntity image : existingImages) { // 이미지리스트가 존재한다면 
+                communityImageListRepository.delete(image); // DB에서 삭제
+                firebaseService.deleteFile(image.getCommunityImageUri()); // Firebase에서 삭제
+            }
+        }
+        // 새 이미지 업로드 및 저장
+        if (dto.getCommnunityImages() != null && dto.getCommnunityImages().length > 0) {
+            List<MultipartFile> fileList = Arrays.asList(dto.getCommnunityImages()); // 이미지 파일들 리스트화
+            try {
+                List<String> uploadedUrls = firebaseService.uploadFiles(fileList); // Firebase 업로드 후 이미지 주소 반환
+                for (String url : uploadedUrls) {// 이미지 DB에 저장
+                    CommunityImageListEntity newImage = new CommunityImageListEntity(url);
+                    newImage.setUserCommunity(userCommunityEntity);
+                    communityImageListRepository.save(newImage);
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Image upload failed");
+            }
+        }
+        userCommunityRepository.save(userCommunityEntity); // 게시물 최종 저장
+        return UserCommunityResponseDto.success(); // 성공 메세지 반환
+    }
+
+
+    //todo : 댓글도 인풋과 수정을 분리
     @Override
     public ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
@@ -93,7 +155,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     }
 
     @Override
-    public ResponseEntity<? super GetAllUserCommunityResponseDto> getAllUserCommunity() {
+    public ResponseEntity<List<GetAllUserCommunityResponseDto>> getAllUserCommunity() {
         List<UserCommunityEntity> communityEntities = userCommunityRepository.findAll();
         return GetAllUserCommunityResponseDto.success(communityEntities);
     }

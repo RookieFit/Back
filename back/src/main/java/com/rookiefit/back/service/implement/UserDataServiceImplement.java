@@ -1,5 +1,6 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.rookiefit.back.entity.UserProfileEntity;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserBodyDataRepository;
 import com.rookiefit.back.repository.UserProfileRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.UserDataService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class UserDataServiceImplement implements UserDataService {
 
         private final UserProfileRepository userProfileRepository;
         private final UserBodyDataRepository userBodyDataRepository;
+        private final FirebaseService firebaseService;
         private final JwtProvider jwtProvider;
 
         @Override
@@ -40,7 +43,15 @@ public class UserDataServiceImplement implements UserDataService {
                 }
                 dto.setToken(currentUserId);
 
-                UserProfileEntity userProfileEntity = new UserProfileEntity(dto);
+                String uploadedFileUrl = null;
+                if (dto.getUserProfileImageFile() != null && !dto.getUserProfileImageFile().isEmpty()) {
+                        try {
+                        uploadedFileUrl = firebaseService.uploadFile(dto.getUserProfileImageFile());
+                        } catch (IOException exception) {
+                         exception.printStackTrace();
+                        }
+                }
+                UserProfileEntity userProfileEntity = new UserProfileEntity(dto,uploadedFileUrl);
                 userProfileRepository.save(userProfileEntity);
                 return InputUserProfileResponseDto.succes();
         }
@@ -48,7 +59,6 @@ public class UserDataServiceImplement implements UserDataService {
         @Override
         public ResponseEntity<? super GetUserProfileResponseDto> getUserProfile(GetUserProfileRequestDto dto) {
                 String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
-
                 boolean isExsitedId = userProfileRepository.existsByUserAuthEntity_UserId(currentUserId);
                 if (!isExsitedId) {
                         System.out.println("아이디 존재하지 않음");
@@ -56,7 +66,6 @@ public class UserDataServiceImplement implements UserDataService {
 
                 UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
                 return GetUserProfileResponseDto.success(userProfileEntity);
-
         }
 
         @Override

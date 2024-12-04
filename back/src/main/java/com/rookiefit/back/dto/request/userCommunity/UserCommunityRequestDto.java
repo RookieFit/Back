@@ -2,6 +2,8 @@ package com.rookiefit.back.dto.request.userCommunity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,4 +33,6 @@ public class UserCommunityRequestDto {
     
     @NotBlank
     private String communityContentType;
+
+    private MultipartFile[] commnunityImages;
 }
