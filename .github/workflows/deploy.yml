@@ -80,11 +80,7 @@ jobs:
         run: ls -R
 
       - name: 파일 압축하기
-        run: |
-          echo "현재 작업 디렉토리:"
-          pwd
-          tar -czvf $GITHUB_SHA.tar.gz ./appspec.yml ./scripts
-        working-directory: ./  # 루트 디렉토리 기준
+        run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
 
       - name: S3에 프로젝트 폴더 업로드하기!
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefit-server/$GITHUB_SHA.tar.gz
