@@ -1,4 +1,4 @@
-name: Deploy To EC2
+name: EC2 배포 워크플로우
 
 on:
   push:
@@ -9,89 +9,50 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Github Repository 파일 불러오기
+      - name: GitHub 레포지토리 체크아웃
         uses: actions/checkout@v4
 
-      - name: JDK 21버전 설치
+      - name: JDK 21 설치
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
-      - name: Create application.api.properties and debug
-        working-directory: ./back 
-        run: |
-          echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > ./src/main/resources/application-api.properties
-          ls -la ./src/main/resources/
-          sudo cat ./src/main/resources/application-api.properties
+      - name: application-api.properties 생성
+        working-directory: ./back
+        run: echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > ./src/main/resources/application-api.properties
 
-      - name: Grant execute permission for gradlew
+      - name: gradlew 권한 부여
         run: chmod +x ./gradlew
         working-directory: ./back
 
-      - name: 테스트 및 빌드하기
+      - name: 프로젝트 빌드
         run: ./gradlew clean build -x test
         working-directory: ./back
 
-      - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
+      - name: AWS 자격 증명 설정
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ap-northeast-2
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: ECR에 로그인하기
-        id: login-ecr
+      - name: Amazon ECR 로그인
+        id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2  
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
+      - name: Docker 이미지 빌드 및 Push
+        run: |
+          docker build -t rookiefit-server ./back
+          docker tag rookiefit-server ${{ steps.ecr-login.outputs.registry }}/rookiefit-server:latest
+          docker push ${{ steps.ecr-login.outputs.registry }}/rookiefit-server:latest
 
-      - name: Build Docker image
-        run: docker build -t rookiefit-server ./back
-
-      - name: Docker 이미지에 Tag 붙이기
-        working-directory: ./back
-        run: docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-
-      - name: ECR에 Docker 이미지 Push하기
-        working-directory: ./back
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-
-      - name: SSH로 EC2에 접속하여 Rolling Update
+      - name: EC2에 SSH로 접속하여 배포
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          script_stop: true
           script: |
-            # 새로운 컨테이너를 백그라운드에서 실행
-            docker run -d --name rookiefit-server-new -p 4041:4040 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-            # 기존 컨테이너를 교체 (Rolling Update)
-            docker stop rookiefit-server || true
-            docker rm rookiefit-server || true
-            docker rename rookiefit-server-new rookiefit-server
-            docker restart rookiefit-server
-
-      - name: 위치 확인 및 파일 목록 출력
-        run: |
-          echo "Current working directory:"
-          pwd
-
-      - name: 파일 압축하기
-        run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts
-
-      - name: S3에 프로젝트 폴더 업로드하기
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefits3/$GITHUB_SHA.tar.gz
-
-      - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
-        run: |
-          aws deploy create-deployment \
-            --application-name RookieFit_Code_Deploy \
-            --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --deployment-group-name RookieFit_Code_Deploy_Group \
-            --s3-location bucket=rookiefits3,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+            # 새로운 컨테이너 실행 및 기존 컨테이너 전환
+            ./start-new-server.sh
