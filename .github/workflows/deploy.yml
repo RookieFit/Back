@@ -18,16 +18,9 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: application.properties 파일 만들기.
-        working-directory: ./back 
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
-
-      - name: Check application.properties content
-        run: cat ./src/main/resources/application.properties
-
       - name: application.api.properties 파일 만들기.
         working-directory: ./back 
-        run: echo "${{ secrets.API_PROPERTIES }}" > ./src/main/resources/api.properties
+        run: echo "${{ secrets.API_PROPERTIES }}" >> ./src/main/resources/api.properties
 
       - name: Check application.api.properties content
         run: cat ./src/main/resources/api.properties
