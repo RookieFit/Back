@@ -49,16 +49,13 @@ public class UserBodyDataEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UserProfileEntity userProfile;
 
-    public UserBodyDataEntity(InputUserBodyDataRequestDto dto) {
+    public UserBodyDataEntity(InputUserBodyDataRequestDto dto, UserProfileEntity userProfileEntity) {
         this.user_age = dto.getUserAge();
         this.user_weight = dto.getUserWeight();
         this.user_height = dto.getUserHeight();
         this.user_muscle_mass = dto.getUserMuscleMass();
         this.user_fat_mass = dto.getUserFatMass();
         this.inbodydate = dto.getInbodydate();
-    }
-
-    public void setUserProfileData(UserProfileEntity userProfileEntity) {
         this.userProfile = userProfileEntity;
     }
 }

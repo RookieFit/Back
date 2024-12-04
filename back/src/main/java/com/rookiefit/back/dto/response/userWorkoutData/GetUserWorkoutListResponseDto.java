@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.rookiefit.back.common.ResponseCode;
+import com.rookiefit.back.common.ResponseMessage;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;

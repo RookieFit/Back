@@ -3,6 +3,8 @@ package com.rookiefit.back.controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +17,7 @@ import com.rookiefit.back.dto.response.userWorkoutData.DeleteUserWorkoutListResp
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
+import com.rookiefit.back.common.CustomUserDetails;
 import com.rookiefit.back.dto.request.userWorkoutData.DeleteUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutListRequestDto;
@@ -40,10 +43,11 @@ public class UserWorkoutDataController {
 
     //todo : 이거 GetMapping으로 바꿔서 requestparam으로 바꿔야함
     @PostMapping("/userworkoutlistdata")
-    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(
-            @RequestBody @Valid GetUserWorkoutListRequestDto dto) {
+    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = ((CustomUserDetails) authentication.getPrincipal()).getUserId();
         ResponseEntity<List<GetUserWorkoutListResponseDto>> responseBody = userWorkoutDataService
-                .getUserWorkoutData(dto);
+                .getUserWorkoutData(currentUserId);
         return responseBody;
     }
 

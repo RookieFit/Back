@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.rookiefit.back.dto.request.userWorkoutData.DeleteUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDetailRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.response.userWorkoutData.DeleteUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailResponseDto;
@@ -91,11 +90,10 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
     }
     
     @Override
-    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(String currentUserId) {
         boolean isExsitedId = userWorkoutListDataRepository.existsByUserId(currentUserId);
         if (!isExsitedId) {
-            System.out.println("아이디가 존재하지 않음");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         // 사용자별 운동 리스트 조회

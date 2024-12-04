@@ -224,9 +224,9 @@ public class AuthServiceImplement implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? super UserDeleteResponseDto> userDelete(UserDeleteRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
-        UserEntity userEntity = userRepository.findByUserId(currentUserId);
+    public ResponseEntity<? super UserDeleteResponseDto> userDelete(UserDeleteRequestDto dto, String userId) {
+;
+        UserEntity userEntity = userRepository.findByUserId(userId);
 
         String inputPassword = dto.getUser_password();
         String encodedPassword = userEntity.getUser_password();

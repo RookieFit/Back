@@ -36,7 +36,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } else {
             logger.error("Token generation failed!");
         }
-        response.sendRedirect("http://localhost:3000/auth/oauth-response/" + token + "/3600");
+        response.sendRedirect("http://localhost:5173/auth/oauth-response/" + token + "/3600");
     }
 
 }
