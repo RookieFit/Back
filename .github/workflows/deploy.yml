@@ -83,7 +83,7 @@ jobs:
       - name: 파일 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts
 
-      - name: S3에 프로젝트 폴더 업로드하기z
+      - name: S3에 프로젝트 폴더 업로드하기
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefits3/$GITHUB_SHA.tar.gz
 
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
