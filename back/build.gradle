@@ -38,7 +38,7 @@ dependencies {
 
     // 외부 SDK 및 라이브러리 의존성
     implementation 'net.nurigo:sdk:4.3.0'  // SMS API
-    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.0.1'  // Firebase Admin SDK
+    implementation 'com.google.firebase:firebase-admin:9.4.1'  // Firebase Admin SDK
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'  // JWT 토큰 관련 라이브러리
     implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'  
     implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'

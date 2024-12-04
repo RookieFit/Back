@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,12 +32,14 @@ public class UserDataController {
 
     @PostMapping("/input-userprofile")
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(
-            @RequestBody @Valid InputUserProfileRequestDto dto) {
+            @ModelAttribute InputUserProfileRequestDto dto) {
+        // 처리 로직
         ResponseEntity<? super InputUserProfileResponseDto> responseBody = userDataService.inputUserProfile(dto);
         return responseBody;
     }
-
-    @GetMapping("/userprofile")
+    
+    //todo : GetMapping으로 바꾸고 token을 requestparam으로 받을것(241202_18:31)
+    @PostMapping("/userprofile")
     public ResponseEntity<? super GetUserProfileResponseDto> userProfile(
             @RequestBody @Valid GetUserProfileRequestDto dto) {
         ResponseEntity<? super GetUserProfileResponseDto> responseBody = userDataService.getUserProfile(dto);

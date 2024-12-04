@@ -2,6 +2,8 @@ package com.rookiefit.back.dto.request.userWorkoutData;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +27,5 @@ public class InputUserWorkoutListRequestDto {
 
     private List<InputUserWorkoutDetailRequestDto> workoutDetails;
 
-    private List<String> workoutImageUris;
+    private MultipartFile[] workoutImageFiles;
 }

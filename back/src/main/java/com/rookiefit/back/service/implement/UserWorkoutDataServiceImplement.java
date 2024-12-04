@@ -1,15 +1,19 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rookiefit.back.dto.request.userWorkoutData.DeleteUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutListRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutDetailRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.response.userWorkoutData.DeleteUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailResponseDto;
@@ -22,6 +26,7 @@ import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutDetailDataRepository;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutImagesRepository;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutListDataRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.UserWorkoutDataService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
 
     private final JwtProvider jwtProvider;
+    private final FirebaseService firebaseService;
     private final UserWorkoutListDataRepository userWorkoutListDataRepository;
     private final UserWorkoutDetailDataRepository userWorkoutDetailDataRepository;
     private final UserWorkoutImagesRepository userWorkoutImagesRepository;
@@ -43,11 +49,10 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
         
         // 기존 WorkoutList 데이터 조회
         UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, dto.getWorkoutCreatedData());
-        
+
         if (userWorkoutListDataEntity != null) {
             // 이미 존재하는 경우 데이터 업데이트
-            userWorkoutListDataEntity.setComment(dto.getComment());
-            userWorkoutListDataEntity.setWorkoutTitle(dto.getWorkout_title());
+            userWorkoutListDataEntity.updateWorkoutData(dto);
             // 기존 WorkoutDetails 삭제 후 새로운 WorkoutDetails 저장
             userWorkoutDetailDataRepository.deleteByUserWorkoutList(userWorkoutListDataEntity);
         } else {
@@ -60,22 +65,28 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
         userWorkoutListDataRepository.save(userWorkoutListDataEntity);
     
         // 새로운 WorkoutDetails 저장
-        List<InputUserWorkoutDetailRequestDto> workoutDetails = dto.getWorkoutDetails();
-        for (InputUserWorkoutDetailRequestDto workoutDetailDto : workoutDetails) {
-            UserWorkoutDetailDataEntity userWorkoutDetailDataEntity = new UserWorkoutDetailDataEntity(workoutDetailDto);
-            userWorkoutDetailDataEntity.setUserWorkoutList(userWorkoutListDataEntity); // 외래 키 설정
-            userWorkoutDetailDataRepository.save(userWorkoutDetailDataEntity);
+        userWorkoutListDataEntity.addWorkoutDetails(dto.getWorkoutDetails());
+        for (UserWorkoutDetailDataEntity detail : userWorkoutListDataEntity.getWorkoutDetails()) {
+            userWorkoutDetailDataRepository.save(detail);
         }
-    
-        // Workout Images 저장
-        List<String> workoutimages = dto.getWorkoutImageUris();
-        if (workoutimages != null && !workoutimages.isEmpty()) {
-            for (String workoutimageuri : workoutimages) {
-                UserWorkoutImagesEntity userWorkoutImagesEntity = new UserWorkoutImagesEntity(workoutimageuri);
-                userWorkoutImagesEntity.setUserWorkoutList(userWorkoutListDataEntity);
-                userWorkoutImagesRepository.save(userWorkoutImagesEntity);
+
+        List<String> workoutImages = new ArrayList<>();
+        // 파일 업로드 처리
+        if (dto.getWorkoutImageFiles() != null && dto.getWorkoutImageFiles().length > 0) {
+            List<MultipartFile> fileList = Arrays.asList(dto.getWorkoutImageFiles());
+            try {
+                workoutImages = firebaseService.uploadFiles(fileList); // Firebase에 업로드 후 URI 리스트 반환
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         }
+
+        // Workout Images 저장
+        userWorkoutListDataEntity.addWorkoutImages(workoutImages);
+        for (UserWorkoutImagesEntity image : userWorkoutListDataEntity.getUserWorkoutImages()) {
+            userWorkoutImagesRepository.save(image);
+        }
+
         return InputUserWorkoutListResponseDto.success();
     }
     
@@ -83,11 +94,18 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
     public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
         String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
         boolean isExsitedId = userWorkoutListDataRepository.existsByUserId(currentUserId);
-        if(!isExsitedId){System.out.println("아이디가존재하지않음");};
+        if (!isExsitedId) {
+            System.out.println("아이디가 존재하지 않음");
+        }
 
+        // 사용자별 운동 리스트 조회
         List<UserWorkoutListDataEntity> userWorkoutListDataEntities = userWorkoutListDataRepository.findWorkoutListByUserId(currentUserId);
+
+        // GetUserWorkoutListResponseDto.success()에서 자동으로 변환 처리됨
         return GetUserWorkoutListResponseDto.success(userWorkoutListDataEntities);
     }
+
+
     @Override
     public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto) {
         String currentDate = dto.getWorkoutDetailCreatedDate();

@@ -70,6 +70,9 @@ public class UserCommunityEntity {
     @OneToMany(mappedBy = "userCommunity", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     private List<UserCommunity_Answer_ListEntity> userCommunityAnswerLists;
 
+    @OneToMany(mappedBy = "userCommunity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<CommunityImageListEntity> communityImages;
+    
     public UserCommunityEntity(UserCommunityRequestDto dto , UserProfileEntity userProfileEntity) {
         this.communityTitle = dto.getCommunityTitle();
         this.communityContent = dto.getCommunityContent();
@@ -79,6 +82,23 @@ public class UserCommunityEntity {
         this.communityContentType = dto.getCommunityContentType();
         this.communityAuthor = userProfileEntity.getUserNickname();
         this.userProfile = userProfileEntity;
+    }
+
+    public void update(UserCommunityRequestDto dto, UserProfileEntity userProfileEntity) {
+        this.communityTitle = dto.getCommunityTitle() != null ? dto.getCommunityTitle() : communityTitle;
+        this.communityContent = dto.getCommunityContent() != null ? dto.getCommunityTitle() : communityContent;
+        this.isModified = dto.getIsModified() != null ? dto.getIsModified() : true;
+        this.communityImageUrl = dto.getCommunityImageUrl() != null ? dto.getCommunityImageUrl() : communityImageUrl;
+        this.communityContentType = dto.getCommunityContentType() != null ? dto.getCommunityContentType() : communityContentType;
+        this.userProfile = userProfileEntity;
+    }
+
+    public void addCommunityImages(List<String> imageUris) {
+        for (String imageUri : imageUris) {
+            CommunityImageListEntity imageEntity = new CommunityImageListEntity(imageUri);
+            imageEntity.setUserCommunity(this);
+            this.communityImages.add(imageEntity);
+        }
     }
 
 }

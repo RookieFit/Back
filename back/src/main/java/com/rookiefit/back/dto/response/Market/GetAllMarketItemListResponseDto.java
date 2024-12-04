@@ -1,11 +1,14 @@
 package com.rookiefit.back.dto.response.Market;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.rookiefit.back.dto.response.ResponseDto;
+import com.rookiefit.back.entity.Market.ItemImageEntity;
 import com.rookiefit.back.entity.Market.MarketItemListEntity;
 import com.rookiefit.back.entity.Market.MarketProductsEntity;
+import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,9 +23,9 @@ public class GetAllMarketItemListResponseDto extends ResponseDto {
     private String marketItemImageUrl;
 
     @NotNull
-    private Date createdAt;
+    private String createdAt;
 
-    private Date updatedAt;
+    private String updatedAt;
 
     private boolean isSold;
 
@@ -30,8 +33,10 @@ public class GetAllMarketItemListResponseDto extends ResponseDto {
 
     private String location;
 
+    private List<String> imageUris;
+
     public GetAllMarketItemListResponseDto(MarketItemListEntity marketItemListEntity,
-            MarketProductsEntity marketProductsEntity) {
+            MarketProductsEntity marketProductsEntity, List<ItemImageEntity> imageEntities) {
         this.marketItemTitle = marketItemListEntity.getMarketItemTitle();
         this.marketItemImageUrl = marketItemListEntity.getMarketItemImageUrl();
         this.createdAt = marketItemListEntity.getCreatedAt();
@@ -39,11 +44,14 @@ public class GetAllMarketItemListResponseDto extends ResponseDto {
         this.isSold = marketItemListEntity.isSold();
         this.productPrice = marketProductsEntity.getProductPrice();
         this.location = marketProductsEntity.getLocation();
+        this.imageUris = marketItemListEntity.getItemImages().stream()
+        .map(ItemImageEntity::getItemImageUri)
+        .collect(Collectors.toList());
     }
 
     public static List<GetAllMarketItemListResponseDto> fromEntityList(List<MarketItemListEntity> entities) {
         return entities.stream()
-                .map(entity -> new GetAllMarketItemListResponseDto(entity, entity.getProduct()))
+                .map(entity -> new GetAllMarketItemListResponseDto(entity, entity.getProduct(), entity.getItemImages()))
                 .toList();
     }
 }

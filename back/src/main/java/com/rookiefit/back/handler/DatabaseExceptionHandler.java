@@ -11,7 +11,7 @@ import com.rookiefit.back.dto.response.ResponseDto;
 
 @RestControllerAdvice
 public class DatabaseExceptionHandler {
-    @ExceptionHandler({ SQLException.class, RuntimeException.class, DataAccessException.class, IllegalArgumentException.class })
+    @ExceptionHandler({ SQLException.class, RuntimeException.class, DataAccessException.class, IllegalArgumentException.class})
     public ResponseEntity<ResponseDto> databaseExceptionHandler(Exception exception) {
         exception.printStackTrace();
         return ResponseDto.databaseError();

@@ -3,6 +3,7 @@ package com.rookiefit.back.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nimbusds.jose.proc.SecurityContext;
 import com.rookiefit.back.dto.request.auth.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserIdRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserPasswordRequestDto;
@@ -36,6 +37,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -121,7 +123,9 @@ public class AuthController {
 
     // 관리자인지 인증
     @GetMapping("/roles")
-    public ResponseEntity<List<String>> getUserRoles(Authentication authentication) {
+    public ResponseEntity<List<String>> getUserRoles() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getPrincipal());
         List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();

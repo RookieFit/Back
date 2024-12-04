@@ -61,6 +61,10 @@ public class AuthServiceImplement implements AuthService {
 
         String userId = dto.getUserId();// 필요없음
         String phoneNumber = dto.getUser_phonenumber();// 키값으로 사용
+        boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(phoneNumber);
+        if (isExistPhoneNumber) {
+            return SignUpResponseDto.duplicatedphonenumber();
+        }
 
         boolean isExistId = userRepository.existsByUserId(userId);
         if (isExistId)
