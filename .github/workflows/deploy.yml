@@ -25,7 +25,6 @@ jobs:
           ls -la ./src/main/resources/
           sudo cat ./src/main/resources/application-api.properties
 
-
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         working-directory: ./back
