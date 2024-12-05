@@ -31,7 +31,9 @@ public class UserDietDataController {
     @PostMapping("/input-userdietlistdata")
     public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(
             @RequestBody @Valid InputUserDietListRequestDto dto) {
-        ResponseEntity<? super InputUserDietListResponseDto> responseBody = userDietDataService.inputUserDietData(dto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
+        ResponseEntity<? super InputUserDietListResponseDto> responseBody = userDietDataService.inputUserDietData(dto, currentUserId);
         return responseBody;
     }
 

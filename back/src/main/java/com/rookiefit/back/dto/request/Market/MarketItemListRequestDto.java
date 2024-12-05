@@ -15,9 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MarketItemListRequestDto {
 
-    @NotBlank
-    private String token;
-
     private boolean isSold;
 
     private Long marketListId;

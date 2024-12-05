@@ -15,9 +15,9 @@ import com.rookiefit.back.dto.response.userCommunity.GetByContentTypeUserCommuni
 import com.rookiefit.back.dto.response.userCommunity.GetUserCommunityResponseDto;
 
 public interface UserCommunityService {
-    ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto);
-    ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto);
-    ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId);
+    ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto, String currentUserId);
+    ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto, String currentUserId);
+    ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId, String currentUserId);
     ResponseEntity<List<GetAllUserCommunityResponseDto>> getAllUserCommunity();
     ResponseEntity<List<GetByContentTypeUserCommunityResponseDto>> getByContentTypeUserCommunity(String communityContentType);
     ResponseEntity<? super DeleteUserCommunityResponseDto> deleteUserCommunity(Long communityListId);

@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserDietDataService {
     // 식단 데이터를 입력하는 메서드
-    ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto);
+    ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto, String currentUserId);
 
     // 식단 데이터를 삭제하는 메서드
     ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(String diet_created_date, String currentUserId);

@@ -27,15 +27,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDietDataServiceImplement implements UserDietDataService {
 
-    private final JwtProvider jwtProvider;
     private final UserDietDataRepository userDietDataRepository;
     private final UserDietDetailDataRepository userDietDetailDataRepository;
     private final UserProfileRepository userProfileRepository;
 
     @Override
     @Transactional
-    public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto, String currentUserId) {
         dto.setToken(currentUserId);
 
         // 기존 Diet 데이터 조회
