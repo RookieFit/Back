@@ -14,9 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserCommunityRequestDto {
 
-    @NotBlank
-    private String token;
-
     private Long communityListId;
 
     @NotBlank

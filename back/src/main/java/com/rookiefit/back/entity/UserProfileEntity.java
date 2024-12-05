@@ -50,18 +50,14 @@ public class UserProfileEntity {
     @NotBlank
     private String userProfileImageUri;
 
-    @NotBlank
     private String gymName;
 
     private String userMessage;
 
-    @NotBlank
     private String userName;
 
-    @NotBlank
     private String userAddress;
 
-    @NotBlank
     private String userNickname;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -93,19 +89,14 @@ public class UserProfileEntity {
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatMessageEntity> messages;  // 사용자가 보낸 메시지들
 
-    public UserProfileEntity(InputUserProfileRequestDto dto, String uploadedFileUrl) {
-
-        this.userAuthEntity = new UserEntity(); // userAuthEntity 초기화
-        this.userAuthEntity.setUserId(dto.getToken()); // userId 설정
+    //241205-09:32_김민준 : dto로 넘어오는 값들이 null로 검사하는게 아닌 isEmpty로 검사해야 빈값이 아닌 기본값을 넣을 수 있음
+    public UserProfileEntity(InputUserProfileRequestDto dto, String uploadedFileUrl, UserEntity userEntity) {
+        this.userAuthEntity = userEntity;// userId 설정
         this.userProfileImageUri = uploadedFileUrl;
         this.gymName = dto.getGymName();
         this.userMessage = dto.getUserMessage();
         this.userName = dto.getUserName();
         this.userAddress = dto.getUserAddress();
         this.userNickname = dto.getUserNickname();
-    }
-
-    public void setUser(UserEntity userEntity) {
-        this.userAuthEntity = userEntity;
     }
 }

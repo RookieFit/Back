@@ -48,8 +48,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
 
     @Transactional
     @Override
-    public ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto){
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
+    public ResponseEntity<? super UserCommunityResponseDto> inputUserCommunity(UserCommunityRequestDto dto, String currentUserId){
         UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
         if (userProfileEntity == null) {
             return UserCommunityResponseDto.idNotFound();
@@ -79,8 +78,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
     //이미지 업데이트 추가 완(241204-14:15_김민준)
     @Override
     @Transactional
-    public ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
+    public ResponseEntity<? super UserCommunityResponseDto> updateUserCommunity(UserCommunityRequestDto dto, Long userCommunityId, String currentUserId) {
         UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);// profile에서 존재하는 userid인지 체크
         if (userProfileEntity == null) {
             return UserCommunityResponseDto.idNotFound();
@@ -127,8 +125,7 @@ public class UserCommunityServiceImplement implements UserCommunityService{
 
     //todo : 댓글도 인풋과 수정을 분리
     @Override
-    public ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super UserCommunityAnswerResponseDto> inputUserCommunityAnswer(UserCommunityAnswerRequestDto dto, String currentUserId) {
         UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
         Optional<UserCommunityEntity> optionaluserCommunity = userCommunityRepository.findById(dto.getCommunityListId());
 

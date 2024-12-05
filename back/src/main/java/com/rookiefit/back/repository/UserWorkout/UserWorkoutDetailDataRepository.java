@@ -10,6 +10,6 @@ import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
 
 @Repository
 public interface UserWorkoutDetailDataRepository extends JpaRepository<UserWorkoutDetailDataEntity , Long>{
-    List<UserWorkoutDetailDataEntity> findByWorkoutDetailCreatedDate(String workoutDetailCreatedDate);
+    List<UserWorkoutDetailDataEntity> findByUserWorkoutList_UserIdAndWorkoutDetailCreatedDate(String currentUserId, String workoutDetailCreatedDate);
     void deleteByUserWorkoutList(UserWorkoutListDataEntity userWorkoutListDataEntity);
 }

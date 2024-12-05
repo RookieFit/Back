@@ -3,7 +3,6 @@ package com.rookiefit.back.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusds.jose.proc.SecurityContext;
 import com.rookiefit.back.dto.request.auth.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserIdRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserPasswordRequestDto;
@@ -73,22 +72,22 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp(
-            @RequestBody @Valid SignUpRequestDto requestBody) {
-        ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
+            @RequestBody @Valid SignUpRequestDto dto) {
+        ResponseEntity<? super SignUpResponseDto> response = authService.signUp(dto);
         return response;
     }
 
     @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> signIn(
-            @RequestBody @Valid SignInRequestDto requestBody) {
-        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+            @RequestBody @Valid SignInRequestDto dto) {
+        ResponseEntity<? super SignInResponseDto> response = authService.signIn(dto);
         return response;
     }
 
     @PostMapping("/find-id")
     public ResponseEntity<? super FindUserIdResponseDto> findUserId(
-            @RequestBody @Valid FindUserIdRequestDto requestBody) {
-        ResponseEntity<? super FindUserIdResponseDto> response = authService.findUserId(requestBody);
+            @RequestBody @Valid FindUserIdRequestDto dto) {
+        ResponseEntity<? super FindUserIdResponseDto> response = authService.findUserId(dto);
         return response;
     }
 
@@ -101,23 +100,25 @@ public class AuthController {
 
     @PostMapping("/find-password")
     public ResponseEntity<? super FindUserPasswordResponseDto> findUserPassword(
-            @RequestBody @Valid FindUserPasswordRequestDto requestBody) {
-        ResponseEntity<? super FindUserPasswordResponseDto> response = authService.findUserPassword(requestBody);
+            @RequestBody @Valid FindUserPasswordRequestDto dto) {
+        ResponseEntity<? super FindUserPasswordResponseDto> response = authService.findUserPassword(dto);
         return response;
     }
 
     @PostMapping("/check-find-password")
     public ResponseEntity<? super CheckFindUserPasswordResponseDto> checkFindUserPassword(
-            @RequestBody @Valid CheckFindUserPasswordRequestDto requestBody) {
+            @RequestBody @Valid CheckFindUserPasswordRequestDto dto) {
         ResponseEntity<? super CheckFindUserPasswordResponseDto> response = authService
-                .checkFindUserPasswordResponseDto(requestBody);
+                .checkFindUserPasswordResponseDto(dto);
         return response;
     }
 
-    @GetMapping("/user-delete")
+    @PostMapping("/user-delete")
     public ResponseEntity<? super UserDeleteResponseDto> userDelete(
-            @RequestBody @Valid UserDeleteRequestDto requestBody) {
-        ResponseEntity<? super UserDeleteResponseDto> response = authService.userDelete(requestBody);
+            @RequestBody @Valid UserDeleteRequestDto dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+        ResponseEntity<? super UserDeleteResponseDto> response = authService.userDelete(dto, currentUserId);
         return response;
     }
 
@@ -125,7 +126,6 @@ public class AuthController {
     @GetMapping("/roles")
     public ResponseEntity<List<String>> getUserRoles() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getPrincipal());
         List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
@@ -135,8 +135,8 @@ public class AuthController {
     // 트레이너 등록 요청
     @PostMapping("/trainer-register")
     public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto requestBody) {
-        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(requestBody);
+            @RequestBody @Valid InputTrainerRequestDto dto) {
+        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto);
         return response;
     }
 }

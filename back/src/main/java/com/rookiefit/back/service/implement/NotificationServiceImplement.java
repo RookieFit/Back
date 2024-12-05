@@ -4,24 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.rookiefit.back.dto.request.Market.MarketProductRequestDto;
 import com.rookiefit.back.dto.request.notification.NotificationRequestDto;
 import com.rookiefit.back.dto.response.notification.InputNotificationResponseDto;
-import com.rookiefit.back.dto.response.Market.DeleteMarketItemResponseDto;
 import com.rookiefit.back.dto.response.notification.DeleteNotificationResponseDto;
 import com.rookiefit.back.dto.response.notification.GetNotificationListResponseDto;
 import com.rookiefit.back.dto.response.notification.GetNotificationResponseDto;
-import com.rookiefit.back.dto.response.userCommunity.GetSearchUserCommunityResponseDto;
 import com.rookiefit.back.entity.NotificationEntity;
 import com.rookiefit.back.entity.UserEntity;
-import com.rookiefit.back.entity.UserProfileEntity;
-import com.rookiefit.back.entity.Market.MarketItemListEntity;
-import com.rookiefit.back.entity.Market.MarketProductsEntity;
-import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.NotificationRepository;
 import com.rookiefit.back.repository.UserRepository;

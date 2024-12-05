@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
-import com.rookiefit.back.dto.request.userData.GetUserBodyDataRequestDto;
-import com.rookiefit.back.dto.request.userData.GetUserProfileRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
@@ -19,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,33 +30,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserDataController {
     private final UserDataService userDataService;
 
+    //241204-21:30_김민준 프로필이미지는 기본이미지넣어줄것
     @PostMapping("/input-userprofile")
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(
             @ModelAttribute InputUserProfileRequestDto dto) {
-        // 처리 로직
-        ResponseEntity<? super InputUserProfileResponseDto> responseBody = userDataService.inputUserProfile(dto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+        ResponseEntity<? super InputUserProfileResponseDto> responseBody = userDataService.inputUserProfile(dto,currentUserId);
         return responseBody;
     }
     
-    //todo : GetMapping으로 바꾸고 token을 requestparam으로 받을것(241202_18:31)
-    @PostMapping("/userprofile")
-    public ResponseEntity<? super GetUserProfileResponseDto> userProfile(
-            @RequestBody @Valid GetUserProfileRequestDto dto) {
-        ResponseEntity<? super GetUserProfileResponseDto> responseBody = userDataService.getUserProfile(dto);
+    @GetMapping("/userprofile")
+    public ResponseEntity<? super GetUserProfileResponseDto> userProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+        ResponseEntity<? super GetUserProfileResponseDto> responseBody = userDataService.getUserProfile(currentUserId);
         return responseBody;
     }
 
     @PostMapping("/input-userbodydata")
     public ResponseEntity<? super InputUserBodyDataResponseDto> inputUserBodyData(
             @RequestBody @Valid InputUserBodyDataRequestDto dto) {
-        ResponseEntity<? super InputUserBodyDataResponseDto> responseBody = userDataService.inputUserBodyData(dto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+        ResponseEntity<? super InputUserBodyDataResponseDto> responseBody = userDataService.inputUserBodyData(dto,currentUserId);
         return responseBody;
     }
 
     @GetMapping("/userbodydata")
-    public ResponseEntity<List<GetUserBodyDataResponseDto>> getUserBodyData(
-            @RequestBody @Valid GetUserBodyDataRequestDto dto) {
-        ResponseEntity<List<GetUserBodyDataResponseDto>> reponseBody = userDataService.getUserBodyData(dto);
+    public ResponseEntity<List<GetUserBodyDataResponseDto>> getUserBodyData() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+        ResponseEntity<List<GetUserBodyDataResponseDto>> reponseBody = userDataService.getUserBodyData(currentUserId);
         return reponseBody;
     }
 }

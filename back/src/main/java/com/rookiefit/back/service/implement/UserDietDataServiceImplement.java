@@ -2,12 +2,11 @@ package com.rookiefit.back.service.implement;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rookiefit.back.provider.JwtProvider;
-import com.rookiefit.back.dto.request.UserDietData.DeleteUserDietListRequestDto;
-import com.rookiefit.back.dto.request.UserDietData.GetDietDataDetailRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietDetailRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietListRequestDto;
 import com.rookiefit.back.dto.response.UserDietData.DeleteUserDietListResponseDto;
@@ -28,15 +27,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDietDataServiceImplement implements UserDietDataService {
 
-    private final JwtProvider jwtProvider;
     private final UserDietDataRepository userDietDataRepository;
     private final UserDietDetailDataRepository userDietDetailDataRepository;
     private final UserProfileRepository userProfileRepository;
 
     @Override
     @Transactional
-    public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto, String currentUserId) {
         dto.setToken(currentUserId);
 
         // 기존 Diet 데이터 조회
@@ -73,20 +70,18 @@ public class UserDietDataServiceImplement implements UserDietDataService {
         return InputUserDietListResponseDto.success();
     }
 
+    //241205-09:55_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
     @Override
     @Transactional
-    public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(DeleteUserDietListRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(String diet_created_date, String currentUserId) {
 
-        // 요청에서 받은 diet_created_date 확인
-        String dietCreatedDate = dto.getDiet_created_date();
-        if (dietCreatedDate == null) {
+        if (diet_created_date == null) {
             return DeleteUserDietListResponseDto.deleteFail();
         }
 
         // diet_created_date와 userId로 유효한 데이터 존재 여부 확인
         UserDietListDataEntity userDiet = userDietDataRepository
-                .findByUserProfile_UserAuthEntity_UserIdAndDietCreatedDate(currentUserId, dietCreatedDate);
+                .findByUserProfile_UserAuthEntity_UserIdAndDietCreatedDate(currentUserId, diet_created_date);
 
         if (userDiet == null) {
             // 해당 데이터를 찾을 수 없는 경우
@@ -94,17 +89,15 @@ public class UserDietDataServiceImplement implements UserDietDataService {
         }
         // 해당 날짜에 대한 모든 데이터 삭제
         userDietDataRepository.deleteAllByUserProfile_UserAuthEntity_UserIdAndDietCreatedDate(
-                currentUserId, dietCreatedDate);
+                currentUserId, diet_created_date);
 
         return DeleteUserDietListResponseDto.success();
 
     }
 
+    //241205-09:43_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
     @Override
-    public ResponseEntity<List<GetDietDataDetailResponseDto>> getUserDietListData(GetDietDataDetailRequestDto dto) {
-        // 토큰에서 사용자 ID 추출
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
-        String dietCreatedDate = dto.getDiet_created_date();
+    public ResponseEntity<List<GetDietDataDetailResponseDto>> getUserDietListData(String dietCreatedDate, String currentUserId) {
 
         // DietList 데이터 조회
         UserDietListDataEntity userDietListDataEntity = userDietDataRepository
@@ -112,7 +105,7 @@ public class UserDietDataServiceImplement implements UserDietDataService {
 
         // 데이터가 없는 경우 응답
         if (userDietListDataEntity == null) {
-            System.out.println("데이터가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         // DietDetail 데이터 조회
@@ -121,11 +114,11 @@ public class UserDietDataServiceImplement implements UserDietDataService {
 
         // 데이터가 없는 경우 응답
         if (dietDetailEntities.isEmpty()) {
-            System.out.println("DietDetail 데이터가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         // 총 칼로리 계산
-        double totalCalories = dietDetailEntities.stream()
+        Double totalCalories = dietDetailEntities.stream()
                 .mapToDouble(UserDietDetailDataEntity::getEnerc) // 칼로리 합산
                 .sum();
 

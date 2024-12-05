@@ -1,7 +1,5 @@
 package com.rookiefit.back.service;
 
-import com.rookiefit.back.dto.request.UserDietData.DeleteUserDietListRequestDto;
-import com.rookiefit.back.dto.request.UserDietData.GetDietDataDetailRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietListRequestDto;
 import com.rookiefit.back.dto.response.UserDietData.DeleteUserDietListResponseDto;
 import com.rookiefit.back.dto.response.UserDietData.GetDietDataDetailResponseDto;
@@ -13,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserDietDataService {
     // 식단 데이터를 입력하는 메서드
-    ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto);
+    ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto, String currentUserId);
 
     // 식단 데이터를 삭제하는 메서드
-    ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(DeleteUserDietListRequestDto dto);
+    ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(String diet_created_date, String currentUserId);
 
     // 해당 날짜의 식단 목록을 가져오는 메서드
-    ResponseEntity<List<GetDietDataDetailResponseDto>> getUserDietListData(GetDietDataDetailRequestDto dto);
+    ResponseEntity<List<GetDietDataDetailResponseDto>> getUserDietListData(String diet_created_date, String currentUserId);
 }
