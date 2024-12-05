@@ -1,7 +1,5 @@
 package com.rookiefit.back.controllers;
 
-import com.rookiefit.back.dto.request.UserDietData.DeleteUserDietListRequestDto;
-import com.rookiefit.back.dto.request.UserDietData.GetDietDataDetailRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputFoodInfoRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietListRequestDto;
 import com.rookiefit.back.dto.response.UserDietData.DeleteUserDietListResponseDto;
@@ -18,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,19 +35,25 @@ public class UserDietDataController {
         return responseBody;
     }
 
+    //241205-10:01_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
     @DeleteMapping("/delete-userdietlistdata")
     public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(
-            @RequestBody @Valid DeleteUserDietListRequestDto dto) {
+            @RequestParam String diet_created_date) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
         ResponseEntity<? super DeleteUserDietListResponseDto> responseBody = userDietDataService
-                .deleteUserDietData(dto);
+                .deleteUserDietData(currentUserId, diet_created_date);
         return responseBody;
     }
 
+    //241205-09:43_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
     @GetMapping("/userdietlistdata")
     public ResponseEntity<List<GetDietDataDetailResponseDto>> getUserDietListData(
-            @RequestBody @Valid GetDietDataDetailRequestDto dto) {
+            @RequestParam("diet_created_date") String diet_created_date) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
         ResponseEntity<List<GetDietDataDetailResponseDto>> responseBody = userDietDataService
-                .getUserDietListData(dto);
+                .getUserDietListData(diet_created_date,currentUserId);
         return responseBody;
     }
 

@@ -2,6 +2,7 @@ package com.rookiefit.back.dto.request.userData;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InputUserProfileRequestDto {
     
+    @NotBlank
     private MultipartFile userProfileImageFile;
 
     private String gymName;
@@ -21,5 +23,5 @@ public class InputUserProfileRequestDto {
 
     private String userAddress;
     
-    private String userNickname = "닉네임 없는 헬린이";
+    private String userNickname;
 }

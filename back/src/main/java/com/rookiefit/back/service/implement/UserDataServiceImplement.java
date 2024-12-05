@@ -45,9 +45,8 @@ public class UserDataServiceImplement implements UserDataService {
                                 exception.printStackTrace();
                         }
                 }
-                if(dto.getUserNickname() == null){ 
+                if(dto.getUserNickname().isEmpty()){ 
                         dto.setUserNickname("닉네임없는 헬린이");
-                        System.out.println(dto.getUserNickname());
                 }
                 UserEntity userEntity = userRepository.findByUserId(currentUserId);
                 UserProfileEntity userProfileEntity = new UserProfileEntity(dto,uploadedFileUrl,userEntity);

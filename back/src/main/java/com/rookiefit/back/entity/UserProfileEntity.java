@@ -47,6 +47,7 @@ public class UserProfileEntity {
     @Column(name = "user_profile_id")
     private Long userProfileId;
 
+    @NotBlank
     private String userProfileImageUri;
 
     private String gymName;
@@ -88,13 +89,14 @@ public class UserProfileEntity {
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatMessageEntity> messages;  // 사용자가 보낸 메시지들
 
+    //241205-09:32_김민준 : dto로 넘어오는 값들이 null로 검사하는게 아닌 isEmpty로 검사해야 빈값이 아닌 기본값을 넣을 수 있음
     public UserProfileEntity(InputUserProfileRequestDto dto, String uploadedFileUrl, UserEntity userEntity) {
         this.userAuthEntity = userEntity;// userId 설정
-        this.userProfileImageUri = uploadedFileUrl != null ? uploadedFileUrl : "userProfileImage";
-        this.gymName = dto.getGymName() != null ? dto.getUserName() : "헬스장 안다니는 헬린이";
-        this.userMessage = dto.getUserMessage() != null ? dto.getUserMessage() : "상태메시지 없는 헬린이";
-        this.userName = dto.getUserName() != null ? dto.getUserName() : "이름없는 헬린이";
-        this.userAddress = dto.getUserAddress() != null ? dto.getUserAddress() : "주소없는 헬린이";
-        this.userNickname = dto.getUserNickname() != null ? dto.getUserNickname() : "닉네임없는 헬린이";
+        this.userProfileImageUri = uploadedFileUrl;
+        this.gymName = dto.getGymName();
+        this.userMessage = dto.getUserMessage();
+        this.userName = dto.getUserName();
+        this.userAddress = dto.getUserAddress();
+        this.userNickname = dto.getUserNickname();
     }
 }

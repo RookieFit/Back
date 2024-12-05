@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserDataController {
     private final UserDataService userDataService;
 
+    //241204-21:30_김민준 프로필이미지는 기본이미지넣어줄것
     @PostMapping("/input-userprofile")
     public ResponseEntity<? super InputUserProfileResponseDto> inputUserProfile(
             @ModelAttribute InputUserProfileRequestDto dto) {
