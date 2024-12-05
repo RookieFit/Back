@@ -32,8 +32,6 @@ jobs:
           ls -la ./src/main/resources/
           sudo cat ./src/main/resources/firebase.json
 
-
-
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         working-directory: ./back
