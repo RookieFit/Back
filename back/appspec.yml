@@ -2,18 +2,9 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/rookiefit-server
-permissions:
-  - object: /
-    owner: ubuntu
-    group: ubuntu
-
+    destination: /home/ubuntu/rookiefit
 hooks:
-  BeforeInstall:
-    - location: scripts/start-server.sh
-      timeout: 300
-      runas: ubuntu
-  AfterInstall:
-    - location: scripts/start-new-server.sh
+  ApplicationStart:
+    - location: scripts/deploy.sh
       timeout: 300
       runas: ubuntu
