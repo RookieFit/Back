@@ -28,10 +28,9 @@ jobs:
       - name: firebase.json 파일 생성 및 디버그
         working-directory: ./back 
         run: |
-          echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > ./src/main/resources/firebase.json
+          echo "${{ secrets.FIREBASE_JSON }}" > ./src/main/resources/firebase.json
           ls -la ./src/main/resources/
-          # 비밀 정보 출력 대신 파일 존재 확인
-          echo "application-api.properties created successfully"
+          sudo cat ./src/main/resources/firebase.json
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
