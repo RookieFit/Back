@@ -42,8 +42,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: ECR에 로그인하기
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2  
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -62,21 +61,19 @@ jobs:
         working-directory: ./back
         run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
-      - name: SSH로 EC2에 접속하기
+      - name: SSH로 EC2에 접속하여 배포 실행
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
           script_stop: true
           script: |
-            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 739275460428.dkr.ecr.ap-northeast-2.amazonaws.com
             chmod +x ./back/scripts/deploy.sh
             ./back/scripts/deploy.sh
-            - name: 위치 확인 및 파일 목록 출력
-              run: |
-                echo "Current working directory:"
-                pwd
+
 
       - name: 파일 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts

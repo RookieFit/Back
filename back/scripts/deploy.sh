@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# AWS ECR 로그인
+aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 739275460428.dkr.ecr.ap-northeast-2.amazonaws.com
+
+
 ECR_REGISTRY="668701699473.dkr.ecr.ap-northeast-2.amazonaws.com"
 
 # 현재 실행 중인 애플리케이션의 포트 확인
