@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietDetailRequestDto;
 import com.rookiefit.back.dto.request.UserDietData.InputUserDietListRequestDto;
 import com.rookiefit.back.dto.response.UserDietData.DeleteUserDietListResponseDto;
@@ -34,7 +33,6 @@ public class UserDietDataServiceImplement implements UserDietDataService {
     @Override
     @Transactional
     public ResponseEntity<? super InputUserDietListResponseDto> inputUserDietData(InputUserDietListRequestDto dto, String currentUserId) {
-        dto.setToken(currentUserId);
 
         // 기존 Diet 데이터 조회
         UserDietListDataEntity userDietListDataEntity = userDietDataRepository
@@ -65,7 +63,6 @@ public class UserDietDataServiceImplement implements UserDietDataService {
                 userDietDetailDataRepository.save(userDietDetailDataEntity);
             }
         }
-
         // 응답 반환
         return InputUserDietListResponseDto.success();
     }

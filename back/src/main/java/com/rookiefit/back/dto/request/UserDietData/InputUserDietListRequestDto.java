@@ -13,9 +13,6 @@ import lombok.Setter;
 public class InputUserDietListRequestDto {
 
     @NotBlank
-    private String token; // 사용자 인증 토큰
-
-    @NotBlank
     private String diet_created_date; // 식단 생성 날짜
 
     private Double total_calories; // 총 칼로리
