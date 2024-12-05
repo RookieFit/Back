@@ -25,12 +25,13 @@ jobs:
           ls -la ./src/main/resources/
           sudo cat ./src/main/resources/application-api.properties
 
-      - name: firebase.json 파일 생성 및 디버그
-        working-directory: ./back 
-        run: |
-          echo "${{ secrets.FIREBASE_JSON }}" > ./src/main/resources/firebase.json
-          ls -la ./src/main/resources/
-          sudo cat ./src/main/resources/firebase.json
+      - name: create-json
+        id: firebase-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "firebase.json"
+          json: ${{ secrets.FIREBASE_JSON }}
+          working-directory: ./back/src/main/resources/
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
