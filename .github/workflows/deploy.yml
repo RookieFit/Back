@@ -31,7 +31,7 @@ jobs:
         with:
           name: "firebase.json"
           json: ${{ secrets.FIREBASE_JSON }}
-          working-directory: ./back/src/main/resources/
+          dir: 'src/main/resources/'
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
