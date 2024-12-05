@@ -13,6 +13,4 @@ public class UserDeleteRequestDto {
     @NotBlank
     private String user_password;
 
-    private String token;
-
 }

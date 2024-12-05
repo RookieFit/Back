@@ -11,24 +11,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class InputUserProfileRequestDto {
-
-
-    @NotBlank
-    private String token;
     
+    @NotBlank
     private MultipartFile userProfileImageFile;
 
-    @NotBlank
     private String gymName;
 
     private String userMessage;
 
-    @NotBlank
     private String userName;
 
-    @NotBlank
     private String userAddress;
     
-    @NotBlank
     private String userNickname;
 }

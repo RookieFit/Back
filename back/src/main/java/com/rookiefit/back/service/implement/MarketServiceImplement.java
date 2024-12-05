@@ -41,10 +41,7 @@ public class MarketServiceImplement implements MarketService{
     private final FirebaseService firebaseService;
 
     @Override
-    public ResponseEntity<? super InputMarketItemListResponseDto> inputMarketItemList(MarketItemListRequestDto dto) {
-        // 현재 사용자 ID를 추출
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
-
+    public ResponseEntity<? super InputMarketItemListResponseDto> inputMarketItemList(MarketItemListRequestDto dto, String currentUserId) {
         // 사용자 프로필 조회
         UserProfileEntity userProfile = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
         if (userProfile == null) {
@@ -88,8 +85,7 @@ public class MarketServiceImplement implements MarketService{
 
     //마켓 게시물 수정하기 이미지처리 구현 완(241204-15:06_김민준)
     @Override
-    public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(MarketItemListRequestDto dto, Long marketListId) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super InputMarketItemListResponseDto> updateMarketItemList(MarketItemListRequestDto dto, Long marketListId, String currentUserId) {
         // 1. MarketItemListEntity 조회
         Optional<MarketItemListEntity> optionalMarketItemList = marketItemListRepository.findById(marketListId);
         if (optionalMarketItemList.isEmpty()) {

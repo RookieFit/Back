@@ -4,25 +4,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rookiefit.back.dto.request.userWorkoutData.DeleteUserWorkoutListRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutDetailRequestDto;
-import com.rookiefit.back.dto.request.userWorkoutData.GetUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.request.userWorkoutData.InputUserWorkoutListRequestDto;
 import com.rookiefit.back.dto.response.userWorkoutData.DeleteUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutDetailResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.GetUserWorkoutListResponseDto;
 import com.rookiefit.back.dto.response.userWorkoutData.InputUserWorkoutListResponseDto;
+import com.rookiefit.back.entity.UserProfileEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutDetailDataEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
 import com.rookiefit.back.entity.UserWorkout.UserWorkoutListDataEntity;
-import com.rookiefit.back.provider.JwtProvider;
+import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutDetailDataRepository;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutImagesRepository;
 import com.rookiefit.back.repository.UserWorkout.UserWorkoutListDataRepository;
@@ -35,18 +33,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
 
-    private final JwtProvider jwtProvider;
     private final FirebaseService firebaseService;
+    private final UserProfileRepository userProfileRepository;
     private final UserWorkoutListDataRepository userWorkoutListDataRepository;
     private final UserWorkoutDetailDataRepository userWorkoutDetailDataRepository;
     private final UserWorkoutImagesRepository userWorkoutImagesRepository;
 
+    //todo : update와 분리하여 구현할것
     @Transactional
     @Override
-    public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken()); // 토큰에서 userId 추출
-        dto.setToken(currentUserId); // userId 저장
-        
+    public ResponseEntity<? super InputUserWorkoutListResponseDto> inputUserWorkoutData(InputUserWorkoutListRequestDto dto, String currentUserId) {
+
+        UserProfileEntity userProfileEntity = userProfileRepository.findByUserAuthEntity_UserId(currentUserId);
+        if(userProfileEntity == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         // 기존 WorkoutList 데이터 조회
         UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, dto.getWorkoutCreatedData());
 
@@ -57,7 +58,7 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             userWorkoutDetailDataRepository.deleteByUserWorkoutList(userWorkoutListDataEntity);
         } else {
             // 새로운 엔티티 생성
-            userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto);
+            userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto,currentUserId,userProfileEntity);
             userWorkoutListDataEntity.setUserId(currentUserId);
         }
     
@@ -90,36 +91,30 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
         return InputUserWorkoutListResponseDto.success();
     }
     
+    //241205-11:35_김민준 : @RequestParam으로 교체 완
     @Override
-    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(GetUserWorkoutListRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<List<GetUserWorkoutListResponseDto>> getUserWorkoutData(String currentUserId) {
         boolean isExsitedId = userWorkoutListDataRepository.existsByUserId(currentUserId);
         if (!isExsitedId) {
-            System.out.println("아이디가 존재하지 않음");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-
         // 사용자별 운동 리스트 조회
         List<UserWorkoutListDataEntity> userWorkoutListDataEntities = userWorkoutListDataRepository.findWorkoutListByUserId(currentUserId);
-
         // GetUserWorkoutListResponseDto.success()에서 자동으로 변환 처리됨
         return GetUserWorkoutListResponseDto.success(userWorkoutListDataEntities);
     }
 
 
     @Override
-    public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(GetUserWorkoutDetailRequestDto dto) {
-        String currentDate = dto.getWorkoutDetailCreatedDate();
-        List<UserWorkoutDetailDataEntity> userWorkoutDetailDataEntity = userWorkoutDetailDataRepository.findByWorkoutDetailCreatedDate(currentDate);
+    public ResponseEntity<List<GetUserWorkoutDetailResponseDto>> getUserWorkoutDetail(String currentUserId, String workoutDetailCreatedDate) {
+        List<UserWorkoutDetailDataEntity> userWorkoutDetailDataEntity = userWorkoutDetailDataRepository.findByUserWorkoutList_UserIdAndWorkoutDetailCreatedDate(currentUserId,workoutDetailCreatedDate);
         return GetUserWorkoutDetailResponseDto.success(userWorkoutDetailDataEntity);  // Pass the entity list to the DTO's success method
     }
 
     @Override
-    public ResponseEntity<? super DeleteUserWorkoutListResponseDto> deleteUserWorkoutList(DeleteUserWorkoutListRequestDto dto) {
-        // 사용자 ID 추출
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
-
+    public ResponseEntity<? super DeleteUserWorkoutListResponseDto> deleteUserWorkoutList(String currentUserId, String workoutCreatedDate) {
         // 삭제할 운동 목록을 DB에서 찾기
-        UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, dto.getWorkoutCreatedDate());
+        UserWorkoutListDataEntity userWorkoutListDataEntity = userWorkoutListDataRepository.findByUserIdAndWorkoutCreatedDate(currentUserId, workoutCreatedDate);
         // 운동 목록이 존재하는지 확인
         if (userWorkoutListDataEntity == null) {
         // 운동 목록이 없으면 에러 응답 반환

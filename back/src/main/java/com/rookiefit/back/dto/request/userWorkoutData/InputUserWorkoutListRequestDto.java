@@ -14,9 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InputUserWorkoutListRequestDto {
 
-    @NotBlank
-    private String token;
-
     private String comment;
 
     @NotBlank
