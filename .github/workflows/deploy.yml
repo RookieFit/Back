@@ -55,10 +55,12 @@ jobs:
       - name: ECR URL 확인
         run: echo ${{ steps.login-ecr.outputs.registry }}
 
-
       - name: Docker 이미지에 Tag 붙이기
         working-directory: ./back
-        run: docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+        run: |
+          echo "Tagging Docker image"
+          docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+
 
       - name: ECR에 Docker 이미지 Push하기
         working-directory: ./back
