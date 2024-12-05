@@ -81,11 +81,6 @@ jobs:
             docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
             docker run -d --name rookiefit-server -p 4040:4040 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
-      - name: 위치 확인 및 파일 목록 출력
-        run: |
-          echo "Current working directory:"
-          pwd
-
       - name: 파일 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts
 
