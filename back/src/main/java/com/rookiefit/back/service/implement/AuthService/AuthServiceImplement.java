@@ -213,7 +213,6 @@ public class AuthServiceImplement implements AuthService {
             CheckFindUserPasswordRequestDto dto) {
 
         String userId = dto.getUserId();
-        String phoneNumber = dto.getUser_phonenumber();
         String certificationNumber = dto.getCertificationNumber();
 
         boolean isMatch = certificationManager.verifyAndDelete(userId, certificationNumber);
@@ -225,7 +224,6 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public ResponseEntity<? super UserDeleteResponseDto> userDelete(UserDeleteRequestDto dto, String userId) {
-;
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         String inputPassword = dto.getUser_password();

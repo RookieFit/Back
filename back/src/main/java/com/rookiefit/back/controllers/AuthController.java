@@ -1,11 +1,8 @@
 package com.rookiefit.back.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusds.jose.proc.SecurityContext;
-import com.rookiefit.back.common.CustomUserDetails;
 import com.rookiefit.back.dto.request.auth.CheckCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserIdRequestDto;
 import com.rookiefit.back.dto.request.auth.CheckFindUserPasswordRequestDto;
@@ -116,7 +113,7 @@ public class AuthController {
         return response;
     }
 
-    @GetMapping("/user-delete")
+    @PostMapping("/user-delete")
     public ResponseEntity<? super UserDeleteResponseDto> userDelete(
             @RequestBody @Valid UserDeleteRequestDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
