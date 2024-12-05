@@ -2,9 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/rookiefit
+    destination: /home/ubuntu/app
+
 hooks:
-  ApplicationStart:
+  AfterInstall:
     - location: scripts/deploy.sh
       timeout: 300
       runas: ubuntu

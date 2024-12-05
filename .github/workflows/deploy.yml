@@ -62,7 +62,7 @@ jobs:
         working-directory: ./back
         run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
-      - name: SSH로 EC2에 접속하여 배포 실행
+      - name: EC2로 배포 스크립트 실행
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -72,8 +72,8 @@ jobs:
           script_stop: true
           script: |
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 739275460428.dkr.ecr.ap-northeast-2.amazonaws.com
-            chmod +x ./back/scripts/deploy.sh
-            ./back/scripts/deploy.sh
+            chmod +x /home/ubuntu/app/scripts/deploy.sh
+            /home/ubuntu/app/scripts/deploy.sh
 
       - name: 파일 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts

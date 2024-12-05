@@ -10,10 +10,10 @@ ECR_REGISTRY="668701699473.dkr.ecr.ap-northeast-2.amazonaws.com"
 CURRENT_PORT=$(docker ps --filter "name=rookiefit-server" --format "{{.Names}}" | grep -oE '[0-9]+$')
 
 # 새 포트 설정
-if [ "${CURRENT_PORT}" == "8080" ]; then
-    TARGET_PORT=8081
+if [ "${CURRENT_PORT}" == "4040" ]; then
+    TARGET_PORT=4040
 else
-    TARGET_PORT=8080
+    TARGET_PORT=4041
 fi
 
 # 새 컨테이너 실행
