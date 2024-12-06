@@ -75,7 +75,7 @@ public class UserDataController {
     // 트레이너 등록 요청
     @PostMapping("/trainer-register")
     public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto dto) {
+            @ModelAttribute InputTrainerRequestDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserId = (String) authentication.getPrincipal();
         ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto, currentUserId);

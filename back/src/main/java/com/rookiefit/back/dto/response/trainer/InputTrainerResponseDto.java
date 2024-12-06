@@ -23,6 +23,6 @@ public class InputTrainerResponseDto {
     // 성공 응답을 반환하는 static 메소드
     public static ResponseEntity<InputTrainerResponseDto> success(String message) {
         InputTrainerResponseDto responseBody = new InputTrainerResponseDto(message);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }

@@ -1,5 +1,8 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
+
+import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import com.rookiefit.back.entity.TrainerEntity;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.repository.TrainerRepository;
 import com.rookiefit.back.repository.UserRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.TrainerService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,22 +24,37 @@ public class TrainerServiceImplement implements TrainerService {
 
         private final TrainerRepository trainerRepository;
         private final UserRepository userRepository;
+        private final FirebaseService firebaseService;
 
         @Override
         public ResponseEntity<? super InputTrainerResponseDto> createTrainer(InputTrainerRequestDto dto,
                         String currentUserId) {
+
                 // 유저 존재 여부 확인
-                UserEntity userEntity = userRepository.findById(
-                                currentUserId)
-                                .orElse(null);
+                UserEntity userEntity = userRepository.findByUserId(currentUserId);
                 if (userEntity == null) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                         .body(new InputTrainerResponseDto("존재하지 않는 사용자입니다."));
                 }
 
+                // 이미지 파일 업로드
+                String licenseImageUrl = null;
+                String businessRegisterImageUrl = null;
+                try {
+                        licenseImageUrl = firebaseService.uploadFile(dto.getLicenseImageUrl());
+                        businessRegisterImageUrl = firebaseService.uploadFile(dto.getBusinessRegisterImageUrl());
+                } catch (IOException exception) {
+                        exception.printStackTrace();
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                        .body(new InputTrainerResponseDto("파일 업로드 중 오류가 발생했습니다."));
+                }
+
+                if (licenseImageUrl == null && businessRegisterImageUrl == null) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }
                 // TrainerEntity 생성
-                TrainerEntity trainerEntity = new TrainerEntity(dto, userEntity);
-                trainerEntity.setUser(userEntity);
+                TrainerEntity trainerEntity = new TrainerEntity(dto, userEntity, licenseImageUrl,
+                                businessRegisterImageUrl);
 
                 // 트레이너 정보 저장
                 trainerRepository.save(trainerEntity);
