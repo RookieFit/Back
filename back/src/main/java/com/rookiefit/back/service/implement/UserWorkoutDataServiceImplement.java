@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,23 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             userWorkoutListDataEntity.updateWorkoutData(dto);
             // 기존 WorkoutDetails 삭제 후 새로운 WorkoutDetails 저장
             userWorkoutDetailDataRepository.deleteByUserWorkoutList(userWorkoutListDataEntity);
+            userWorkoutListDataEntity.getWorkoutDetails().clear();
+
+            // 기존 WorkoutImages 삭제 (Firebase + DB)
+            List<String> existingImageUrls = userWorkoutListDataEntity.getUserWorkoutImages()
+                    .stream()
+                    .map(UserWorkoutImagesEntity::getWorkoutImageUri)
+                    .collect(Collectors.toList());
+             // DB에서 이미지 엔티티 삭제
+             
+        userWorkoutImagesRepository.deleteByUserWorkoutList(userWorkoutListDataEntity);
+        userWorkoutListDataEntity.getUserWorkoutImages().clear();
+
+
+        // Firebase에서 이미지 삭제
+        if (!existingImageUrls.isEmpty()) {
+            firebaseService.deleteFiles(existingImageUrls);
+        }
         } else {
             // 새로운 엔티티 생성
             userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto,currentUserId,userProfileEntity);

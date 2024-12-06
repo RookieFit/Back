@@ -2,6 +2,7 @@ package com.rookiefit.back.config;
 
 import java.util.Map;
 
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
@@ -27,6 +28,7 @@ public class WebSocketJwtInterceptor implements HandshakeInterceptor {
                                     WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
 
         // 쿼리 파라미터에서 token 추출
+        
         String token = request.getURI().getQuery();
 
         if (token != null && token.startsWith("token=")) {
@@ -48,6 +50,7 @@ public class WebSocketJwtInterceptor implements HandshakeInterceptor {
                 System.out.println("Invalid or expired token.");
             }
         }
+        System.out.println(token);
         // 토큰이 없거나 유효하지 않으면 WebSocket 연결을 거부
         response.setStatusCode(HttpStatus.FORBIDDEN);
         return false;

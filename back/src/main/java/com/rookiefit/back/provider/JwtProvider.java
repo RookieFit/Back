@@ -60,19 +60,20 @@ public class JwtProvider {
 
     }
 
-    public String getUserIdFromToken(String token) {
-        try {
-            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+    //token에서 userid추출하는 메서드 여기서 잠들다 241205_15:55
+    // public String getUserIdFromToken(String token) {
+    //     try {
+    //         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    //         Claims claims = Jwts.parserBuilder()
+    //                 .setSigningKey(key)
+    //                 .build()
+    //                 .parseClaimsJws(token)
+    //                 .getBody();
 
-            return claims.getSubject();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    //         return claims.getSubject();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
 }

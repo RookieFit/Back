@@ -15,6 +15,9 @@ public interface UserCommunityRepository extends JpaRepository<UserCommunityEnti
 
     List<UserCommunityEntity> findByCommunityContentType(String communityContentType);
 
+    List<UserCommunityEntity> findByCommunityTitleContainingOrCommunityContentContainingOrCommunityAuthorContaining(
+        String titleKeyword, String contentKeyword, String authorKeyword
+        );
     List<UserCommunityEntity> findByCommunityTitleContaining(String keyword);
     List<UserCommunityEntity> findByCommunityContentContaining(String keyword);
     List<UserCommunityEntity> findByCommunityAuthorContaining(String keyword);
