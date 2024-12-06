@@ -48,9 +48,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: ECR에 로그인하기
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2  
+      - name: ECR에 로그인 및 Docker Pull
+        run: |
+          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+          docker pull ${{ secrets.AWS_ECR_REGISTRY }}/rookiefit-server:latest
 
       - name: Cache Docker layers
         uses: actions/cache@v2
