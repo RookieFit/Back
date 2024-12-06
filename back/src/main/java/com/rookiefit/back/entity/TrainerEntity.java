@@ -38,6 +38,7 @@ public class TrainerEntity {
 
     private String businessRegisterImageUrl;
 
+
     public TrainerEntity(InputTrainerRequestDto dto, UserEntity userEntity, String licenseImageUrl, String businessRegisterImageUrl) {
         this.licenseNumber = dto.getLicenseNumber();
         this.licenseImageUrl = licenseImageUrl;

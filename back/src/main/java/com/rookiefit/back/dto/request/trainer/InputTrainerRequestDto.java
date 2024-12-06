@@ -12,13 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InputTrainerRequestDto {
 
-    @NotBlank
-    private String userId;
-
     private MultipartFile licenseImageUrl;
 
-    @NotBlank
+
     private String licenseNumber;
+
+    private MultipartFile licenseImageUrl;
 
     @NotBlank
     private String businessRegisterNumber;

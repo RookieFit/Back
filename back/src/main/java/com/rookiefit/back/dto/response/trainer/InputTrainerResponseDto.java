@@ -3,14 +3,11 @@ package com.rookiefit.back.dto.response.trainer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class InputTrainerResponseDto {
 
-    private String userId; // 사용자 ID
     private boolean isLicensed; // 라이센스 승인 여부
     private String message;
 
@@ -25,14 +22,22 @@ public class InputTrainerResponseDto {
 
     public InputTrainerResponseDto(String message) {
         this.message = message;
+
+    private String message;
+
+    // 기본 생성자
+    public InputTrainerResponseDto() {
+        super();
     }
 
-    // public InputTrainerResponseDto() {
-    // super();
-    // }
+    // 메시지를 받는 생성자
+    public InputTrainerResponseDto(String message) {
+        this.message = message;
+    }
 
-    // public static ResponseEntity<InputTrainerResponseDto> success() {
-    // InputTrainerResponseDto responseBody = new InputTrainerResponseDto();
-    // return ResponseEntity.status(HttpStatus.OK).body(responseBody);
-    // }
+    // 성공 응답을 반환하는 static 메소드
+    public static ResponseEntity<InputTrainerResponseDto> success(String message) {
+        InputTrainerResponseDto responseBody = new InputTrainerResponseDto(message);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
 }
