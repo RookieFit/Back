@@ -11,7 +11,6 @@ import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserBodyDataResponseDto;
-import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 
 import com.rookiefit.back.service.TrainerService;
 import com.rookiefit.back.service.UserDataService;
