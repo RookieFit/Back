@@ -47,7 +47,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final AuthService authService;
-    private final TrainerService trainerService;
 
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
@@ -130,13 +129,5 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         return ResponseEntity.ok(roles);
-    }
-
-    // 트레이너 등록 요청
-    @PostMapping("/trainer-register")
-    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto dto) {
-        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto);
-        return response;
     }
 }

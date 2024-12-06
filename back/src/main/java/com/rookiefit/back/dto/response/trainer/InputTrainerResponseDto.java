@@ -12,7 +12,6 @@ public class InputTrainerResponseDto {
         super();
     }
 
-    // 인증 신청 완료 응답
     public static ResponseEntity<InputTrainerResponseDto> success() {
         InputTrainerResponseDto responseBody = new InputTrainerResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
