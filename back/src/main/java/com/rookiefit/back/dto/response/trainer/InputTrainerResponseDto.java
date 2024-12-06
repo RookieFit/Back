@@ -12,9 +12,19 @@ public class InputTrainerResponseDto {
 
     private String userId; // 사용자 ID
     private boolean isLicensed; // 라이센스 승인 여부
+    private String message;
 
-    public static InputTrainerResponseDto success(String userId, boolean isLicensed) {
-        return new InputTrainerResponseDto(userId, isLicensed);
+    public static ResponseEntity<InputTrainerResponseDto> success(String message) {
+        InputTrainerResponseDto responseBody = new InputTrainerResponseDto(message);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+
+    public InputTrainerResponseDto() {
+        super();
+    }
+
+    public InputTrainerResponseDto(String message) {
+        this.message = message;
     }
 
     // public InputTrainerResponseDto() {

@@ -1,5 +1,7 @@
 package com.rookiefit.back.service.implement;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.rookiefit.back.entity.TrainerEntity;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.repository.TrainerRepository;
 import com.rookiefit.back.repository.UserRepository;
+import com.rookiefit.back.service.FirebaseService;
 import com.rookiefit.back.service.TrainerService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,27 +23,36 @@ public class TrainerServiceImplement implements TrainerService {
 
     private final TrainerRepository trainerRepository;
     private final UserRepository userRepository;
+    private final FirebaseService firebaseService;
 
     // 트레이너 인증 요청
     @Override
-    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(InputTrainerRequestDto dto) {
+    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(InputTrainerRequestDto dto, String currentUserId) {
 
         // 유저가 존재하는지 확인
-        UserEntity userEntity = userRepository.findById(dto.getUserId()).orElse(null);
+        UserEntity userEntity = userRepository.findByUserId(currentUserId);
         if (userEntity == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new InputTrainerResponseDto(dto.getUserId(), false));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                        .body(new InputTrainerResponseDto("존재하지 않는 사용자입니다."));
         }
 
-        // TrainerEntity 생성 및 저장
-        TrainerEntity trainerEntity = new TrainerEntity(dto, userEntity);
+        String licenseImageUrl = null;
+        String businessRegisterImageUrl = null;
+        try {
+                licenseImageUrl = firebaseService.uploadFile(dto.getLicenseImageUrl());
+                businessRegisterImageUrl = firebaseService.uploadFile(dto.getBusinessRegisterImageUrl());
+        } catch (IOException exception) {
+                exception.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body(new InputTrainerResponseDto("파일 업로드 중 오류가 발생했습니다."));
+        }
 
-        trainerEntity.setUser(userEntity);
-        trainerRepository.save(trainerEntity);
-
+        TrainerEntity trainerEntity = new TrainerEntity(dto, userEntity, licenseImageUrl,
+                                businessRegisterImageUrl);
         // 응답 생성 및 반환
-        InputTrainerResponseDto responseDto = new InputTrainerResponseDto(dto.getUserId(), userEntity.getIsLicensed());
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        trainerRepository.save(trainerEntity);
+        // 응답 반환
+        return InputTrainerResponseDto.success("트레이너 인증 신청이 완료되었습니다.");
     }
 
     // TODO ADMIN 파트 다시 하기..
