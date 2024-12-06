@@ -56,6 +56,7 @@ public class UserWorkoutDataServiceImplement implements UserWorkoutDataService{
             userWorkoutListDataEntity.updateWorkoutData(dto);
             // 기존 WorkoutDetails 삭제 후 새로운 WorkoutDetails 저장
             userWorkoutDetailDataRepository.deleteByUserWorkoutList(userWorkoutListDataEntity);
+            userWorkoutListDataEntity.getWorkoutDetails().clear();
         } else {
             // 새로운 엔티티 생성
             userWorkoutListDataEntity = new UserWorkoutListDataEntity(dto,currentUserId,userProfileEntity);

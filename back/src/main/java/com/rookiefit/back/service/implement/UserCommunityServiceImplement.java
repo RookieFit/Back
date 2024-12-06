@@ -24,7 +24,6 @@ import com.rookiefit.back.entity.UserProfileEntity;
 import com.rookiefit.back.entity.UserCommunity.CommunityImageListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunity_Answer_ListEntity;
-import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.UserProfileRepository;
 import com.rookiefit.back.repository.UserCommunity.CommunityImageListRepository;
 import com.rookiefit.back.repository.UserCommunity.UserCommunityAnswerRepository;
@@ -39,7 +38,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserCommunityServiceImplement implements UserCommunityService{
 
-    private final JwtProvider jwtProvider;
     private final UserCommunityRepository userCommunityRepository;
     private final UserCommunityAnswerRepository userCommunityAnswerRepository;
     private final CommunityImageListRepository communityImageListRepository;
