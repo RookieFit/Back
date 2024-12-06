@@ -38,14 +38,12 @@ public class TrainerEntity {
 
     private String businessRegisterImageUrl;
 
-    public TrainerEntity(InputTrainerRequestDto dto, UserEntity userEntity) {
+    public TrainerEntity(InputTrainerRequestDto dto, UserEntity userEntity, String licenseImageUrl,
+            String businessRegisterImageUrl) {
         this.licenseNumber = dto.getLicenseNumber();
-        this.licenseImageUrl = dto.getLicenseImageUrl();
+        this.licenseImageUrl = licenseImageUrl;
         this.businessRegisterNumber = dto.getBusinessRegisterNumber();
-        this.businessRegisterImageUrl = dto.getBusinessRegisterImageUrl();
-    }
-
-    public void setUser(UserEntity userEntity) {
+        this.businessRegisterImageUrl = businessRegisterImageUrl;
         this.userAuthEntity = userEntity;
     }
 }

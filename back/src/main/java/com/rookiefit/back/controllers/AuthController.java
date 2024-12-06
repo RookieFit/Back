@@ -54,6 +54,7 @@ public class AuthController {
     private final TrainerService trainerService;
     private final UserRepository userRepository;
 
+
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
             @RequestBody @Valid IdCheckRequestDto dto) {
