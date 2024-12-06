@@ -11,9 +11,6 @@ import lombok.Setter;
 public class InputTrainerRequestDto {
 
     @NotBlank
-    private String userId;
-
-    @NotBlank
     private String licenseImageUrl;
 
     @NotBlank
