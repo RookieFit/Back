@@ -48,29 +48,18 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: ECR에 로그인 및 Docker Pull
+      - name: ECR에 로그인하기
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2  
+
+      - name: Docker 이미지 빌드 및 Push
         run: |
-          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
-          docker pull ${{ secrets.AWS_ECR_REGISTRY }}/rookiefit-server:latest
+          docker build -t rookiefit-server ./back
+          docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
-
-      - name: Build Docker image
-        run: docker build -t rookiefit-server ./back
-
-      - name: Docker 이미지에 Tag 붙이기
-        working-directory: ./back
-        run: docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-
-      - name: ECR에 Docker 이미지 Push하기
-        working-directory: ./back
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
-
-      - name: SSH로 EC2에 접속하기
+      - name: SSH로 EC2에 접속하여 Docker 이미지 배포
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -78,6 +67,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
             docker stop rookiefit-server || true
             docker rm rookiefit-server || true
             docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
@@ -86,10 +76,10 @@ jobs:
       - name: 파일 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts
 
-      - name: S3에 프로젝트 폴더 업로드하기
+      - name: S3에 프로젝트 파일 업로드
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefits3/$GITHUB_SHA.tar.gz
 
-      - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
+      - name: CodeDeploy를 활용하여 EC2에 프로젝트 코드 배포
         run: |
           aws deploy create-deployment \
             --application-name RookieFit_Code_Deploy \
