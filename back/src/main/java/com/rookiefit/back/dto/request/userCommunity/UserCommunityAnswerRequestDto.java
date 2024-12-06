@@ -18,9 +18,6 @@ public class UserCommunityAnswerRequestDto {
         private Long communityAnswerListId;
 
         @NotBlank
-        private String token;
-
-        @NotBlank
         private String answerContent;
         
         private LocalDateTime answerCreatedDate;
