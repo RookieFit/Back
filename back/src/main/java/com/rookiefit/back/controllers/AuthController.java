@@ -20,6 +20,8 @@ import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
 import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
+import com.rookiefit.back.entity.UserEntity;
+import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
@@ -33,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,12 +44,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
 @RestController
 @RequestMapping("/api/v1/auth/")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+    private final TrainerService trainerService;
+    private final UserRepository userRepository;
+
 
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck(
@@ -129,5 +136,25 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         return ResponseEntity.ok(roles);
+    }
+
+    //트레이너 자격이 있는사람인지 체크
+    @GetMapping("/islicensed")
+    public ResponseEntity<Boolean> getLicensed() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
+        UserEntity userEntity = userRepository.findByUserId(currentUserId);
+        if(userEntity==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(userEntity.getIsLicensed());
+    }
+
+    // 트레이너 등록 요청
+    @PostMapping("/trainer-register")
+    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
+            @RequestBody @Valid InputTrainerRequestDto dto) {
+        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto);
+        return response;
     }
 }

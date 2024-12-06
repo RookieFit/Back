@@ -67,29 +67,12 @@ public class UserDietDataServiceImplement implements UserDietDataService {
         return InputUserDietListResponseDto.success();
     }
 
-    //241205-09:55_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
+    //241205-09:55_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체, detailid를 받아서 해당 삭제
     @Override
     @Transactional
-    public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(String diet_created_date, String currentUserId) {
-
-        if (diet_created_date == null) {
-            return DeleteUserDietListResponseDto.deleteFail();
-        }
-
-        // diet_created_date와 userId로 유효한 데이터 존재 여부 확인
-        UserDietListDataEntity userDiet = userDietDataRepository
-                .findByUserProfile_UserAuthEntity_UserIdAndDietCreatedDate(currentUserId, diet_created_date);
-
-        if (userDiet == null) {
-            // 해당 데이터를 찾을 수 없는 경우
-            return DeleteUserDietListResponseDto.deleteFail();
-        }
-        // 해당 날짜에 대한 모든 데이터 삭제
-        userDietDataRepository.deleteAllByUserProfile_UserAuthEntity_UserIdAndDietCreatedDate(
-                currentUserId, diet_created_date);
-
+    public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(Long userDietDetailId) {
+        userDietDetailDataRepository.deleteById(userDietDetailId);
         return DeleteUserDietListResponseDto.success();
-
     }
 
     //241205-09:43_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체

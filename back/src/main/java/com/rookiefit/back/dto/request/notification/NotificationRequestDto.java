@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class NotificationRequestDto {
-    private String token;
     private Long notificationId;
     private String notificationAuthor;
     private String notificationContent;

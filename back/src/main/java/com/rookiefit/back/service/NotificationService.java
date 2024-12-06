@@ -9,8 +9,8 @@ import com.rookiefit.back.dto.response.notification.GetNotificationListResponseD
 import com.rookiefit.back.dto.response.notification.GetNotificationResponseDto;
 
 public interface NotificationService {
-    ResponseEntity<? super InputNotificationResponseDto> createNotification(NotificationRequestDto dto);
-    ResponseEntity<? super InputNotificationResponseDto> updateNotification(NotificationRequestDto dto, Long notificationId);
+    ResponseEntity<? super InputNotificationResponseDto> createNotification(NotificationRequestDto dto, String currentUserId);
+    ResponseEntity<? super InputNotificationResponseDto> updateNotification(NotificationRequestDto dto, Long notificationId, String currentUserId);
     ResponseEntity<? super GetNotificationListResponseDto> getAllNotification();
     ResponseEntity<? super GetNotificationResponseDto> getNotification(Long id);
     ResponseEntity<? super GetNotificationListResponseDto> searchNotification(String keyword, String field);

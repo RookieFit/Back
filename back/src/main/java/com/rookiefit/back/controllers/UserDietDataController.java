@@ -40,11 +40,9 @@ public class UserDietDataController {
     //241205-10:01_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
     @DeleteMapping("/delete-userdietlistdata")
     public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(
-            @RequestParam String diet_created_date) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserId = (String)authentication.getPrincipal();
+            @PathVariable Long userDietDetailId) {
         ResponseEntity<? super DeleteUserDietListResponseDto> responseBody = userDietDataService
-                .deleteUserDietData(currentUserId, diet_created_date);
+                .deleteUserDietData(userDietDetailId);
         return responseBody;
     }
 

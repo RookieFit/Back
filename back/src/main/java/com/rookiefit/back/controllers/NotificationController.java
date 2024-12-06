@@ -1,6 +1,8 @@
 package com.rookiefit.back.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,15 +34,19 @@ public class NotificationController {
     @PostMapping("/admin/create-notification")
     public ResponseEntity<? super InputNotificationResponseDto> createNotification(
         @RequestBody @Valid NotificationRequestDto dto) {
-            ResponseEntity<? super InputNotificationResponseDto> responseBody = notificationService.createNotification(dto);
-            return responseBody;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
+        ResponseEntity<? super InputNotificationResponseDto> responseBody = notificationService.createNotification(dto,currentUserId);
+        return responseBody;
     }
 
     @PutMapping("/admin/update-notification/{id}")
     public ResponseEntity<? super InputNotificationResponseDto> updateNotification(
         @PathVariable("id")Long notificationId, @RequestBody @Valid NotificationRequestDto dto) {
-            ResponseEntity<? super InputNotificationResponseDto> responseBody = notificationService.updateNotification(dto, notificationId);
-            return responseBody;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
+        ResponseEntity<? super InputNotificationResponseDto> responseBody = notificationService.updateNotification(dto, notificationId,currentUserId);
+        return responseBody;
     }
 
     @GetMapping("/get-all-notification")
