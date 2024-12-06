@@ -17,8 +17,8 @@ public class DeleteUserDietListResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<? super DeleteUserDietListResponseDto> success() {
-        DeleteUserDietListResponseDto reponseBody = new DeleteUserDietListResponseDto();
-        return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
+        DeleteUserDietListResponseDto responseBody = new DeleteUserDietListResponseDto();
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> deleteFail() {
