@@ -38,11 +38,11 @@ public class UserDietDataController {
     }
 
     //241205-10:01_(기능구현자 == {김경은})/Feat.김민준 : @RequestParam으로 교체
-    @DeleteMapping("/delete-userdietlistdata")
+    @DeleteMapping("/delete-userdietlistdata/{userDietDetailId}")
     public ResponseEntity<? super DeleteUserDietListResponseDto> deleteUserDietData(
-            @PathVariable Long userDietDetailId) {
-        ResponseEntity<? super DeleteUserDietListResponseDto> responseBody = userDietDataService
-                .deleteUserDietData(userDietDetailId);
+            @PathVariable("userDietDetailId") Long userDietDetailId) {
+        System.out.println("userDietDetailId:  "+userDietDetailId);
+        ResponseEntity<? super DeleteUserDietListResponseDto> responseBody = userDietDataService.deleteUserDietData(userDietDetailId);
         return responseBody;
     }
 

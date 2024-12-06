@@ -5,7 +5,9 @@ import com.rookiefit.back.entity.UserDiet.UserDietListDataEntity;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserDietDetailDataRepository extends JpaRepository<UserDietDetailDataEntity, Long> {
     List<UserDietDetailDataEntity> findAllByUserDietListData_DietCreatedDate(String dietCreatedDate);
 
