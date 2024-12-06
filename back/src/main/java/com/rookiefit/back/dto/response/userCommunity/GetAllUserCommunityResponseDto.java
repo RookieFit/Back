@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.entity.UserCommunity.CommunityImageListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +28,9 @@ public class GetAllUserCommunityResponseDto extends ResponseDto {
     private String communityContent;
     private String communityImageUrl;
     private String communityContentType;
+    private Boolean isModified;
     private LocalDateTime createdDate;
-    private List<String> commnunityImages;
+    private List<String> commnunityImages; 
 
     public GetAllUserCommunityResponseDto(UserCommunityEntity entity) {
         this.communityListId = entity.getCommunityListId();
@@ -36,6 +38,7 @@ public class GetAllUserCommunityResponseDto extends ResponseDto {
         this.communityContent = entity.getCommunityContent();
         this.communityImageUrl = entity.getCommunityImageUrl();
         this.communityContentType = entity.getCommunityContentType();
+        this.isModified = entity.getIsModified();
         this.createdDate = entity.getCreatedDate();
         // 이미지를 처리하는 로직을 여기에서 수행
         this.commnunityImages = (entity.getCommunityImages() != null && !entity.getCommunityImages().isEmpty())

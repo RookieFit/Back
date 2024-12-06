@@ -11,6 +11,8 @@ import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserBodyDataResponseDto;
+
+import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.service.TrainerService;
 import com.rookiefit.back.service.UserDataService;
 
@@ -75,8 +77,10 @@ public class UserDataController {
     // 트레이너 등록 요청
     @PostMapping("/trainer-register")
     public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto dto) {
-        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto);
+            @ModelAttribute InputTrainerRequestDto dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto, currentUserId);
         return response;
     }
 }

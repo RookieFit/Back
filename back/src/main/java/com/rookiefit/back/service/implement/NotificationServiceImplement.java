@@ -14,7 +14,6 @@ import com.rookiefit.back.dto.response.notification.GetNotificationListResponseD
 import com.rookiefit.back.dto.response.notification.GetNotificationResponseDto;
 import com.rookiefit.back.entity.NotificationEntity;
 import com.rookiefit.back.entity.UserEntity;
-import com.rookiefit.back.provider.JwtProvider;
 import com.rookiefit.back.repository.NotificationRepository;
 import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.service.NotificationService;
@@ -26,13 +25,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationServiceImplement implements NotificationService{
 
-    private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
 
     @Override
-    public ResponseEntity<? super InputNotificationResponseDto> createNotification(NotificationRequestDto dto) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super InputNotificationResponseDto> createNotification(NotificationRequestDto dto, String currentUserId) {
         UserEntity userEntity = userRepository.findByUserId(currentUserId);
         if(userEntity == null) {
             return  ResponseEntity.badRequest().body("UserId not found");
@@ -44,8 +41,7 @@ public class NotificationServiceImplement implements NotificationService{
     }
 
     @Override
-    public ResponseEntity<? super InputNotificationResponseDto> updateNotification(NotificationRequestDto dto, Long notificationId) {
-        String currentUserId = jwtProvider.getUserIdFromToken(dto.getToken());
+    public ResponseEntity<? super InputNotificationResponseDto> updateNotification(NotificationRequestDto dto, Long notificationId, String currentUserId) {
         UserEntity userEntity = userRepository.findByUserId(currentUserId);
         if(userEntity == null) {
             return  ResponseEntity.badRequest().body("UserId not found");

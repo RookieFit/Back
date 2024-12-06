@@ -8,12 +8,21 @@ import lombok.Getter;
 @Getter
 public class InputTrainerResponseDto {
 
+    private String message;
+
+    // 기본 생성자
     public InputTrainerResponseDto() {
         super();
     }
 
-    public static ResponseEntity<InputTrainerResponseDto> success() {
-        InputTrainerResponseDto responseBody = new InputTrainerResponseDto();
+    // 메시지를 받는 생성자
+    public InputTrainerResponseDto(String message) {
+        this.message = message;
+    }
+
+    // 성공 응답을 반환하는 static 메소드
+    public static ResponseEntity<InputTrainerResponseDto> success(String message) {
+        InputTrainerResponseDto responseBody = new InputTrainerResponseDto(message);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }

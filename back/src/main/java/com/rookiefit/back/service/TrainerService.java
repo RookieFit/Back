@@ -4,13 +4,11 @@ import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface TrainerService {
 
     // 트레이너 인증 요청 등록
-    ResponseEntity<? super InputTrainerResponseDto> createTrainer(InputTrainerRequestDto dto);
+    ResponseEntity<? super InputTrainerResponseDto> createTrainer(InputTrainerRequestDto dto, String currentUserId);
 
     // 관리자 승인 후 라이센스 승인 처리
     // ResponseEntity<? super InputTrainerResponseDto> approveTrainer(String

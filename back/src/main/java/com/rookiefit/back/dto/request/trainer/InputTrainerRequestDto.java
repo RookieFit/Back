@@ -1,5 +1,7 @@
 package com.rookiefit.back.dto.request.trainer;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,17 +13,12 @@ import lombok.Setter;
 public class InputTrainerRequestDto {
 
     @NotBlank
-    private String userId;
-
-    @NotBlank
-    private String licenseImageUrl;
-
-    @NotBlank
     private String licenseNumber;
+
+    private MultipartFile licenseImageUrl;
 
     @NotBlank
     private String businessRegisterNumber;
 
-    @NotBlank
-    private String businessRegisterImageUrl;
+    private MultipartFile businessRegisterImageUrl;
 }
