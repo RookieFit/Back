@@ -1,9 +1,12 @@
 package com.rookiefit.back.dto.response.userCommunity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.rookiefit.back.dto.response.ResponseDto;
+import com.rookiefit.back.entity.UserCommunity.CommunityImageListEntity;
 import com.rookiefit.back.entity.UserCommunity.UserCommunityEntity;
 import lombok.Getter;
 
@@ -15,6 +18,7 @@ public class GetUserCommunityResponseDto extends ResponseDto {
     private String communityAuthor;
     private String communityContentType;
     private boolean isModified;
+    private List<String> commnunityImages;
     private List<GetUserCommnityAnswerResponseDto> userCommunityAnswerList;
 
     public GetUserCommunityResponseDto(UserCommunityEntity userCommunityEntity) {
@@ -24,6 +28,11 @@ public class GetUserCommunityResponseDto extends ResponseDto {
         this.communityAuthor = userCommunityEntity.getCommunityAuthor();
         this.communityContentType = userCommunityEntity.getCommunityContentType();
         this.isModified = userCommunityEntity.getIsModified();
+        this.commnunityImages = (userCommunityEntity.getCommunityImages() != null && !userCommunityEntity.getCommunityImages().isEmpty()) ?
+            userCommunityEntity.getCommunityImages()
+                .stream()
+                .map(CommunityImageListEntity::getCommunityImageUri)
+                .collect(Collectors.toList()) : new ArrayList<>();
         this.userCommunityAnswerList = userCommunityEntity.getUserCommunityAnswerLists()
                 .stream()
                 .map(GetUserCommnityAnswerResponseDto::new)
