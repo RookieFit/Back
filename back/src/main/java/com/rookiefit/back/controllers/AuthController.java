@@ -41,6 +41,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -153,8 +154,10 @@ public class AuthController {
     // 트레이너 등록 요청
     @PostMapping("/trainer-register")
     public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto dto) {
-        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto);
+            @ModelAttribute @Valid InputTrainerRequestDto dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String)authentication.getPrincipal();
+        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto,currentUserId);
         return response;
     }
 }

@@ -8,6 +8,21 @@ import lombok.Getter;
 @Getter
 public class InputTrainerResponseDto {
 
+    private boolean isLicensed; // 라이센스 승인 여부
+    private String message;
+
+    public static ResponseEntity<InputTrainerResponseDto> success(String message) {
+        InputTrainerResponseDto responseBody = new InputTrainerResponseDto(message);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+
+    public InputTrainerResponseDto() {
+        super();
+    }
+
+    public InputTrainerResponseDto(String message) {
+        this.message = message;
+
     private String message;
 
     // 기본 생성자

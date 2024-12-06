@@ -7,10 +7,12 @@ import com.rookiefit.back.dto.request.userData.InputUserProfileRequestDto;
 import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.request.userData.InputUserBodyDataRequestDto;
 import com.rookiefit.back.dto.response.userData.InputUserProfileResponseDto;
+import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.userData.GetUserProfileResponseDto;
 import com.rookiefit.back.dto.response.userData.InputUserBodyDataResponseDto;
 import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
+
 import com.rookiefit.back.service.TrainerService;
 import com.rookiefit.back.service.UserDataService;
 
