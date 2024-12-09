@@ -44,7 +44,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/api/v1/auth/")
 @RequiredArgsConstructor
@@ -137,23 +136,15 @@ public class AuthController {
         return ResponseEntity.ok(roles);
     }
 
-    //트레이너 자격이 있는사람인지 체크
+    // 트레이너 자격이 있는사람인지 체크
     @GetMapping("/islicensed")
     public ResponseEntity<Boolean> getLicensed() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserId = (String)authentication.getPrincipal();
+        String currentUserId = (String) authentication.getPrincipal();
         UserEntity userEntity = userRepository.findByUserId(currentUserId);
-        if(userEntity==null){
+        if (userEntity == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return ResponseEntity.ok(userEntity.getIsLicensed());
-    }
-
-    // 트레이너 등록 요청
-    @PostMapping("/trainer-register")
-    public ResponseEntity<? super InputTrainerResponseDto> createTrainer(
-            @RequestBody @Valid InputTrainerRequestDto dto) {
-        ResponseEntity<? super InputTrainerResponseDto> response = trainerService.createTrainer(dto);
-        return response;
     }
 }
