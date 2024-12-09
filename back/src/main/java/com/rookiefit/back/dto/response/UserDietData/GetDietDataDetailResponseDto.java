@@ -22,6 +22,7 @@ public class GetDietDataDetailResponseDto extends ResponseDto {
 
     @Getter
     public static class DietDetail {
+        private Long userDietDetailId;
         private String foodName;
         private String foodFirstCategory;
         private Double chocdf;
@@ -30,11 +31,12 @@ public class GetDietDataDetailResponseDto extends ResponseDto {
         private Double enerc;
 
         // 생성자 추가
-        public DietDetail(String foodName, String foodFirstCategory,
+        public DietDetail(Long userDietDetailId, String foodName, String foodFirstCategory,
                 Double chocdf,
                 Double prot,
                 Double fat,
                 Double enerc) {
+            this.userDietDetailId = userDietDetailId;
             this.foodName = foodName;
             this.foodFirstCategory = foodFirstCategory;
             this.chocdf = chocdf;
@@ -61,6 +63,7 @@ public class GetDietDataDetailResponseDto extends ResponseDto {
         // UserDietDetailDataEntity를 DietDetail로 변환
         List<DietDetail> dietDetails = userDietDetailDataEntities.stream()
                 .map(detail -> new DietDetail(
+                        detail.getUserDietDetailId(),
                         detail.getFoodName(),
                         detail.getFoodFirstCategory(),
                         detail.getChocdf(),
