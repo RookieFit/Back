@@ -59,7 +59,7 @@ jobs:
           aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
           docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
 
-      - name: SSH로 EC2에 접속하여 Docker 이미지 배포
+      - name: SSH로 EC2에 접속하여 Docker 이미지 배포..
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
