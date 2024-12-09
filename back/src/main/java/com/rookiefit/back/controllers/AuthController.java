@@ -13,13 +13,11 @@ import com.rookiefit.back.dto.request.auth.SignInRequestDto;
 import com.rookiefit.back.dto.request.auth.SignUpRequestDto;
 import com.rookiefit.back.dto.request.auth.SmsCertificationRequestDto;
 import com.rookiefit.back.dto.request.auth.UserDeleteRequestDto;
-import com.rookiefit.back.dto.request.trainer.InputTrainerRequestDto;
 import com.rookiefit.back.dto.response.auth.IdCheckResponseDto;
 import com.rookiefit.back.dto.response.auth.SignInResponseDto;
 import com.rookiefit.back.dto.response.auth.SignUpResponseDto;
 import com.rookiefit.back.dto.response.auth.SmsCertificationResponseDto;
 import com.rookiefit.back.dto.response.auth.UserDeleteResponseDto;
-import com.rookiefit.back.dto.response.trainer.InputTrainerResponseDto;
 import com.rookiefit.back.entity.UserEntity;
 import com.rookiefit.back.repository.UserRepository;
 import com.rookiefit.back.dto.response.auth.CheckCertificationResponseDto;
@@ -28,8 +26,6 @@ import com.rookiefit.back.dto.response.auth.FindUserIdResponseDto;
 import com.rookiefit.back.dto.response.auth.CheckFindUserPasswordResponseDto;
 import com.rookiefit.back.dto.response.auth.FindUserPasswordResponseDto;
 import com.rookiefit.back.service.AuthService;
-import com.rookiefit.back.service.TrainerService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -41,7 +37,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -51,7 +46,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final AuthService authService;
-    private final TrainerService trainerService;
     private final UserRepository userRepository;
 
     @PostMapping("/id-check")

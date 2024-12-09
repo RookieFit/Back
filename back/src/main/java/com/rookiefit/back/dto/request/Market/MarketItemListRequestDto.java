@@ -1,11 +1,8 @@
 package com.rookiefit.back.dto.request.Market;
 
-import java.util.Date;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
