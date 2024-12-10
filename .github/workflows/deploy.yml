@@ -79,7 +79,7 @@ jobs:
       - name: S3에 프로젝트 파일 업로드
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefits3/$GITHUB_SHA.tar.gz
 
-      - name: CodeDeploy를 활용하여 EC2에 프로젝트 코드 배포
+      - name: CodeDeploy를 활용하여 EC2에 프로젝트 코드 배포..
         run: |
           aws deploy create-deployment \
             --application-name RookieFit_Code_Deploy \
