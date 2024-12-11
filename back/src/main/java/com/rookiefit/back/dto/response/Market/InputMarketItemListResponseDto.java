@@ -8,12 +8,13 @@ import com.rookiefit.back.dto.response.ResponseDto;
 import lombok.Getter;
 
 @Getter
-public class InputMarketItemListResponseDto extends ResponseDto{
+public class InputMarketItemListResponseDto extends ResponseDto {
     private InputMarketItemListResponseDto() {
         super();
     }
+
     public static ResponseEntity<InputMarketItemListResponseDto> success() {
-        InputMarketItemListResponseDto reponseBody = new InputMarketItemListResponseDto();
-        return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
+        InputMarketItemListResponseDto responseBody = new InputMarketItemListResponseDto();
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }

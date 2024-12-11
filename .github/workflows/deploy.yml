@@ -1,0 +1,88 @@
+name: Deploy To EC2
+
+on:
+  push:
+    branches:
+      - Deployment-Workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Repository 파일 불러오기..
+        uses: actions/checkout@v4
+
+      - name: JDK 21버전 설치
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Create application.api.properties and debug
+        working-directory: ./back 
+        run: |
+          echo "${{ secrets.APPLICATION_API_PROPERTIES }}" > ./src/main/resources/application-api.properties
+          ls -la ./src/main/resources/
+          sudo cat ./src/main/resources/application-api.properties
+
+      - name: create-json
+        id: firebase-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "firebase.json"
+          json: ${{ secrets.FIREBASE_JSON }}
+          dir: ./back/src/main/resources/
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        working-directory: ./back
+
+      - name: 테스트 및 빌드하기
+        run: ./gradlew clean build -x test
+        working-directory: ./back
+
+      - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: ECR에 로그인하기
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2  
+
+      - name: Docker 이미지 빌드 및 Push
+        run: |
+          docker build -t rookiefit-server ./back
+          docker tag rookiefit-server ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+
+      - name: SSH로 EC2에 접속하여 Docker 이미지 배포..
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }} 
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          script: |
+            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+            docker stop rookiefit-server || true
+            docker rm rookiefit-server || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+            docker run -d --name rookiefit-server -p 4040:4040 ${{ steps.login-ecr.outputs.registry }}/rookiefit-server:latest
+
+      - name: 파일 압축하기
+        run: tar -czvf $GITHUB_SHA.tar.gz ./back/appspec.yml ./back/scripts
+
+      - name: S3에 프로젝트 파일 업로드
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://rookiefits3/$GITHUB_SHA.tar.gz
+
+      - name: CodeDeploy를 활용하여 EC2에 프로젝트 코드 배포..
+        run: |
+          aws deploy create-deployment \
+            --application-name RookieFit_Code_Deploy \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name RookieFit_Code_Deploy_Group \
+            --s3-location bucket=rookiefits3,bundleType=tgz,key=$GITHUB_SHA.tar.gz

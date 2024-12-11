@@ -12,5 +12,4 @@ public class UserDeleteRequestDto {
 
     @NotBlank
     private String user_password;
-
 }

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class GetDietDataResponseDto {
     private Long id;
     private String foodName;
-    private String food_First_Category;
+    private String foodFirstCategory;
     private double chocdf;
     private double prot;
     private double fatce;
@@ -23,7 +23,7 @@ public class GetDietDataResponseDto {
     private GetDietDataResponseDto(FoodInfoEntity entity) {
         this.id = entity.getId();
         this.foodName = entity.getFoodName();
-        this.food_First_Category = entity.getFoodFirstCategory();
+        this.foodFirstCategory = entity.getFoodFirstCategory();
         this.chocdf = entity.getChocdf();
         this.prot = entity.getProt();
         this.fatce = entity.getFatce();

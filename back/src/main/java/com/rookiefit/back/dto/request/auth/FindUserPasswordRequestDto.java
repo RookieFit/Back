@@ -14,6 +14,6 @@ public class FindUserPasswordRequestDto {
     private String userId;
 
     @NotBlank
-    private String user_phonenumber;
+    private String userPhoneNumber;
 
 }

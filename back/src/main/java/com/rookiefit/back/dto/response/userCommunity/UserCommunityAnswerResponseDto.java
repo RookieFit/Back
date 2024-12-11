@@ -10,17 +10,19 @@ import com.rookiefit.back.dto.response.ResponseDto;
 import lombok.Getter;
 
 @Getter
-public class UserCommunityAnswerResponseDto extends ResponseDto{
+public class UserCommunityAnswerResponseDto extends ResponseDto {
     private UserCommunityAnswerResponseDto() {
         super();
     }
+
     public static ResponseEntity<UserCommunityAnswerResponseDto> success() {
-        UserCommunityAnswerResponseDto reponseBody = new UserCommunityAnswerResponseDto();
-        return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
+        UserCommunityAnswerResponseDto responseBody = new UserCommunityAnswerResponseDto();
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> communityListIdNotFound() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.COMMUNITY_LIST_NOT_FOUND,ResponseMessage.COMMUNITY_LIST_NOT_FOUND);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.COMMUNITY_LIST_NOT_FOUND,
+                ResponseMessage.COMMUNITY_LIST_NOT_FOUND);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 }

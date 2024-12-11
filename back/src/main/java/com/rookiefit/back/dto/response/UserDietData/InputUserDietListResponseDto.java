@@ -14,8 +14,8 @@ public class InputUserDietListResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<InputUserDietListResponseDto> success() {
-        InputUserDietListResponseDto reponseBody = new InputUserDietListResponseDto();
-        return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
+        InputUserDietListResponseDto responseBody = new InputUserDietListResponseDto();
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
 }

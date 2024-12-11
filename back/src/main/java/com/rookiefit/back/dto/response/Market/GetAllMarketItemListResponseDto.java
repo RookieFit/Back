@@ -8,8 +8,6 @@ import com.rookiefit.back.dto.response.ResponseDto;
 import com.rookiefit.back.entity.Market.ItemImageEntity;
 import com.rookiefit.back.entity.Market.MarketItemListEntity;
 import com.rookiefit.back.entity.Market.MarketProductsEntity;
-import com.rookiefit.back.entity.UserWorkout.UserWorkoutImagesEntity;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -45,8 +43,8 @@ public class GetAllMarketItemListResponseDto extends ResponseDto {
         this.productPrice = marketProductsEntity.getProductPrice();
         this.location = marketProductsEntity.getLocation();
         this.imageUris = marketItemListEntity.getItemImages().stream()
-        .map(ItemImageEntity::getItemImageUri)
-        .collect(Collectors.toList());
+                .map(ItemImageEntity::getItemImageUri)
+                .collect(Collectors.toList());
     }
 
     public static List<GetAllMarketItemListResponseDto> fromEntityList(List<MarketItemListEntity> entities) {

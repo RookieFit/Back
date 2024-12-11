@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CheckFindUserPasswordRequestDto {
-    
+
     @NotBlank
     private String userId;
 
     @NotBlank
-    private String user_phonenumber;
+    private String userPhoneNumber;
 
     @NotBlank
     private String certificationNumber;

@@ -162,7 +162,7 @@ public class AuthServiceImplement implements AuthService {
     @Override
     public ResponseEntity<? super FindUserPasswordResponseDto> findUserPassword(FindUserPasswordRequestDto dto) {
         String userId = dto.getUserId();// 입력받은 아이디
-        String phoneNumber = dto.getUser_phonenumber();// 입력받은 전화번호
+        String phoneNumber = dto.getUserPhoneNumber();// 입력받은 전화번호
 
         boolean isExistId = userRepository.existsByUserId(userId);// DB에 아이디가 있는지 검사
         if (!isExistId)

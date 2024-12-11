@@ -16,8 +16,8 @@ public class InputFoodInfoResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<InputFoodInfoResponseDto> success() {
-        InputFoodInfoResponseDto reponseBody = new InputFoodInfoResponseDto();
-        return ResponseEntity.status(HttpStatus.OK).body(reponseBody);
+        InputFoodInfoResponseDto responseBody = new InputFoodInfoResponseDto();
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> insertFail() {
