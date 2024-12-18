@@ -47,7 +47,6 @@ public class UserProfileEntity {
     @Column(name = "user_profile_id")
     private Long userProfileId;
 
-    @NotBlank
     private String userProfileImageUri;
 
     private String gymName;
@@ -74,22 +73,23 @@ public class UserProfileEntity {
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserWorkoutListDataEntity> userWorkoutLists;
 
-    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserCommunityEntity> userCommunityEntities;
 
-    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserCommunity_Answer_ListEntity> userCommunityAnswerListEntities;
 
-    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<MarketItemListEntity> MarketItemEntities;
 
     @ManyToMany(mappedBy = "participants")
-    private List<UserChatRoomEntity> chatRooms;  // 사용자가 참여한 채팅방들
+    private List<UserChatRoomEntity> chatRooms; // 사용자가 참여한 채팅방들
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserChatMessageEntity> messages;  // 사용자가 보낸 메시지들
+    private List<UserChatMessageEntity> messages; // 사용자가 보낸 메시지들
 
-    //241205-09:32_김민준 : dto로 넘어오는 값들이 null로 검사하는게 아닌 isEmpty로 검사해야 빈값이 아닌 기본값을 넣을 수 있음
+    // 241205-09:32_김민준 : dto로 넘어오는 값들이 null로 검사하는게 아닌 isEmpty로 검사해야 빈값이 아닌 기본값을 넣을
+    // 수 있음
     public UserProfileEntity(InputUserProfileRequestDto dto, String uploadedFileUrl, UserEntity userEntity) {
         this.userAuthEntity = userEntity;// userId 설정
         this.userProfileImageUri = uploadedFileUrl;
