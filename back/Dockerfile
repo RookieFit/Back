@@ -3,8 +3,8 @@ FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
 # Gradle Wrapper 및 프로젝트 복사
-COPY gradlew gradlew.bat build.gradle settings.gradle gradle /app/
-COPY src /app/src
+COPY back/gradlew back/gradlew.bat back/build.gradle back/settings.gradle back/gradle /app/
+COPY back/src /app/src
 
 # 실행 권한 부여
 RUN chmod +x gradlew
