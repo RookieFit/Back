@@ -25,7 +25,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1  # Gradle Wrapper 검증
 
       - name: Build with Gradle
-        run: ./gradlew build -x test   # Gradle 빌드, 테스트는 제외
+        run: ./gradlew build   # Gradle 빌드
 
       - name: Build Docker image
         run: |
