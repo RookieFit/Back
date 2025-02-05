@@ -46,8 +46,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Tag Docker image
+        run: docker tag myapp:latest pipakmj/myapp:latest
+
       - name: Push Docker image to Docker Hub
-        run: docker push pipakmj/myapp:latest
+        run: docker push pipakmj/myapp:latest  # 이 부분을 추가해야 이미지를 Docker Hub로 푸시합니다.
 
       - name: SSH 접속
         uses: appleboy/ssh-action@v0.1.5
