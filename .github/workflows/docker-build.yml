@@ -33,7 +33,7 @@ jobs:
         working-directory: ./back
         run: chmod +x gradlew
 
-      - name: Build project (skip tests)
+      - name: 프로젝트 빌드
         working-directory: ./back
         run: ./gradlew clean build -x test
 
