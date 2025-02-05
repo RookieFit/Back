@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 application-api.properties
 firebase.json
+docker-compose.yml
 
 
 ### STS ###
