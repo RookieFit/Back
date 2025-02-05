@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Gradle Wrapper 및 프로젝트 복사
 COPY back/gradlew back/gradlew.bat back/build.gradle back/settings.gradle back/gradle /app/
+COPY back/gradle/wrapper /app/gradle/wrapper
 COPY back/src /app/src
 
 # 실행 권한 부여
