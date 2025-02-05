@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew clean build -x test
 
       - name: Build Docker image
-        run: docker build -t myapp:latest -f ./back/Dockerfile ./back  # Dockerfile 위치를 ./back으로 지정
+        run: docker build -t myapp:latest -f ./back/Dockerfile .  # Dockerfile 위치를 ./back으로 지정
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
