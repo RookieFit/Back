@@ -28,7 +28,7 @@ public class UserEntity {
 
     private String user_password;
 
-    // private String user_email;
+    private String user_email;
 
     private String userPhoneNumber;
 
@@ -48,7 +48,7 @@ public class UserEntity {
 
         this.userId = dto.getUserId();
         this.user_password = dto.getUser_password();
-        // this.user_email = dto.getUser_email();
+        this.user_email = "email";
         this.userPhoneNumber = dto.getUser_phonenumber();
         this.type = "app";
         this.role = "ROLE_USER";
