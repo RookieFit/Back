@@ -1,5 +1,5 @@
 # 1. Gradle을 사용하여 애플리케이션을 빌드할 이미지 (빌드 단계)
-FROM gradle:7.6-jdk21-alpine AS build
+FROM gradle:8.5-jdk21 AS build
 
 # 2. 작업 디렉토리 설정
 WORKDIR /app
