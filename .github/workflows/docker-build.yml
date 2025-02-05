@@ -37,7 +37,7 @@ jobs:
         working-directory: ./back
         run: ./gradlew clean build -x test
 
-      - name: Build Docker image
+      - name: 도커이미지 빌드
         run: docker build -t myapp:latest -f ./back/Dockerfile .
 
       - name: Log in to Docker Hub
