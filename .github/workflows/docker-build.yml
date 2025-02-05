@@ -33,11 +33,11 @@ jobs:
         working-directory: ./back
         run: chmod +x gradlew
 
-      - name: 프로젝트 빌드
+      - name: Build the project
         working-directory: ./back
         run: ./gradlew clean build -x test
 
-      - name: 도커이미지 빌드
+      - name: Build Docker image
         run: docker build -t myapp:latest -f ./back/Dockerfile .
 
       - name: Log in to Docker Hub
@@ -45,6 +45,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker image to Docker Hub
+        run: docker push pipakmj/myapp:latest
 
       - name: SSH 접속
         uses: appleboy/ssh-action@v0.1.5
