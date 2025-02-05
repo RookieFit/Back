@@ -60,7 +60,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             echo "Starting deploy process"
-            docker pull pipakmj/myapp:latest
-            docker stop myapp_container || true
-            docker rm myapp_container || true
-            docker run -d --name myapp_container -p 4040:4040 pipakmj/myapp:latest
+            docker pull ***/myapp:latest
+            docker stop myapp_container || echo "myapp_container does not exist"
+            docker rm myapp_container || echo "myapp_container does not exist"
+            docker run -d --name myapp_container -p 4040:4040 ***/myapp:latest
+
