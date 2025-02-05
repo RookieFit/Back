@@ -29,6 +29,14 @@ jobs:
           ls -la ./src/main/resources/
           cat ./src/main/resources/application-api.properties
 
+      - name: create-json
+        id: firebase-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "firebase.json"
+          json: ${{ secrets.FIREBASE_JSON }}
+          dir: ./back/src/main/resources/
+
       - name: Grant execute permission for gradlew
         working-directory: ./back
         run: chmod +x gradlew
