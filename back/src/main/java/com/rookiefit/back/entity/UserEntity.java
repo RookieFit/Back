@@ -48,7 +48,7 @@ public class UserEntity {
 
         this.userId = dto.getUserId();
         this.user_password = dto.getUser_password();
-        this.user_email = "email";
+        this.user_email = dto.getEmail();
         this.userPhoneNumber = dto.getUser_phonenumber();
         this.type = "app";
         this.role = "ROLE_USER";
